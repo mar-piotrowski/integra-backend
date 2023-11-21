@@ -1,5 +1,8 @@
 using Application.Features.Contract.Command;
+using Application.Features.Contract.Query;
+using Domain.Enums;
 using Domain.Result;
+using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +15,17 @@ public class ContractController : ControllerBase {
     public ContractController(ISender sender) {
         _sender = sender;
     }
-    
+
     [HttpGet]
-    public ActionResult GetAll(int userId) {
-        throw new NotImplementedException();
+    public async Task<ActionResult> GetAll([FromRoute] ContractType contractType, [FromRoute] int userId) {
+        var result = await _sender.Send(new GetContractsQuery(contractType, UserId.Create(userId)));
+        return result.MapResult();
     }
 
-    [HttpGet("{documentId:int}")]
-    public ActionResult Get(int userId, [FromRoute] int documentId, [FromQuery] int documentType) {
-        throw new NotImplementedException();
+    [HttpGet("{contractId:int}")]
+    public async Task<ActionResult> Get([FromQuery] int contractId) {
+        var result = await _sender.Send(new GetContractQuery(ContractId.Create(contractId)));
+        return result.MapResult();
     }
 
     [HttpPost]
@@ -30,10 +35,10 @@ public class ContractController : ControllerBase {
     }
 
     [HttpPut("{documentId:int}")]
-    public ActionResult Update(int userId, int documentId) {
+    public async Task<ActionResult> Update(int userId, int documentId) {
         throw new NotImplementedException();
     }
-    
+
     [HttpDelete("{documentId:int}")]
     public ActionResult Delete(int userId, int documentId) {
         throw new NotImplementedException();

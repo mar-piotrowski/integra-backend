@@ -1,5 +1,6 @@
 using Domain.Common.Models;
 using Domain.Entities;
+using Domain.ValueObjects;
 using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ public class DatabaseContext : DbContext {
     public DbSet<Contract> Contracts { get; set; }
     public DbSet<InsuranceCode> InsuranceCodes { get; set; }
     public DbSet<JobPosition> JobPositions { get; set; }
+    public DbSet<Absence> Absences { get; set; }
 
     public DatabaseContext(IConfiguration configuration, PublishDomainEventsInterceptor domainEventsInterceptor) {
         _configuration = configuration;
@@ -32,7 +34,7 @@ public class DatabaseContext : DbContext {
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        optionsBuilder.UseNpgsql(_configuration.GetConnectionString(ConnectionName));
+        optionsBuilder .UseNpgsql(_configuration.GetConnectionString(ConnectionName)) .UseSnakeCaseNamingConvention();
         optionsBuilder.AddInterceptors(_domainEventsInterceptor);
     }
 }

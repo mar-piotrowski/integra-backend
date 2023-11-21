@@ -18,10 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Absence\Commands\" />
-      <Folder Include="Features\Absence\Queries\" />
-      <Folder Include="Features\Contract\Query\" />
-      <Folder Include="Features\JobPosition\Query\" />
       <Folder Include="Features\Stock\Query\" />
     </ItemGroup>
 

@@ -13,6 +13,7 @@ public static class ContractorMapper {
             contractor.Location.MapToDto()
         );
 
-    public static List<ContractorDto> MapToListDto(this IEnumerable<Contractor> contractors) =>
+    public static List<ContractorDto> MapToDtos(this IEnumerable<Contractor> contractors) =>
         contractors.Select(contractor => contractor.MapToDto()).ToList();
+    
 }

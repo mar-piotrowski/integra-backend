@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231118173944_dfddfdfs")]
+    partial class dfddfdfs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,6 +374,66 @@ namespace Infrastructure.Migrations
                     b.ToTable("jobPositions", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Location", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("ApartmentNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("apartment_no");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("city");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("country");
+
+                    b.Property<string>("HouseNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("house_no");
+
+                    b.Property<bool>("IsCompany")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_company");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_private");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("postal_code");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("street");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("id")
+                        .HasName("pk_locations");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_locations_user_id");
+
+                    b.ToTable("locations", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -568,66 +631,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("bankDetails", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.ValueObjects.Location", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<string>("ApartmentNo")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("apartment_no");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("city");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("country");
-
-                    b.Property<string>("HouseNo")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("house_no");
-
-                    b.Property<bool>("IsCompany")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_company");
-
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_private");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("postal_code");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("street");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("id")
-                        .HasName("pk_locations");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_locations_user_id");
-
-                    b.ToTable("locations", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.Absence", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -674,7 +677,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_contractors_bank_details_bank_details_temp_id");
 
-                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                    b.HasOne("Domain.Entities.Location", "Location")
                         .WithMany()
                         .HasForeignKey("Locationid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -686,9 +689,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Location", b =>
+                {
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithMany("Locations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_locations_users_user_temp_id2");
+                });
+
             modelBuilder.Entity("Domain.Entities.Stock", b =>
                 {
-                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                    b.HasOne("Domain.Entities.Location", "Location")
                         .WithMany()
                         .HasForeignKey("Locationid")
                         .HasConstraintName("fk_stocks_locations_location_temp_id1");
@@ -716,16 +729,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_absence_statuses_absences_absence_id");
-                });
-
-            modelBuilder.Entity("Domain.ValueObjects.Location", b =>
-                {
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithMany("Locations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_locations_users_user_temp_id2");
                 });
 
             modelBuilder.Entity("Domain.Entities.Absence", b =>

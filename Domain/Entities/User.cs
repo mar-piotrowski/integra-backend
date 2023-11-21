@@ -15,14 +15,15 @@ namespace Domain.Entities {
         public string? Sex { get; private set; }
         public bool IsStudent { get; private set; }
         public Credential Credential { get; private set; }
-
         private readonly List<Location> _locations = new List<Location>();
-
         private readonly List<Contract> _contracts = new List<Contract>();
-
+        private readonly List<Absence> _absences = new List<Absence>();
+        
         public IEnumerable<Location> Locations => _locations.AsReadOnly();
 
         public IEnumerable<Contract> Contracts => _contracts.AsReadOnly();
+
+        public IEnumerable<Absence> Absences => _absences.AsReadOnly();
 
         private User() { }
 
@@ -74,16 +75,20 @@ namespace Domain.Entities {
             sex
         );
 
+        public void AddAbsence(Absence absence) {
+            _absences.Add(absence);
+        }
+
         public void AddContract(Contract contract) {
             _contracts.Add(contract);
         }
-        
+
         public void AddLocation(Location location) {
             _locations.Add(location);
         }
-        
+
         public void AddLocations(IEnumerable<Location> locations) {
-           _locations.AddRange(locations); 
+            _locations.AddRange(locations);
         }
 
         public void AddCredentials(Credential credential) {

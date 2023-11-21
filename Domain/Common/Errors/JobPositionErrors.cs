@@ -9,4 +9,7 @@ public static class JobPositionErrors {
 
    public static Error TitleDoesNotExists =>
        new Error(HttpStatusCode.NotFound, "JobPosition.NotFount", "Podane stanowisko nie istnieje");
+
+   public static Error NotFoundAny =>
+       new Error(HttpStatusCode.NotFound, "JobPosition.NotFoundAny", "Nie znaleziono stanowisk");
 }

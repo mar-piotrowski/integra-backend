@@ -1,4 +1,5 @@
 using Domain.Abstractions;
+using Domain.ValueObjects;
 
 namespace Domain.Entities {
     public class UserLocation : IAuditableEntity {

@@ -22,6 +22,6 @@ public class GetContractorsQueryHandler : IQueryHandler<GetContractorsQuery, Con
         var contractors = _contractorRepository.GetAllWithLocation();
         if (!contractors.Any())
             return Result.Failure<ContractorsResponse>(ContractorErrors.NotFoundMany);
-        return Result.Success(new ContractorsResponse { Contractors = contractors.MapToListDto() });
+        return Result.Success(new ContractorsResponse { Contractors = contractors.MapToDtos() });
     }
 }

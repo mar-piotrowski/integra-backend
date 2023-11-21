@@ -1,10 +1,12 @@
 using Application.Dtos;
 using Application.Features.JobPosition.Command;
+using Application.Features.JobPosition.Query;
 using Domain.Result;
+using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntegraBackend.Controllers; 
+namespace IntegraBackend.Controllers;
 
 [Route("/api/v1/job-positions")]
 public class JobPositionController : ControllerBase {
@@ -15,13 +17,15 @@ public class JobPositionController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAll() {
-        throw new NotImplementedException();
+    public async Task<ActionResult> GetAll([FromRoute] string name) {
+        var result = await _sender.Send(new GetJobPositionsQuery(name));
+        return result.MapResult();
     }
 
     [HttpGet("{jobPositionId:int}")]
     public async Task<ActionResult> Get(int jobPositionId) {
-        throw new NotImplementedException();
+        var result = await _sender.Send(new GetJobPositionQuery(JobPositionId.Create(jobPositionId)));
+        return result.MapResult();
     }
 
     [HttpPost]
@@ -32,7 +36,10 @@ public class JobPositionController : ControllerBase {
 
     [HttpPut("{jobPositionId:int}")]
     public async Task<ActionResult> Update(int jobPositionId, [FromBody] UpdateJobPositionRequest request) {
-        var result = await _sender.Send(new UpdateJobPositionCommand(jobPositionId, request.Title));
+        var result = await _sender.Send(new UpdateJobPositionCommand(
+            JobPositionId.Create(jobPositionId),
+            request.Title
+        ));
         return result.MapResult();
     }
 

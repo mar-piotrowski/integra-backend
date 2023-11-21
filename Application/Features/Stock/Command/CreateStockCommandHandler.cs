@@ -4,6 +4,7 @@ using Application.Abstractions.Repositories;
 using Domain.Common.Errors;
 using Domain.Entities;
 using Domain.Result;
+using Domain.ValueObjects;
 
 namespace Application.Features.Stock.Command;
 

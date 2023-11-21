@@ -1,8 +1,7 @@
 using Domain.Common.Models;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 
-namespace Domain.Entities {
+namespace Domain.ValueObjects {
     public class Location : ValueObject {
         public string Street { get; private set; }
         public string HouseNo { get; private set; }
