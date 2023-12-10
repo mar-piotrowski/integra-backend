@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("/api/v1/articles")]
+[Route("integra/articles")]
 public class ArticleController : ControllerBase {
     private readonly ISender _sender;
 
@@ -18,8 +18,8 @@ public class ArticleController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAll([FromQuery] int stockId) {
-        var command = new GetArticlesQuery(StockId.Create(stockId));
+    public async Task<ActionResult> GetAll() {
+        var command = new GetArticlesQuery();
         var result = await _sender.Send(command);
         return result.MapResult();
     }

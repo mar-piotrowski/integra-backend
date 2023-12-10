@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("/api/v1/absences")]
+[Route("integra/absences")]
 public class AbsenceController : Controller {
     private readonly ISender _sender;
 

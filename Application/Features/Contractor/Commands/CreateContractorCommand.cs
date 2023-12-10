@@ -9,6 +9,7 @@ public record CreateContractorCommand(
     string ShortName,
     string Representative,
     string Nip,
+    string Email,
     LocationDto Location,
     BankDetailsDto BankDetails
 ) : ICommand;

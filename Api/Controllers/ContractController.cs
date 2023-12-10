@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("/api/v1/contracts")]
+[Route("integra/contracts")]
 public class ContractController : ControllerBase {
     private readonly ISender _sender;
 

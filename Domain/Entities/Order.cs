@@ -1,6 +1,5 @@
 using Domain.Common.Models;
 using Domain.Events;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 
 namespace Domain.Entities {
@@ -32,8 +31,8 @@ namespace Domain.Entities {
             string pkwiu,
             string description
         ) {
-            var article = Article.Create(name, code, gtin, measureUnit, pkwiu, description);
-            _articles.Add(article);
+            // var article = Article.Create(name, code, gtin, measureUnit, pkwiu, description);
+            // _articles.Add(article);
         }
 
         public void DeleteArticleItem(Article article) => _articles.Remove(article);

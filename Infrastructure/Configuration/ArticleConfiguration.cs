@@ -1,5 +1,4 @@
 using Domain.Entities;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,7 +13,5 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article> {
             .HasConversion(c => c.Value, value => ArticleId.Create(value))
             .IsRequired()
             .ValueGeneratedOnAdd();
-        builder.Property(p => p.StockId)
-            .HasConversion(c => c.Value, value => StockId.Create(value));
     }
 }

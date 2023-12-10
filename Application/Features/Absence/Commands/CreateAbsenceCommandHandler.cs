@@ -25,7 +25,7 @@ public class CreateAbsenceCommandHandler : ICommandHandler<CreateAbsenceCommand>
     public async Task<Result> Handle(CreateAbsenceCommand request, CancellationToken cancellationToken) {
         var user = _userRepository.GetById(UserId.Create(request.UserId));
         if (user is null)
-            return Result.Failure(UserErrors.NotFoundOne);
+            return Result.Failure(UserErrors.NotFound);
         var absence = Domain.Entities.Absence.Create(
             request.StartDate,
             request.EndDate,

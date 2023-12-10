@@ -31,4 +31,7 @@ public static class LocationMapper {
 
     public static IEnumerable<Location> MapToEntities(this IEnumerable<LocationDto> locations) =>
         locations.Select(location => location.MapToEntity());
+    
+    public static IEnumerable<LocationDto> MapToDtos(this IEnumerable<Location> locations) =>
+        locations.Select(location => location.MapToDto());
 }

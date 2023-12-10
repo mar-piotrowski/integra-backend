@@ -28,7 +28,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
             return Result.Failure<LoginResponse>(UserErrors.EmailNotFound);
         if (!_passwordHasher.Verify(user.Credential.Password, request.Password))
             return Result.Failure<LoginResponse>(UserErrors.PasswordWrong);
-        var token = _jwtTokenGenerator.GenerateToken(user.Firstname, user.Lastname);
+        // var token = _jwtTokenGenerator.GenerateToken(user.Firstname, user.Lastname);
         return Result.Success(new LoginResponse(""));
     }
 }

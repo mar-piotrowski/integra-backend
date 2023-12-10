@@ -4,13 +4,13 @@ using Domain.ValueObjects.Ids;
 namespace Application.Features.Absence.Commands;
 
 public record CreateAbsenceCommand(
-    DateTime StartDate, 
+    DateTime StartDate,
     DateTime EndDate,
     string? DiseaseCode,
-    string Series,
-    string Number,
+    string? Series,
+    string? Number,
     DateTime ReleaseDate,
     DateTime DeliveryDate,
-    string Description,
+    string? Description,
     int UserId
-) : ICommand ;
+) : ICommand;

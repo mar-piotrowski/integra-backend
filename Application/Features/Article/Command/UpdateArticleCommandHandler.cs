@@ -18,7 +18,7 @@ public class UpdateArticleCommandHandler : ICommandHandler<UpdateArticleCommand>
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken) {
         var user = _articleRepository.GetById(request.Id);
         if (user is null)
-            return Result.Failure(UserErrors.NotFoundOne);
+            return Result.Failure(UserErrors.NotFound);
         return Result.Success();
     }
 }

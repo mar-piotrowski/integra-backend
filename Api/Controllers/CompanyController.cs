@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("/api/v1/companies")]
+[Route("integra/companies")]
 public class CompanyController : ControllerBase {
     [HttpGet]
     public ActionResult GetAll() {

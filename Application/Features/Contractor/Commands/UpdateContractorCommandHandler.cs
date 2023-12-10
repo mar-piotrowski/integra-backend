@@ -3,6 +3,7 @@ using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Domain.Common.Errors;
 using Domain.Result;
+using Domain.ValueObjects;
 
 namespace Application.Features.Contractor.Commands; 
 
@@ -16,10 +17,10 @@ public class UpdateContractorCommandHandler : ICommandHandler<UpdateContractorCo
     }
     
     public async Task<Result> Handle(UpdateContractorCommand request, CancellationToken cancellationToken) {
-        var contractor = _contractorRepository.FindByNip(request.Nip);
+        var contractor = _contractorRepository.FindByNip(Nip.Create(request.Nip));
         if (contractor is null)
             return Result.Failure(ContractorErrors.NipNotExists);
-        contractor.Update(request.FullName, request.ShortName, request.Location, request.BankDetails);
+        contractor.Update(request.FullName, request.ShortName, Email.Create(request.Email), request.Location, request.BankDetails);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }

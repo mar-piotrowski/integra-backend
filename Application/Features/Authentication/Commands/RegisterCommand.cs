@@ -1,8 +1,6 @@
-using Application.Abstractions;
 using Application.Abstractions.Messaging;
 using Application.Dtos;
 using Domain.ValueObjects;
-using MediatR;
 
 namespace Application.Features.Authentication.Commands;
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("/api/v1/job-positions")]
+[Route("integra/job-positions")]
 public class JobPositionController : ControllerBase {
     private readonly ISender _sender;
 

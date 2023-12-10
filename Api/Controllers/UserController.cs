@@ -2,14 +2,13 @@ using Application.Dtos;
 using Application.Features.User.Commands;
 using Application.Features.User.Queries;
 using Domain.Result;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("/api/v1/users")]
+[Route("integra/users")]
 public class UserController : ControllerBase {
     private readonly ISender _sender;
 
@@ -31,11 +30,21 @@ public class UserController : ControllerBase {
         var result = await _sender.Send(command);
         return result.MapResult();
     }
-
+    
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserCommand command) {
         var result = await _sender.Send(command);
         return result.MapResult();
+    }
+    
+    [HttpPost("startWork")]
+    public async Task<ActionResult> StartWork() {
+        throw new NotImplementedException();
+    }
+
+    [HttpPost("endWork")]
+    public async Task<ActionResult> EndWork() {
+        throw new NotImplementedException();
     }
 
     [HttpPut("{userId:int}")]

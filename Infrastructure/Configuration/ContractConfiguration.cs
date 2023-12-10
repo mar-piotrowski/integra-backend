@@ -18,5 +18,7 @@ public class ContractConfiguration : IEntityTypeConfiguration<Contract> {
             .HasConversion(c => c.Value, value => JobPositionId.Create(value));
         builder.Property(p => p.InsuranceCodeId)
             .HasConversion(c => c.Value, value => InsuranceCodeId.Create(value));
+        builder.Property(p => p.DeductibleCostId)
+            .HasConversion(c => c.Value, value => DeductibleCostId.Create(value));
     }
 }

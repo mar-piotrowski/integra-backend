@@ -11,7 +11,7 @@ namespace Domain.ValueObjects {
         public string Country { get; private set; }
         public bool IsPrivate { get; private set; }
         public bool IsCompany { get; private set; }
-        public UserId UserId { get; private set; }
+        public UserId? UserId { get; private set; }
 
         public Location() { }
 

@@ -27,6 +27,7 @@ public class ContractorCreateCommandHandler : ICommandHandler<CreateContractorCo
             request.ShortName,
             request.Representative,
             Nip.Create(request.Nip),
+            Email.Create(request.Email), 
             Location.Create(
                 request.Location.Street,
                 request.Location.HouseNo,

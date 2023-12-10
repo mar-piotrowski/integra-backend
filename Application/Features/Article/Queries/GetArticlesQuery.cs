@@ -5,4 +5,4 @@ using Domain.ValueObjects.Ids;
 
 namespace Application.Features.Article.Queries;
 
-public record GetArticlesQuery(StockId? StockId): IQuery<IEnumerable<ArticleResponse>>;
+public record GetArticlesQuery : IQuery<ArticlesResponse>;

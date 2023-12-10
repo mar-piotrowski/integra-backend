@@ -15,15 +15,23 @@ namespace Domain.Entities {
         public string? Sex { get; private set; }
         public bool IsStudent { get; private set; }
         public Credential Credential { get; private set; }
+        public JobPosition? JobPosition { get; private set; }
+        private readonly List<HolidayLimit> _holidayLimits = new List<HolidayLimit>();
         private readonly List<Location> _locations = new List<Location>();
         private readonly List<Contract> _contracts = new List<Contract>();
         private readonly List<Absence> _absences = new List<Absence>();
-        
+        private readonly List<JobHistory> _jobHistories = new List<JobHistory>();
+        private readonly List<SchoolHistory> _schoolHistories = new List<SchoolHistory>();
+        public IEnumerable<SchoolHistory> SchoolHistories => _schoolHistories.AsReadOnly();
+        public IEnumerable<JobHistory> JobHistories => _jobHistories.AsReadOnly();
+
         public IEnumerable<Location> Locations => _locations.AsReadOnly();
 
         public IEnumerable<Contract> Contracts => _contracts.AsReadOnly();
 
         public IEnumerable<Absence> Absences => _absences.AsReadOnly();
+
+        public IEnumerable<HolidayLimit> HolidayLimits => _holidayLimits.AsReadOnly();
 
         private User() { }
 
@@ -94,5 +102,22 @@ namespace Domain.Entities {
         public void AddCredentials(Credential credential) {
             Credential = credential;
         }
+
+        public void AddJobPosition(JobPosition jobPosition) {
+            JobPosition = jobPosition;
+        }
+
+        public void UpdateJobPosition(JobPosition jobPosition) {
+            JobPosition = jobPosition;
+        }
+
+        public void AddSchool(SchoolHistory schoolHistory) => _schoolHistories.Add(schoolHistory);
+        public void UpdateSchoolHistory(SchoolHistoryId schoolHistoryId, SchoolHistory schoolHistory) =>
+            _schoolHistories.FirstOrDefault(entry => entry.Id == schoolHistoryId)?.Update(schoolHistory);
+
+        public void AddJobHistory(JobHistory jobHistory) => _jobHistories.Add(jobHistory);
+
+        public void UpdateJobHistory(JobHistoryId jobHistoryId, JobHistory jobHistory) =>
+            _jobHistories.FirstOrDefault(entry => entry.Id == jobHistoryId)?.Update(jobHistory);
     }
 }

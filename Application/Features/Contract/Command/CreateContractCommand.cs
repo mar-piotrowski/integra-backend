@@ -5,14 +5,18 @@ namespace Application.Features.Contract.Command;
 
 public record CreateContractCommand(
     decimal Salary,
-    DateTime SignedOnDate,
+    int WorkingHours1,
+    int WorkingHours2,
+    DateTime? SignedOnDate,
     DateTime StartDate,
     DateTime? EndDate,
-    bool JobFund,
+    bool JobFound,
     bool Fgsp,
     bool PitExemption,
+    bool TaxRelief,
     ContractType ContractType,
     int InsuranceCodeId,
     int UserId,
-    int JobPositionId
+    int JobPositionId,
+    int DeductibleCostId
 ) : ICommand;

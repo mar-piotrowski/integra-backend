@@ -8,7 +8,8 @@ namespace Application.Features.Contractor.Commands;
 public record UpdateContractorCommand(
     string FullName,
     string ShortName,
-    Nip Nip,
+    string Nip,
+    string Email, 
     Location Location,
     BankDetails BankDetails 
 ) : ICommand;

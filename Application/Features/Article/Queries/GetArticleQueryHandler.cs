@@ -8,17 +8,17 @@ using Domain.Result;
 
 namespace Application.Features.Article.Queries;
 
-public class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, ArticleResponse> {
+public class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, ArticleDto> {
     private readonly IArticleRepository _articleRepository;
 
     public GetArticleQueryHandler(IArticleRepository articleRepository) {
         _articleRepository = articleRepository;
     }
     
-    public async Task<Result<ArticleResponse>> Handle(GetArticleQuery request, CancellationToken cancellationToken) {
+    public async Task<Result<ArticleDto>> Handle(GetArticleQuery request, CancellationToken cancellationToken) {
         var article = _articleRepository.GetById(request.ArticleId);
         if (article is null)
-            return Result.Failure<ArticleResponse>(ArticleErrors.NotFoundOne);
+            return Result.Failure<ArticleDto>(ArticleErrors.NotFoundOne);
         return Result.Success(article.MapToArticleResponse());
     }
 }

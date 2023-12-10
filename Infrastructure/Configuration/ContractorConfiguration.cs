@@ -16,5 +16,7 @@ public class ContractorConfiguration : IEntityTypeConfiguration<Contractor> {
             .ValueGeneratedOnAdd();
         builder.Property(p => p.Nip)
             .HasConversion(c => c.Value, value => Nip.Create(value));
+        builder.Property(p => p.Email)
+            .HasConversion(c => c.Value, value => Email.Create(value));
     }
 }

@@ -11,27 +11,27 @@ public abstract class Repository<TEntity, TIdentityEntity> : IRepository<TEntity
     protected Repository(DatabaseContext dbContext) =>
         DbContext = dbContext;
 
-    public IEnumerable<TEntity> GetAll() =>
+    public virtual IEnumerable<TEntity> GetAll() =>
         DbContext.Set<TEntity>().ToList();
 
-    public TEntity? GetById(TIdentityEntity id) =>
+    public virtual TEntity? GetById(TIdentityEntity id) =>
         DbContext.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
 
-    public void Add(TEntity entity) =>
+    public virtual void Add(TEntity entity) =>
         DbContext.Set<TEntity>().Add(entity);
 
-    public void AddRange(IEnumerable<TEntity> entities) =>
+    public virtual void AddRange(IEnumerable<TEntity> entities) =>
         DbContext.Set<TEntity>().AddRange(entities);
 
-    public void Update(TEntity entity) =>
+    public virtual void Update(TEntity entity) =>
         DbContext.Set<TEntity>().Update(entity);
 
-    public void UpdateRange(IEnumerable<TEntity> entities) =>
+    public virtual void UpdateRange(IEnumerable<TEntity> entities) =>
         DbContext.Set<TEntity>().UpdateRange(entities);
 
-    public void Remove(TEntity entity) =>
+    public virtual void Remove(TEntity entity) =>
         DbContext.Set<TEntity>().Remove(entity);
 
-    public void RemoveRange(IEnumerable<TEntity> entities) =>
+    public virtual void RemoveRange(IEnumerable<TEntity> entities) =>
         DbContext.Set<TEntity>().RemoveRange(entities);
 }

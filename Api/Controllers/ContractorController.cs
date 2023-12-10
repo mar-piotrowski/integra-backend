@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
-[Route("api/v1/contractors")]
+[Route("integra/contractors")]
 public class ContractorController : ControllerBase {
     private readonly ISender _sender;
 
@@ -36,14 +36,8 @@ public class ContractorController : ControllerBase {
     }
 
     [HttpPut("{nip}")]
-    public async Task<ActionResult> Edit(string nip, [FromBody] UpdateContractorRequest request) {
-        var result = await _sender.Send(new UpdateContractorCommand(
-            request.FullName,
-            request.ShortName,
-            Nip.Create(nip),
-            request.Location.MapToEntity(),
-            request.BankDetails.MapToEntity()
-        ));
+    public async Task<ActionResult> Edit(string nip, [FromBody] UpdateContractorCommand command) {
+        var result = await _sender.Send(command);
         return result.MapResult();
     }
 }

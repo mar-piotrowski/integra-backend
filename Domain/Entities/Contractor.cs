@@ -7,6 +7,7 @@ namespace Domain.Entities {
         public string FullName { get; private set; }
         public string ShortName { get; private set; }
         public string Representative { get; private set; }
+        public Email Email { get; private set; }
         public Nip Nip { get; private set; }
         public Location Location { get; private set; }
         public BankDetails BankDetails { get; private set; }
@@ -18,6 +19,7 @@ namespace Domain.Entities {
             string shortName,
             string representative,
             Nip nip,
+            Email email,
             Location location,
             BankDetails bankDetails
         ) {
@@ -25,6 +27,7 @@ namespace Domain.Entities {
             ShortName = shortName;
             Representative = representative;
             Nip = nip;
+            Email = email;
             Location = location;
             BankDetails = bankDetails;
         }
@@ -34,14 +37,16 @@ namespace Domain.Entities {
             string shortName,
             string representative,
             Nip nip,
+            Email email,
             Location location,
             BankDetails bankDetails
-        ) => new Contractor(fullName, shortName, representative, nip, location, bankDetails);
+        ) => new Contractor(fullName, shortName, representative, nip, email, location, bankDetails);
 
 
-        public void Update(string fullName, string shortName, Location location, BankDetails bankDetails) {
+        public void Update(string fullName, string shortName, Email email, Location location, BankDetails bankDetails) {
             FullName = fullName;
             ShortName = shortName;
+            Email = email;
             Location.Update(
                 location.Street,
                 location.HouseNo,

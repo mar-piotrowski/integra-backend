@@ -30,18 +30,23 @@ public class CreateContractCommandHandler : ICommandHandler<CreateContractComman
         var jobPosition = _jobPositionRepository.GetById(JobPositionId.Create(request.JobPositionId));
         if (jobPosition is null)
             return Result.Failure(JobPositionErrors.TitleDoesNotExists);
+        Console.WriteLine(request.StartDate);
         var contract = Domain.Entities.Contract.Create(
             request.Salary,
+            request.WorkingHours1,
+            request.WorkingHours2,
             request.SignedOnDate,
             request.StartDate,
             request.EndDate,
-            request.JobFund,
+            request.JobFound,
             request.Fgsp,
             request.PitExemption,
             request.ContractType,
+            request.TaxRelief,
             InsuranceCodeId.Create(request.InsuranceCodeId),
             UserId.Create(request.UserId),
-            JobPositionId.Create(request.JobPositionId) 
+            JobPositionId.Create(request.JobPositionId),
+            DeductibleCostId.Create(request.DeductibleCostId)
         );
         _contractRepository.Add(contract);
         user.AddContract(contract);

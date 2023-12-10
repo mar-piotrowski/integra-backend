@@ -5,5 +5,6 @@ public class UserDto {
     public string Firstname { get; init; }
     public string Lastname { get; init; }
     public string Email { get; init; }
+    public string? JobPosition { get; init; }
     public List<LocationDto> Locations { get; set; } = new List<LocationDto>();
 }

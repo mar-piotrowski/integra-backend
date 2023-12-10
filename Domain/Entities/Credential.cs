@@ -1,6 +1,5 @@
 using Domain.Common.Models;
 using Domain.Enums;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 
 namespace Domain.Entities {

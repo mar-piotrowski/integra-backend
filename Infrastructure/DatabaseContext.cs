@@ -9,8 +9,6 @@ namespace Infrastructure;
 
 public class DatabaseContext : DbContext {
     private readonly PublishDomainEventsInterceptor _domainEventsInterceptor;
-    private readonly IConfiguration _configuration;
-    private const string ConnectionName = "Database";
 
     public DbSet<User> Users { get; set; }
     public DbSet<Contractor> Contractors { get; set; }
@@ -21,10 +19,17 @@ public class DatabaseContext : DbContext {
     public DbSet<Contract> Contracts { get; set; }
     public DbSet<InsuranceCode> InsuranceCodes { get; set; }
     public DbSet<JobPosition> JobPositions { get; set; }
+    public DbSet<JobHistory> JobHistories { get; set; }
+    public DbSet<SchoolHistory> SchoolHistories { get; set; }
+    public DbSet<HolidayLimit> HolidayLimits { get; set; }
+    public DbSet<Schedule> Schedules { get; set; }
+    public DbSet<Card> Cards { get; set; }
     public DbSet<Absence> Absences { get; set; }
 
-    public DatabaseContext(IConfiguration configuration, PublishDomainEventsInterceptor domainEventsInterceptor) {
-        _configuration = configuration;
+    public DatabaseContext(
+        DbContextOptions<DatabaseContext> options,
+        PublishDomainEventsInterceptor domainEventsInterceptor
+    ) : base(options) {
         _domainEventsInterceptor = domainEventsInterceptor;
     }
 
@@ -34,7 +39,6 @@ public class DatabaseContext : DbContext {
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        optionsBuilder .UseNpgsql(_configuration.GetConnectionString(ConnectionName)) .UseSnakeCaseNamingConvention();
         optionsBuilder.AddInterceptors(_domainEventsInterceptor);
     }
 }

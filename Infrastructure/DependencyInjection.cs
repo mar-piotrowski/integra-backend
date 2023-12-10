@@ -4,6 +4,7 @@ using Infrastructure.Authentication;
 using Infrastructure.Interceptors;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,8 +12,10 @@ namespace Infrastructure;
 
 public static class DependencyInjection {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
-        services.AddEntityFrameworkNpgsql();
-        services.AddSingleton<DatabaseContext>();
+        services.AddDbContext<DatabaseContext>(
+            options => {
+                options.UseNpgsql(configuration.GetConnectionString("Database")).UseSnakeCaseNamingConvention();
+            });
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddSingleton<PublishDomainEventsInterceptor>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -25,6 +28,10 @@ public static class DependencyInjection {
         services.AddScoped<IContractRepository, ContractRepository>();
         services.AddScoped<IJobPositionRepository, JobPositionRepository>();
         services.AddScoped<IAbsenceRepository, AbsenceRepository>();
+        services.AddScoped<IJobHistoryRepository, JobHistoryRepository>();
+        services.AddScoped<ISchoolHistoryRepository, SchoolHistoryRepository>();
+        services.AddScoped<IHolidayLimitRepository, HolidayLimitRepository>();
+        services.AddScoped<IHolidayCalculator, HolidayCalculator>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }

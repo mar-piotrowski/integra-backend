@@ -25,6 +25,11 @@ public class CreateArticleCommandHandler : ICommandHandler<CreateArticleCommand>
             request.Gtin,
             request.MeasureUnit,
             request.Pkwiu,
+            request.BuyPriceWithTax,
+            request.BuyPriceWithoutTax,
+            request.SellPriceWithoutTax,
+            request.SellPriceWithTax,
+            request.TaxId,
             request.Description
         );
         _articleRepository.Add(article);

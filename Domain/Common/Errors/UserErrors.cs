@@ -3,7 +3,7 @@ using Domain.Common.Models;
 
 namespace Domain.Common.Errors {
     public static class UserErrors {
-        public static Error NotFoundOne =>
+        public static Error NotFound =>
             new Error(HttpStatusCode.NotFound, "User.NotFound", "Nie znaleziono użytkownika o podanym id");
 
         public static Error IdentityNumberExists =>
