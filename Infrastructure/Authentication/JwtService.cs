@@ -7,39 +7,48 @@ using Domain.Entities;
 using Domain.ValueObjects.Ids;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TokenInfo = Domain.Models.TokenInfo;
 
 namespace Infrastructure.Authentication;
 
 public class JwtService : IJwtService {
-    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly JwtSettings _jwtOptions;
 
-    public JwtService(IDateTimeProvider dateTimeProvider, IOptions<JwtSettings> jwtOptions) {
-        _dateTimeProvider = dateTimeProvider;
+    public JwtService(IOptions<JwtSettings> jwtOptions) {
         _jwtOptions = jwtOptions.Value;
     }
 
     public string GenerateAccessToken(User user) {
-        var expiry = _dateTimeProvider.UtcNow.AddSeconds(20);
+        var expiry = DateTime.UtcNow.AddSeconds(20);
         var claims = GetUserClaims(user);
         return CreateToken(expiry, claims);
     }
 
     public string GenerateRefreshToken(User user) {
-        var expiry = _dateTimeProvider.UtcNow.AddMinutes(15);
+        var expiry = DateTime.UtcNow.AddMinutes(1);
         var claims = GetUserClaims(user);
         return CreateToken(expiry, claims);
     }
 
-    public bool VerifyToken(string token) {
+    public bool IsValid(string token) {
+        try {
+            var jwtSecurity = new JwtSecurityToken(token);
+            return jwtSecurity.ValidTo > DateTime.UtcNow;
+        }
+        catch {
+            return false;
+        }
+    }
+
+    public TokenInfo VerifyToken(string token) {
         try {
             var tokenHandler = new JwtSecurityTokenHandler();
             var parameters = GetValidationParameters();
             tokenHandler.ValidateToken(token, parameters, out var securityToken);
-            return true;
+            return new TokenInfo(true, securityToken.ValidTo);
         }
         catch {
-            return false;
+            return new TokenInfo(false, null);
         }
     }
 
@@ -72,7 +81,7 @@ public class JwtService : IJwtService {
         };
 
     private IEnumerable<Claim> GetUserClaims(User user) => new[] {
-        new Claim("guid",Guid.NewGuid().ToString()),
+        new Claim("guid", Guid.NewGuid().ToString()),
         new Claim("userId", user.Id.Value.ToString()),
         new Claim(
             "permission",
@@ -81,7 +90,7 @@ public class JwtService : IJwtService {
         ),
         new Claim(
             "modulePermissions",
-            JsonSerializer.Serialize(user.Credential.ModulePermissions ),
+            JsonSerializer.Serialize(user.Credential.ModulePermissions),
             JsonClaimValueTypes.JsonArray
         )
     };
