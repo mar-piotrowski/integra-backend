@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231127193456_dfasdf")]
-    partial class dfasdf
+    [Migration("20231216135133_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,11 +35,11 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("delivery_date");
 
                     b.Property<string>("Description")
@@ -52,11 +52,11 @@ namespace Infrastructure.Migrations
                         .HasColumnName("disease_code");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Number")
@@ -65,7 +65,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("number");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("release_date");
 
                     b.Property<string>("Series")
@@ -74,7 +74,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("series");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
                     b.Property<int>("UserId")
@@ -99,13 +99,21 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("BuyPriceWithTax")
+                        .HasColumnType("numeric")
+                        .HasColumnName("buy_price_with_tax");
+
+                    b.Property<decimal>("BuyPriceWithoutTax")
+                        .HasColumnType("numeric")
+                        .HasColumnName("buy_price_without_tax");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("code");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<string>("Description")
@@ -124,7 +132,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("measure_unit");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Name")
@@ -141,9 +149,21 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("pkwiu");
 
-                    b.Property<int>("StockId")
+                    b.Property<decimal>("SellPriceWithTax")
+                        .HasColumnType("numeric")
+                        .HasColumnName("sell_price_with_tax");
+
+                    b.Property<decimal>("SellPriceWithoutTax")
+                        .HasColumnType("numeric")
+                        .HasColumnName("sell_price_without_tax");
+
+                    b.Property<int?>("StockId")
                         .HasColumnType("integer")
                         .HasColumnName("stock_id");
+
+                    b.Property<int>("TaxId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tax_id");
 
                     b.HasKey("Id")
                         .HasName("pk_articles");
@@ -155,6 +175,45 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("ix_articles_stock_id");
 
                     b.ToTable("articles", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Card", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("number");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_cards");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_cards_user_id");
+
+                    b.ToTable("cards", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Contract", b =>
@@ -171,11 +230,15 @@ namespace Infrastructure.Migrations
                         .HasColumnName("contract_type");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
+                    b.Property<int>("DeductibleCostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("deductible_cost_id");
+
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<bool>("Fgsp")
@@ -195,7 +258,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("job_position_id");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<bool>("PitExemption")
@@ -206,17 +269,29 @@ namespace Infrastructure.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("salary");
 
-                    b.Property<DateTime>("SignedOnDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateTime?>("SignedOnDate")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("signed_on_date");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
+
+                    b.Property<bool>("TaxRelief")
+                        .HasColumnType("boolean")
+                        .HasColumnName("tax_relief");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
+
+                    b.Property<int>("WorkingHours1")
+                        .HasColumnType("integer")
+                        .HasColumnName("working_hours1");
+
+                    b.Property<int>("WorkingHours2")
+                        .HasColumnType("integer")
+                        .HasColumnName("working_hours2");
 
                     b.HasKey("Id")
                         .HasName("pk_contracts");
@@ -241,7 +316,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("bank_detailsid");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<string>("Email")
@@ -259,7 +334,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("locationid");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Nip")
@@ -299,11 +374,11 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Password")
@@ -311,14 +386,105 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
-                    b.Property<int>("Permission")
-                        .HasColumnType("integer")
-                        .HasColumnName("permission");
-
                     b.HasKey("Id")
                         .HasName("pk_credentials");
 
                     b.ToTable("credentials", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.DeductibleCost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("RowDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("row_date");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_deductible_cost");
+
+                    b.ToTable("deductible_cost", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.HolidayLimit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AvailableDays")
+                        .HasColumnType("integer")
+                        .HasColumnName("available_days");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("Current")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("current");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_date");
+
+                    b.Property<int>("MergedDays")
+                        .HasColumnType("integer")
+                        .HasColumnName("merged_days");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_date");
+
+                    b.Property<int>("UsedDays")
+                        .HasColumnType("integer")
+                        .HasColumnName("used_days");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_holiday_limits");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_holiday_limits_user_id");
+
+                    b.ToTable("holidayLimits", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.InsuranceCode", b =>
@@ -333,11 +499,11 @@ namespace Infrastructure.Migrations
                         .HasColumnName("code");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Title")
@@ -366,15 +532,15 @@ namespace Infrastructure.Migrations
                         .HasColumnName("company_name");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Position")
@@ -383,7 +549,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("position");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
                     b.Property<int>("UserId")
@@ -409,11 +575,11 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Title")
@@ -441,11 +607,11 @@ namespace Infrastructure.Migrations
                         .HasColumnName("contractor_id");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Status")
@@ -459,6 +625,52 @@ namespace Infrastructure.Migrations
                     b.ToTable("orders", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime>("EndWorkTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_work_time");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<DateTime>("StartWorkTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_work_time");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_schedules");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_schedules_user_id");
+
+                    b.ToTable("schedules", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.SchoolHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -469,7 +681,7 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<int>("Degree")
@@ -477,11 +689,11 @@ namespace Infrastructure.Migrations
                         .HasColumnName("degree");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("SchoolName")
@@ -495,7 +707,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("specialization");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
                     b.Property<string>("Title")
@@ -526,7 +738,7 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<int?>("Locationid")
@@ -534,7 +746,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("locationid");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Name")
@@ -561,7 +773,7 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
                     b.Property<int>("CredentialId")
@@ -569,7 +781,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("credential_id");
 
                     b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("date_of_birth");
 
                     b.Property<string>("Email")
@@ -600,7 +812,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("lastname");
 
                     b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
                     b.Property<string>("Phone")
@@ -610,6 +822,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("PlaceOfBirth")
                         .HasColumnType("text")
                         .HasColumnName("place_of_birth");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text")
+                        .HasColumnName("refresh_token");
 
                     b.Property<string>("SecondName")
                         .HasColumnType("text")
@@ -629,6 +845,56 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("ix_users_job_position_id");
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("integer")
+                        .HasColumnName("card_id");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_date");
+
+                    b.Property<DateTime>("EndWorkDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_work_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_date");
+
+                    b.Property<DateTime>("StartWorkDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_work_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_working_times");
+
+                    b.HasIndex("CardId")
+                        .HasDatabaseName("ix_working_times_card_id");
+
+                    b.ToTable("workingTimes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.AbsenceStatus", b =>
@@ -770,9 +1036,19 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Stock", null)
                         .WithMany("Articles")
                         .HasForeignKey("StockId")
+                        .HasConstraintName("fk_articles_stocks_stock_temp_id");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Card", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_articles_stocks_stock_temp_id");
+                        .HasConstraintName("fk_cards_users_user_temp_id6");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Contract", b =>
@@ -806,24 +1082,113 @@ namespace Infrastructure.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Credential", b =>
+                {
+                    b.OwnsMany("Domain.ValueObjects.ModulePermission", "ModulePermissions", b1 =>
+                        {
+                            b1.Property<int>("CredentialId")
+                                .HasColumnType("integer")
+                                .HasColumnName("credential_id");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasColumnName("id");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("integer")
+                                .HasColumnName("type");
+
+                            b1.HasKey("CredentialId", "Id")
+                                .HasName("pk_module_permission");
+
+                            b1.ToTable("module_permission", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("CredentialId")
+                                .HasConstraintName("fk_module_permission_credentials_credential_temp_id1");
+                        });
+
+                    b.OwnsMany("Domain.ValueObjects.Permission", "Permissions", b1 =>
+                        {
+                            b1.Property<int>("CredentialId")
+                                .HasColumnType("integer")
+                                .HasColumnName("credential_id");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasColumnName("id");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("integer")
+                                .HasColumnName("type");
+
+                            b1.HasKey("CredentialId", "Id")
+                                .HasName("pk_permission");
+
+                            b1.ToTable("permission", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("CredentialId")
+                                .HasConstraintName("fk_permission_credentials_credential_temp_id2");
+                        });
+
+                    b.Navigation("ModulePermissions");
+
+                    b.Navigation("Permissions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.HolidayLimit", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("HolidayLimits")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_holiday_limits_users_user_temp_id2");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.JobHistory", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("Domain.Entities.User", "User")
                         .WithMany("JobHistories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_job_histories_users_user_temp_id2");
+                        .HasConstraintName("fk_job_histories_users_user_temp_id3");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_schedules_users_user_temp_id7");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolHistory", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("Domain.Entities.User", "User")
                         .WithMany("SchoolHistories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_school_histories_users_user_temp_id4");
+                        .HasConstraintName("fk_school_histories_users_user_temp_id5");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stock", b =>
@@ -855,6 +1220,18 @@ namespace Infrastructure.Migrations
                     b.Navigation("JobPosition");
                 });
 
+            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
+                {
+                    b.HasOne("Domain.Entities.Card", "Card")
+                        .WithMany("WorkingTimes")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_working_times_cards_card_id1");
+
+                    b.Navigation("Card");
+                });
+
             modelBuilder.Entity("Domain.ValueObjects.AbsenceStatus", b =>
                 {
                     b.HasOne("Domain.Entities.Absence", null)
@@ -870,13 +1247,18 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany("Locations")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_locations_users_user_temp_id3");
+                        .HasConstraintName("fk_locations_users_user_temp_id4");
                 });
 
             modelBuilder.Entity("Domain.Entities.Absence", b =>
                 {
                     b.Navigation("Status")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Card", b =>
+                {
+                    b.Navigation("WorkingTimes");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -894,6 +1276,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Absences");
 
                     b.Navigation("Contracts");
+
+                    b.Navigation("HolidayLimits");
 
                     b.Navigation("JobHistories");
 
