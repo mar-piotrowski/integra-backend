@@ -29,13 +29,13 @@ public class CardController {
         throw new NotImplementedException();
     }
     
-    [HttpPost]
-    public async Task<ActionResult> Active() {
-        throw new NotImplementedException();
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> DeActive() {
-        throw new NotImplementedException();
-    }
+    // [HttpPost]
+    // public async Task<ActionResult> Active() {
+    //     throw new NotImplementedException();
+    // }
+    //
+    // [HttpPost]
+    // public async Task<ActionResult> DeActive() {
+    //     throw new NotImplementedException();
+    // }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Application.Abstractions;
 using Application.Abstractions.Repositories;
 using Infrastructure.Authentication;
@@ -18,8 +19,8 @@ public static class DependencyInjection {
             });
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         services.AddSingleton<PublishDomainEventsInterceptor>();
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IArticleRepository, ArticleRepository>();

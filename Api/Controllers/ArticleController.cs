@@ -5,11 +5,14 @@ using Domain.Result;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
 [Route("integra/articles")]
+[ApiController]
+[Authorize]
 public class ArticleController : ControllerBase {
     private readonly ISender _sender;
 

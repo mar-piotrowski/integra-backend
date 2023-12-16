@@ -46,7 +46,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
             request.PlaceOfBirth,
             request.Sex
         );
-        var credentials = Credential.Create("123", Permission.Employee);
+        var credentials = Credential.Create("123");
+        credentials.AddPermission(new Permission(PermissionType.Employee));
         user.AddCredentials(credentials);
         user.AddJobPosition(jobPosition);
         if (request.Locations is not null)

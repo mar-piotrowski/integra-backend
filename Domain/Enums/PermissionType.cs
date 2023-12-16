@@ -1,5 +1,5 @@
 namespace Domain.Enums {
-   public enum Permission {
+   public enum PermissionType {
       Employee,
       EmployeeWithAccess,
       Administrator,

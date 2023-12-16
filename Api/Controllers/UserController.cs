@@ -4,6 +4,7 @@ using Application.Features.User.Queries;
 using Domain.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
@@ -18,6 +19,7 @@ public class UserController : ControllerBase {
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<ActionResult> GetAll([FromQuery] GetUsersFromQuery queryParams) {
         var command = new GetUsersQuery(queryParams.Sort);
         var result = await _sender.Send(command);

@@ -16,6 +16,8 @@ namespace Domain.Entities {
         public bool IsStudent { get; private set; }
         public Credential Credential { get; private set; }
         public JobPosition? JobPosition { get; private set; }
+        public string? RefreshToken{ get; private set; }
+        
         private readonly List<HolidayLimit> _holidayLimits = new List<HolidayLimit>();
         private readonly List<Location> _locations = new List<Location>();
         private readonly List<Contract> _contracts = new List<Contract>();
@@ -119,5 +121,7 @@ namespace Domain.Entities {
 
         public void UpdateJobHistory(JobHistoryId jobHistoryId, JobHistory jobHistory) =>
             _jobHistories.FirstOrDefault(entry => entry.Id == jobHistoryId)?.Update(jobHistory);
+
+        public void AddRefreshToken(string refreshToken) => RefreshToken = refreshToken;
     }
 }

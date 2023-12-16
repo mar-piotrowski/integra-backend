@@ -14,5 +14,7 @@ public class CredentialConfiguration : IEntityTypeConfiguration<Credential> {
             .HasConversion(c => c.Value, value => CredentialId.Create(value))
             .IsRequired()
             .ValueGeneratedOnAdd();
+        builder.OwnsMany(p => p.Permissions);
+        builder.OwnsMany(m => m.ModulePermissions);
     }
 }

@@ -3,6 +3,7 @@ using Application.Features.Authentication.Commands;
 using Domain.Result;
 using Domain.ValueObjects;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
@@ -17,11 +18,20 @@ public class AuthenticationController : ControllerBase {
 
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] LoginRequest request) {
-        var result =
-            await _sender.Send(new LoginCommand(Email.Create(request.Email), Password.Create(request.Password)));
+        var result = await _sender.Send(new LoginCommand(
+            Email.Create(request.Email),
+            Password.Create(request.Password))
+        );
+        if (!result.IsSuccess)
+            return result.MapResult();
+        var cookieOptions = new CookieOptions {
+            HttpOnly = true,
+            Secure = true,
+        };
+        HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, cookieOptions);
         return result.MapResult();
     }
-
+    
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegisterRequest request) {
         var result = await _sender.Send(new RegisterCommand(
@@ -31,11 +41,26 @@ public class AuthenticationController : ControllerBase {
             Password.Create(request.Password),
             Password.Create(request.ConfirmPassword)
         ));
+
         return result.MapResult();
+    }
+
+    [HttpPost("logout")]
+    public ActionResult Logout() {
+        HttpContext.Response.Cookies.Delete("refreshToken");
+        return Ok();
     }
 
     [HttpPost("reset-password")]
     public ActionResult ForgotPassword([FromBody] ForgotPasswordRequest resetPassword) {
         throw new NotImplementedException();
+    }
+
+    [HttpPost("refresh-token")]
+    [AllowAnonymous]
+    public async Task<ActionResult> RefreshToken() {
+        HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
+        var result = await _sender.Send(new RefreshTokenCommand(refreshToken ?? ""));
+        return result.MapResult();
     }
 }

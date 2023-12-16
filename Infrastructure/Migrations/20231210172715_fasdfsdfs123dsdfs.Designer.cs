@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231210172715_fasdfsdfs123dsdfs")]
+    partial class fasdfsdfs123dsdfs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,6 +386,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnName("permission");
+
                     b.HasKey("Id")
                         .HasName("pk_credentials");
 
@@ -588,6 +595,45 @@ namespace Infrastructure.Migrations
                         .HasName("pk_job_positions");
 
                     b.ToTable("jobPositions", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.ModulePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Access")
+                        .HasColumnType("boolean")
+                        .HasColumnName("access");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<int?>("CredentialId")
+                        .HasColumnType("integer")
+                        .HasColumnName("credential_id");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_module_permission");
+
+                    b.HasIndex("CredentialId")
+                        .HasDatabaseName("ix_module_permission_credential_id");
+
+                    b.ToTable("module_permission", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -819,10 +865,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("PlaceOfBirth")
                         .HasColumnType("text")
                         .HasColumnName("place_of_birth");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("text")
-                        .HasColumnName("refresh_token");
 
                     b.Property<string>("SecondName")
                         .HasColumnType("text")
@@ -1079,67 +1121,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Credential", b =>
-                {
-                    b.OwnsMany("Domain.ValueObjects.ModulePermission", "ModulePermissions", b1 =>
-                        {
-                            b1.Property<int>("CredentialId")
-                                .HasColumnType("integer")
-                                .HasColumnName("credential_id");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasColumnName("id");
-
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("integer")
-                                .HasColumnName("type");
-
-                            b1.HasKey("CredentialId", "Id")
-                                .HasName("pk_module_permission");
-
-                            b1.ToTable("module_permission", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("CredentialId")
-                                .HasConstraintName("fk_module_permission_credentials_credential_temp_id1");
-                        });
-
-                    b.OwnsMany("Domain.ValueObjects.Permission", "Permissions", b1 =>
-                        {
-                            b1.Property<int>("CredentialId")
-                                .HasColumnType("integer")
-                                .HasColumnName("credential_id");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasColumnName("id");
-
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("integer")
-                                .HasColumnName("type");
-
-                            b1.HasKey("CredentialId", "Id")
-                                .HasName("pk_permission");
-
-                            b1.ToTable("permission", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("CredentialId")
-                                .HasConstraintName("fk_permission_credentials_credential_temp_id2");
-                        });
-
-                    b.Navigation("ModulePermissions");
-
-                    b.Navigation("Permissions");
-                });
-
             modelBuilder.Entity("Domain.Entities.HolidayLimit", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -1162,6 +1143,14 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("fk_job_histories_users_user_temp_id3");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ModulePermission", b =>
+                {
+                    b.HasOne("Domain.Entities.Credential", null)
+                        .WithMany("ModulePermissions")
+                        .HasForeignKey("CredentialId")
+                        .HasConstraintName("fk_module_permission_credentials_credential_temp_id1");
                 });
 
             modelBuilder.Entity("Domain.Entities.Schedule", b =>
@@ -1256,6 +1245,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Card", b =>
                 {
                     b.Navigation("WorkingTimes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Credential", b =>
+                {
+                    b.Navigation("ModulePermissions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>

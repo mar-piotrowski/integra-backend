@@ -22,8 +22,8 @@ public class DatabaseContext : DbContext {
     public DbSet<JobHistory> JobHistories { get; set; }
     public DbSet<SchoolHistory> SchoolHistories { get; set; }
     public DbSet<HolidayLimit> HolidayLimits { get; set; }
-    public DbSet<Schedule> Schedules { get; set; }
-    public DbSet<Card> Cards { get; set; }
+    // public DbSet<Schedule> Schedules { get; set; }
+    // public DbSet<Card> Cards { get; set; }
     public DbSet<Absence> Absences { get; set; }
 
     public DatabaseContext(

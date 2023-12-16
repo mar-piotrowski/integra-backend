@@ -15,5 +15,6 @@ public class CardConfiguration : IEntityTypeConfiguration<Card> {
             .ValueGeneratedOnAdd();
         builder.Property(p => p.UserId)
             .HasConversion(c => c.Value, value => UserId.Create(value));
+        builder.HasMany(p => p.WorkingTimes);
     }
 }
