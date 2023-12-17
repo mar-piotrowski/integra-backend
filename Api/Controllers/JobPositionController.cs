@@ -17,14 +17,20 @@ public class JobPositionController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAll([FromRoute] string name) {
-        var result = await _sender.Send(new GetJobPositionsQuery(name));
+    public async Task<ActionResult> GetAll([FromQuery] JobPositionQueries queries) {
+        var result = await _sender.Send(new GetJobPositionsQuery(""));
         return result.MapResult();
     }
 
     [HttpGet("{jobPositionId:int}")]
     public async Task<ActionResult> Get(int jobPositionId) {
         var result = await _sender.Send(new GetJobPositionQuery(JobPositionId.Create(jobPositionId)));
+        return result.MapResult();
+    }
+
+    [HttpGet("statistics")]
+    public async Task<ActionResult> GetAllWithStatistics() {
+        var result = await _sender.Send(new GetJobPositionWithStatusQuery());
         return result.MapResult();
     }
 
@@ -43,6 +49,7 @@ public class JobPositionController : ControllerBase {
         return result.MapResult();
     }
 
+    
     [HttpDelete]
     public async Task<ActionResult> Delete() {
         throw new NotImplementedException();

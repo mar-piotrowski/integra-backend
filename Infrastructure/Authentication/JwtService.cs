@@ -19,13 +19,13 @@ public class JwtService : IJwtService {
     }
 
     public string GenerateAccessToken(User user) {
-        var expiry = DateTime.UtcNow.AddSeconds(20);
+        var expiry = DateTime.UtcNow.AddHours(20);
         var claims = GetUserClaims(user);
         return CreateToken(expiry, claims);
     }
 
     public string GenerateRefreshToken(User user) {
-        var expiry = DateTime.UtcNow.AddMinutes(1);
+        var expiry = DateTime.UtcNow.AddYears(1);
         var claims = GetUserClaims(user);
         return CreateToken(expiry, claims);
     }

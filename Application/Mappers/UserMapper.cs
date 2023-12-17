@@ -7,8 +7,15 @@ public static class UserMapper {
     public static UserDto MapToDto(this User user) => new UserDto() {
         Id = user.Id.Value,
         Firstname = user.Firstname,
+        SecondName = user.SecondName,
         Lastname = user.Lastname,
         Email = user.Email.Value,
+        Phone = user.Phone,
+        DateOfBirth = user.DateOfBirth,
+        PlaceOfBirth = user.PlaceOfBirth,
+        IsStudent = user.IsStudent,
+        Sex = user.Sex,
+        IdentityNumber = user.IdentityNumber,
         JobPosition = user.JobPosition?.Title,
         Locations = user.Locations.MapToDtos().ToList()
     };

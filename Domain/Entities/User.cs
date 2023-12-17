@@ -16,14 +16,14 @@ namespace Domain.Entities {
         public bool IsStudent { get; private set; }
         public Credential Credential { get; private set; }
         public JobPosition? JobPosition { get; private set; }
-        public string? RefreshToken{ get; private set; }
-        
+        public string? RefreshToken { get; private set; }
         private readonly List<HolidayLimit> _holidayLimits = new List<HolidayLimit>();
         private readonly List<Location> _locations = new List<Location>();
         private readonly List<Contract> _contracts = new List<Contract>();
         private readonly List<Absence> _absences = new List<Absence>();
         private readonly List<JobHistory> _jobHistories = new List<JobHistory>();
         private readonly List<SchoolHistory> _schoolHistories = new List<SchoolHistory>();
+        
         public IEnumerable<SchoolHistory> SchoolHistories => _schoolHistories.AsReadOnly();
         public IEnumerable<JobHistory> JobHistories => _jobHistories.AsReadOnly();
 
@@ -35,7 +35,8 @@ namespace Domain.Entities {
 
         public IEnumerable<HolidayLimit> HolidayLimits => _holidayLimits.AsReadOnly();
 
-        private User() { }
+        private User() {
+        }
 
         private User(
             string firstname,
@@ -114,6 +115,7 @@ namespace Domain.Entities {
         }
 
         public void AddSchool(SchoolHistory schoolHistory) => _schoolHistories.Add(schoolHistory);
+
         public void UpdateSchoolHistory(SchoolHistoryId schoolHistoryId, SchoolHistory schoolHistory) =>
             _schoolHistories.FirstOrDefault(entry => entry.Id == schoolHistoryId)?.Update(schoolHistory);
 
