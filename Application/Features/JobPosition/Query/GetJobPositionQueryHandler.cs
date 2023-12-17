@@ -17,6 +17,6 @@ public class GetJobPositionQueryHandler : IQueryHandler<GetJobPositionQuery, Job
         var jobPosition = _jobPositionRepository.GetById(request.JobPositionId);
         if (jobPosition is null)
             return Result.Failure<JobPositionDto>(JobPositionErrors.TitleDoesNotExists);
-        return Result.Success(new JobPositionDto(jobPosition.Title));
+        return Result.Success(new JobPositionDto(jobPosition.Id.Value, jobPosition.Title));
     }
 }

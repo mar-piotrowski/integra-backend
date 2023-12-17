@@ -19,6 +19,9 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
     public override IEnumerable<User> GetAll() =>
         DbContext.Set<User>().Include(l => l.Locations).Include(j => j.JobPosition);
 
+    public IEnumerable<User> GetAllWithPosition(string position) =>
+        DbContext.Set<User>().Where(user => user.JobPosition != null && user.JobPosition.Title == position);
+
     public IEnumerable<User> GetAllWithLocation() =>
         DbContext.Set<User>().Include(l => l.Locations).Include(j => j.JobPosition);
 
