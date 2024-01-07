@@ -1,6 +1,8 @@
 using Application.Dtos;
-using Application.Features.Authentication.Commands;
-using Domain.Result;
+using Application.Features.Authentication.Login;
+using Application.Features.Authentication.RefreshToken;
+using Application.Features.Authentication.Register;
+using Domain.Common.Result;
 using Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

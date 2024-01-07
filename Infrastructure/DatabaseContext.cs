@@ -3,29 +3,29 @@ using Domain.Entities;
 using Domain.ValueObjects;
 using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure;
 
 public class DatabaseContext : DbContext {
     private readonly PublishDomainEventsInterceptor _domainEventsInterceptor;
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Contractor> Contractors { get; set; }
-    public DbSet<Article> Articles { get; set; }
-    public DbSet<Credential> Credentials { get; set; }
-    public DbSet<Stock> Stocks { get; set; }
-    public DbSet<Location> Locations { get; set; }
-    public DbSet<Contract> Contracts { get; set; }
-    public DbSet<InsuranceCode> InsuranceCodes { get; set; }
-    public DbSet<JobPosition> JobPositions { get; set; }
-    public DbSet<JobHistory> JobHistories { get; set; }
-    public DbSet<SchoolHistory> SchoolHistories { get; set; }
-    public DbSet<HolidayLimit> HolidayLimits { get; set; }
-    // public DbSet<Schedule> Schedules { get; set; }
-    // public DbSet<Card> Cards { get; set; }
-    public DbSet<Absence> Absences { get; set; }
-
+    public DbSet<User> Users { get; init; }
+    public DbSet<Contractor> Contractors { get; init; }
+    public DbSet<Article> Articles { get; init; }
+    public DbSet<Credential> Credentials { get; init; }
+    public DbSet<Stock> Stocks { get; init; }
+    public DbSet<Location> Locations { get; init; }
+    public DbSet<Contract> Contracts { get; init; }
+    public DbSet<InsuranceCode> InsuranceCodes { get; init; }
+    public DbSet<JobPosition> JobPositions { get; init; }
+    public DbSet<JobHistory> JobHistories { get; init; }
+    public DbSet<SchoolHistory> SchoolHistories { get; init; }
+    public DbSet<HolidayLimit> HolidayLimits { get; init; }
+    public DbSet<Absence> Absences { get; init; }
+    public DbSet<Card> Cards { get; init; }
+    public DbSet<Permission> Permissions { get; init; }
+    public DbSet<UserPermissions> UserPermissions { get; init; }
+    
     public DatabaseContext(
         DbContextOptions<DatabaseContext> options,
         PublishDomainEventsInterceptor domainEventsInterceptor

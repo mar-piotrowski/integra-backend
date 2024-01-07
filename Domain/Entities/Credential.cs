@@ -6,18 +6,14 @@ namespace Domain.Entities {
     public class Credential : Entity<CredentialId> {
         public string Password { get; private set; }
         private readonly List<Permission> _permissions = new List<Permission>();
-        private readonly List<ModulePermission> _modulePermissions = new List<ModulePermission>();
         public IReadOnlyList<Permission> Permissions => _permissions.AsReadOnly();
-        public IReadOnlyList<ModulePermission> ModulePermissions => _modulePermissions.AsReadOnly();
+        
         private Credential() { }
 
-        private Credential(string password) =>
-            Password = password;
+        private Credential(string password) => Password = password;
 
         public static Credential Create(string password) => new Credential(password);
 
         public void AddPermission(Permission permission) => _permissions.Add(permission);
-
-        public void AddModulePermission(ModulePermission modulePermission) => _modulePermissions.Add(modulePermission);
     }
 }

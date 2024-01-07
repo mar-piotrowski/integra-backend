@@ -1,7 +1,11 @@
-using Application.Features.Contract.Command;
-using Application.Features.Contract.Query;
-using Domain.Enums;
-using Domain.Result;
+using Application.Dtos;
+using Application.Features.Contract.CreateContract;
+using Application.Features.Contract.GetContract;
+using Application.Features.Contract.GetContractChanges;
+using Application.Features.Contract.GetContracts;
+using Application.Features.Contract.TerminateContract;
+using Application.Features.Contract.UpdateContract;
+using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +16,23 @@ namespace IntegraBackend.Controllers;
 public class ContractController : ControllerBase {
     private readonly ISender _sender;
 
-    public ContractController(ISender sender) {
-        _sender = sender;
-    }
+    public ContractController(ISender sender) => _sender = sender;
 
     [HttpGet]
-    public async Task<ActionResult> GetAll([FromRoute] ContractType contractType, [FromRoute] int userId) {
-        var result = await _sender.Send(new GetContractsQuery(contractType, UserId.Create(userId)));
+    public async Task<ActionResult> GetAll([FromQuery] ContractQueries queries) {
+        var result = await _sender.Send(new GetContractsQuery(queries));
         return result.MapResult();
     }
 
     [HttpGet("{contractId:int}")]
-    public async Task<ActionResult> Get([FromQuery] int contractId) {
+    public async Task<ActionResult> Get(int contractId) {
         var result = await _sender.Send(new GetContractQuery(ContractId.Create(contractId)));
+        return result.MapResult();
+    }
+
+    [HttpGet("{contractId:int}/changes")]
+    public async Task<ActionResult> Changes(int contractId) {
+        var result = await _sender.Send(new GetContractChangesQuery(ContractId.Create(contractId)));
         return result.MapResult();
     }
 
@@ -34,13 +42,18 @@ public class ContractController : ControllerBase {
         return result.MapResult();
     }
 
-    [HttpPut("{documentId:int}")]
-    public async Task<ActionResult> Update(int userId, int documentId) {
+    [HttpPut("{contractId:int}")]
+    public async Task<ActionResult> Update([FromBody] UpdateContractCommand command) {
         throw new NotImplementedException();
     }
 
-    [HttpDelete("{documentId:int}")]
-    public ActionResult Delete(int userId, int documentId) {
-        throw new NotImplementedException();
+    [HttpPost("{contractId:int}/terminate")]
+    public async Task<ActionResult> Termination(int contractId, [FromBody] TerminateContractRequest request) {
+        var result = await _sender.Send(new TerminateContractCommand(
+            ContractId.Create(contractId),
+            request.TerminateType,
+            request.TerminateDate
+        ));
+        return result.MapResult();
     }
 }

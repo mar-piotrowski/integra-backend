@@ -1,9 +1,9 @@
 using Application.Dtos;
-using Application.Features.JobHistory.Command;
-using Application.Features.JobHistory.Queries;
-using Application.Features.User.Commands;
-using Application.Features.User.Queries;
-using Domain.Result;
+using Application.Features.JobHistory.CreateJobHistory;
+using Application.Features.JobHistory.DeleteJobHistory;
+using Application.Features.JobHistory.GetJobHistories;
+using Application.Features.JobHistory.UpdateJobHistory;
+using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

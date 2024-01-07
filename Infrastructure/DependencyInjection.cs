@@ -1,6 +1,6 @@
-using System.Collections.Immutable;
 using Application.Abstractions;
 using Application.Abstractions.Repositories;
+using Application.Features.Absence;
 using Infrastructure.Authentication;
 using Infrastructure.Interceptors;
 using Infrastructure.Repositories;
@@ -33,7 +33,11 @@ public static class DependencyInjection {
         services.AddScoped<ISchoolHistoryRepository, SchoolHistoryRepository>();
         services.AddScoped<IHolidayLimitRepository, HolidayLimitRepository>();
         services.AddScoped<IHolidayCalculator, HolidayCalculator>();
+        services.AddScoped<IContractChangesRepository, ContractChangeRepository>();
+        services.AddScoped<ICardRepository, CardRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IUserPermissionsRepository, UserPermissionsRepository>();
         return services;
     }
 }

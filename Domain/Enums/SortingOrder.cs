@@ -1,6 +1,6 @@
-namespace Domain.Enums {
-   public enum SortingOrder {
-      Asc,
-      Desc
-   }
+namespace Domain.Enums;
+
+public enum SortingOrder {
+    Asc,
+    Desc
 }

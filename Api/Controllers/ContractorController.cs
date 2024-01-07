@@ -1,8 +1,8 @@
-using Application.Dtos;
-using Application.Features.Contractor.Commands;
-using Application.Features.Contractor.Queries;
-using Application.Mappers;
-using Domain.Result;
+using Application.Features.Contractor.CreateContractor;
+using Application.Features.Contractor.GetContractor;
+using Application.Features.Contractor.GetContractors;
+using Application.Features.Contractor.UpdateContractor;
+using Domain.Common.Result;
 using Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

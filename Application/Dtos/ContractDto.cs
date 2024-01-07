@@ -3,7 +3,10 @@ using Domain.Enums;
 namespace Application.Dtos;
 
 public record ContractDto(
-    decimal Salary,
+    int Id,
+    ContractStatus Status,
+    decimal SalaryWithTax,
+    decimal SalaryWithoutTax,
     int WorkingHours1,
     int WorkingHours2,
     DateTime? SignedOnDate,
@@ -14,8 +17,8 @@ public record ContractDto(
     bool PitExemption,
     ContractType ContractType,
     bool TaxRelief,
-    int InsuranceCodeId,
-    int UserId,
-    int JobPositionId,
-    int DeductibleCostId
+    int? InsuranceCodeId,
+    UserDto User,
+    JobPositionDto? JobPosition,
+    decimal? DeductibleCost
 );

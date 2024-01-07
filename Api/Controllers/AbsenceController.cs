@@ -1,7 +1,10 @@
 using Application.Dtos;
-using Application.Features.Absence.Commands;
-using Application.Features.Absence.Queries;
-using Domain.Result;
+using Application.Features.Absence.AcceptAbsence;
+using Application.Features.Absence.CreateAbsence;
+using Application.Features.Absence.GetAbsence;
+using Application.Features.Absence.GetAbsences;
+using Application.Features.Absence.RejectAbsence;
+using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +15,7 @@ namespace IntegraBackend.Controllers;
 public class AbsenceController : Controller {
     private readonly ISender _sender;
 
-    public AbsenceController(ISender sender) {
-        _sender = sender;
-    }
+    public AbsenceController(ISender sender) => _sender = sender;
 
     [HttpGet]
     public async Task<ActionResult> GetAll([FromRoute] AbsenceRouteParameters routeParameters) {

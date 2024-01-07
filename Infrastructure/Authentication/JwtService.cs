@@ -7,7 +7,7 @@ using Domain.Entities;
 using Domain.ValueObjects.Ids;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TokenInfo = Domain.Models.TokenInfo;
+using TokenInfo = Domain.Common.Models.TokenInfo;
 
 namespace Infrastructure.Authentication;
 
@@ -85,12 +85,12 @@ public class JwtService : IJwtService {
         new Claim("userId", user.Id.Value.ToString()),
         new Claim(
             "permission",
-            JsonSerializer.Serialize(user.Credential.Permissions.Select(permission => permission.Type)),
+            // JsonSerializer.Serialize(user.Credential.Permissions.Select(permission => permission.Type)),
             JsonClaimValueTypes.JsonArray
         ),
         new Claim(
             "modulePermissions",
-            JsonSerializer.Serialize(user.Credential.ModulePermissions),
+            JsonSerializer.Serialize(user.Credential.Permissions),
             JsonClaimValueTypes.JsonArray
         )
     };

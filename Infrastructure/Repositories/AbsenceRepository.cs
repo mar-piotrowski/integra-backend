@@ -1,4 +1,5 @@
 using Application.Abstractions.Repositories;
+using Application.Features.Absence;
 using Domain.Entities;
 using Domain.ValueObjects.Ids;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +10,11 @@ public class AbsenceRepository : Repository<Absence, AbsenceId>, IAbsenceReposit
     public AbsenceRepository(DatabaseContext dbContext) : base(dbContext) { }
 
     public IEnumerable<Absence> GetAllWithUser() =>
-        DbContext.Absences.Include(u => u.User).Include(s => s.Status).ToList();
+        DbContext.Set<Absence>().Include(u => u.User).Include(s => s.Status).ToList();
 
     public Absence? GetByIdWithStatus(AbsenceId absenceId) =>
-        DbContext.Absences.Include(u => u.User).Include(s => s.Status).FirstOrDefault(entry => entry.Id == absenceId);
+        DbContext.Set<Absence>()
+            .Include(u => u.User)
+            .Include(s => s.Status)
+            .FirstOrDefault(entry => entry.Id == absenceId);
 }

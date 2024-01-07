@@ -6,7 +6,7 @@ namespace Application.Mappers;
 public static class AbsenceMapper {
     public static AbsenceDto MapToDto(this Absence absence) => new AbsenceDto {
         Id = absence.Id.Value,
-        User = absence.User.MapToDto(),
+        // User = absence.User.MapToDto(),
         StartDate = absence.StartDate,
         EndDate = absence.EndDate,
         DiseaseCode = absence.DiseaseCode,
