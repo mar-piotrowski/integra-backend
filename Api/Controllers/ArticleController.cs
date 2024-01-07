@@ -1,7 +1,9 @@
 using Application.Dtos;
-using Application.Features.Article.Command;
-using Application.Features.Article.Queries;
-using Domain.Result;
+using Application.Features.Article.CreateArticle;
+using Application.Features.Article.GetArtcle;
+using Application.Features.Article.GetArticles;
+using Application.Features.Article.UpdateArticle;
+using Domain.Common.Result;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 using MediatR;

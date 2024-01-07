@@ -1,9 +1,9 @@
 using Application.Dtos;
-using Application.Features.SchoolHistory.Commands;
-using Application.Features.SchoolHistory.Queries;
-using Application.Features.User.Commands;
-using Application.Features.User.Queries;
-using Domain.Result;
+using Application.Features.SchoolHistory.CreateSchoolHistory;
+using Application.Features.SchoolHistory.DeleteSchoolHistory;
+using Application.Features.SchoolHistory.GetSchoolHistories;
+using Application.Features.SchoolHistory.UpdateSchoolHistory;
+using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

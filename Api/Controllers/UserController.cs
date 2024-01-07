@@ -1,7 +1,13 @@
 using Application.Dtos;
-using Application.Features.User.Commands;
-using Application.Features.User.Queries;
-using Domain.Result;
+using Application.Features.User.AddPermission;
+using Application.Features.User.AddPermissions;
+using Application.Features.User.CreateUser;
+using Application.Features.User.DeleteUser;
+using Application.Features.User.GetUser;
+using Application.Features.User.GetUsers;
+using Application.Features.User.UpdateUser;
+using Domain.Common.Result;
+using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +18,11 @@ namespace IntegraBackend.Controllers;
 public class UserController : ControllerBase {
     private readonly ISender _sender;
 
-    public UserController(ISender sender) {
-        _sender = sender;
-    }
+    public UserController(ISender sender) => _sender = sender;
 
     [HttpGet]
-    public async Task<ActionResult> GetAll([FromQuery] GetUsersFromQuery queryParams) {
-        var command = new GetUsersQuery(queryParams.Sort);
+    public async Task<ActionResult> GetAll([FromQuery] UserQueryParams filters) {
+        var command = new GetUsersQuery(filters.Sort);
         var result = await _sender.Send(command);
         return result.MapResult();
     }
@@ -29,21 +33,29 @@ public class UserController : ControllerBase {
         var result = await _sender.Send(command);
         return result.MapResult();
     }
-    
+
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserCommand command) {
         var result = await _sender.Send(command);
         return result.MapResult();
     }
-    
-    [HttpPost("startWork")]
-    public async Task<ActionResult> StartWork() {
-        throw new NotImplementedException();
+
+    [HttpPost("{userId:int}/add-permission")]
+    public async Task<ActionResult> AddPermission(int userId, [FromBody] AddUserPermissionRequest request) {
+        var result = await _sender.Send(new AddUserPermissionCommand(
+            UserId.Create(userId),
+            PermissionCode.Create(request.PermissionCode)
+        ));
+        return result.MapResult();
     }
 
-    [HttpPost("endWork")]
-    public async Task<ActionResult> EndWork() {
-        throw new NotImplementedException();
+    [HttpPost("{userId:int}/add-permissions")]
+    public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request) {
+        var result = await _sender.Send(new AddUserPermissionsCommand(
+            UserId.Create(userId),
+            request.PermissionCodes.Select(PermissionCode.Create)
+        ));
+        return result.MapResult();
     }
 
     [HttpPut("{userId:int}")]

@@ -1,7 +1,8 @@
 using Application.Dtos;
-using Application.Features.HolidayLimit.Command;
-using Application.Features.HolidayLimit.Query;
-using Domain.Result;
+using Application.Features.HolidayLimit.CreateHolidayLimit;
+using Application.Features.HolidayLimit.GetHolidayLimits;
+using Application.Features.HolidayLimit.GetHolidayLimt;
+using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

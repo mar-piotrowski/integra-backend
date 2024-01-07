@@ -1,7 +1,10 @@
 using Application.Dtos;
-using Application.Features.JobPosition.Command;
-using Application.Features.JobPosition.Query;
-using Domain.Result;
+using Application.Features.JobPosition.CreateJobPosition;
+using Application.Features.JobPosition.GetJobPosition;
+using Application.Features.JobPosition.GetJobPositions;
+using Application.Features.JobPosition.GetJobPositionWithStatus;
+using Application.Features.JobPosition.UpdateJobPosition;
+using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

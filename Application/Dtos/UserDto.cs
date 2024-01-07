@@ -1,5 +1,3 @@
-using Domain.ValueObjects;
-
 namespace Application.Dtos;
 
 public class UserDto {
@@ -8,8 +6,8 @@ public class UserDto {
     public string Lastname { get; init; }
     public string? SecondName { get; init; }
     public string Email { get; init; }
-    public Phone? Phone { get; init; } 
-    public IdentityNumber? IdentityNumber { get; init; } 
+    public string? Phone { get; init; } 
+    public string? IdentityNumber { get; init; } 
     public DateTime? DateOfBirth { get; init; }
     public string? PlaceOfBirth { get; init; }
     public string? Sex { get; init; }

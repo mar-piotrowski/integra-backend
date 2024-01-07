@@ -1,5 +1,5 @@
+using Domain.Common.Models;
 using Domain.Entities;
-using Domain.Models;
 using Domain.ValueObjects.Ids;
 
 namespace Application.Abstractions;

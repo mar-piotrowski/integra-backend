@@ -1,7 +1,7 @@
 using Application.Abstractions;
 using Application.Abstractions.Repositories;
+using Domain.Common.Models;
 using Domain.Enums;
-using Domain.Models;
 using Domain.ValueObjects.Ids;
 
 namespace Infrastructure.Services;

@@ -1,4 +1,4 @@
-using Domain.Result;
+using Domain.Common.Result;
 using MediatR;
 
 namespace Application.Abstractions.Messaging;

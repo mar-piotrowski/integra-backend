@@ -3,7 +3,10 @@ using Domain.Entities;
 
 namespace Application.Mappers;
 
-public static class JobPositionMapper {
-    public static IEnumerable<JobPositionDto> MapToDtos(this IEnumerable<JobPosition> jobPositions) =>
-        jobPositions.Select(jobPosition => new JobPositionDto(jobPosition.Id.Value, jobPosition.Title));
+public class JobPositionMapper {
+    public JobPositionDto MapToDto(JobPosition jobPosition) =>
+        new JobPositionDto(jobPosition.Id.Value, jobPosition.Title);
+    
+    public IEnumerable<JobPositionDto> MapToDtos(IEnumerable<JobPosition> jobPositions) =>
+        jobPositions.Select(MapToDto);
 }

@@ -17,10 +17,4 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Card\Queries\" />
-      <Folder Include="Features\Schedule\Command\" />
-      <Folder Include="Features\Schedule\Query\" />
-    </ItemGroup>
-
 </Project>

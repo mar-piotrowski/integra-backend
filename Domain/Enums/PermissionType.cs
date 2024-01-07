@@ -1,8 +1,6 @@
-namespace Domain.Enums {
-   public enum PermissionType {
-      Employee,
-      EmployeeWithAccess,
-      Administrator,
-      ExternalUser,
-   }
+namespace Domain.Enums;
+
+public enum PermissionType {
+    User,
+    Card
 }

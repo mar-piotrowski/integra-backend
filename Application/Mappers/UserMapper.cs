@@ -3,23 +3,23 @@ using Domain.Entities;
 
 namespace Application.Mappers;
 
-public static class UserMapper {
-    public static UserDto MapToDto(this User user) => new UserDto() {
+public class UserMapper {
+    public UserDto MapToDto(User user) => new UserDto() {
         Id = user.Id.Value,
         Firstname = user.Firstname,
         SecondName = user.SecondName,
         Lastname = user.Lastname,
         Email = user.Email.Value,
-        Phone = user.Phone,
+        Phone = user.Phone?.Value ?? "",
         DateOfBirth = user.DateOfBirth,
         PlaceOfBirth = user.PlaceOfBirth,
         IsStudent = user.IsStudent,
         Sex = user.Sex,
-        IdentityNumber = user.IdentityNumber,
+        IdentityNumber = user.IdentityNumber?.Value ?? "",
         JobPosition = user.JobPosition?.Title,
         Locations = user.Locations.MapToDtos().ToList()
     };
 
-    public static UsersResponse MapToUsersResponse(this IEnumerable<User> users) =>
-        new UsersResponse(users.Select(user => user.MapToDto()));
+    public UsersResponse MapToUsersResponse(IEnumerable<User> users) =>
+        new UsersResponse(users.Select(MapToDto));
 }

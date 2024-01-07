@@ -1,4 +1,4 @@
-using Domain.Models;
+using Domain.Common.Models;
 using Domain.ValueObjects.Ids;
 
 namespace Application.Abstractions;
