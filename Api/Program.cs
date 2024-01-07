@@ -17,9 +17,11 @@ builder.Services.AddCors(cors =>
                 .AllowAnyMethod();
         })
 );
+
 builder.Services
     .AddInfrastructure(configuration)
     .AddApplication(configuration);
+
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -39,6 +41,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.SeedDatabase();
 
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();

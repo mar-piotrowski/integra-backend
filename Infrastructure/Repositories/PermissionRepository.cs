@@ -1,5 +1,6 @@
 using Application.Abstractions.Repositories;
 using Application.Dtos;
+using Domain.Authentication;
 using Domain.Entities;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
@@ -10,6 +11,8 @@ public class PermissionRepository : Repository<Permission, PermissionId>, IPermi
     public PermissionRepository(DatabaseContext dbContext) : base(dbContext) { }
 
     public IEnumerable<Permission> GetAll(PermissionQueryParams filters) {
+        if (filters.Type is null)
+            return DbContext.Set<Permission>().ToList();
         IQueryable<Permission> queryable = DbContext.Set<Permission>();
         if (filters.Type is not null)
             queryable = queryable.Where(entry => entry.Type == filters.Type);

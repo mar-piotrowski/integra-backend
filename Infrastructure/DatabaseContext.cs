@@ -1,7 +1,9 @@
 using Domain.Common.Models;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.ValueObjects;
 using Infrastructure.Interceptors;
+using Infrastructure.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
@@ -25,7 +27,7 @@ public class DatabaseContext : DbContext {
     public DbSet<Card> Cards { get; init; }
     public DbSet<Permission> Permissions { get; init; }
     public DbSet<UserPermissions> UserPermissions { get; init; }
-    
+
     public DatabaseContext(
         DbContextOptions<DatabaseContext> options,
         PublishDomainEventsInterceptor domainEventsInterceptor
