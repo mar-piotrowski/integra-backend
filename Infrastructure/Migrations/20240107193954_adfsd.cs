@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class inisdfdsfst : Migration
+    public partial class adfsd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,46 +105,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "module_permission",
-                columns: table => new
-                {
-                    credential_id = table.Column<int>(type: "integer", nullable: false),
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    type = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_module_permission", x => new { x.credential_id, x.id });
-                    table.ForeignKey(
-                        name: "fk_module_permission_credentials_credential_temp_id",
-                        column: x => x.credential_id,
-                        principalTable: "credentials",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "permission",
-                columns: table => new
-                {
-                    credential_id = table.Column<int>(type: "integer", nullable: false),
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    type = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_permission", x => new { x.credential_id, x.id });
-                    table.ForeignKey(
-                        name: "fk_permission_credentials_credential_temp_id1",
-                        column: x => x.credential_id,
-                        principalTable: "credentials",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -170,7 +130,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_users", x => x.id);
                     table.ForeignKey(
-                        name: "fk_users_credentials_credential_temp_id2",
+                        name: "fk_users_credentials_credential_temp_id1",
                         column: x => x.credential_id,
                         principalTable: "credentials",
                         principalColumn: "id",
@@ -218,7 +178,7 @@ namespace Infrastructure.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     number = table.Column<string>(type: "text", nullable: false),
-                    active = table.Column<bool>(type: "boolean", nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
@@ -227,7 +187,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_cards", x => x.id);
                     table.ForeignKey(
-                        name: "fk_cards_users_user_temp_id6",
+                        name: "fk_cards_users_user_temp_id1",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -240,6 +200,7 @@ namespace Infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    status = table.Column<int>(type: "integer", nullable: false),
                     salary_with_tax = table.Column<decimal>(type: "numeric", nullable: false),
                     salary_without_tax = table.Column<decimal>(type: "numeric", nullable: false),
                     working_hours1 = table.Column<int>(type: "integer", nullable: false),
@@ -266,7 +227,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_contracts", x => x.id);
                     table.ForeignKey(
-                        name: "fk_contracts_users_user_temp_id1",
+                        name: "fk_contracts_users_user_temp_id2",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -294,7 +255,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_holiday_limits", x => x.id);
                     table.ForeignKey(
-                        name: "fk_holiday_limits_users_user_temp_id2",
+                        name: "fk_holiday_limits_users_user_temp_id3",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -319,7 +280,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_job_histories", x => x.id);
                     table.ForeignKey(
-                        name: "fk_job_histories_users_user_temp_id3",
+                        name: "fk_job_histories_users_user_temp_id4",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -346,7 +307,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_locations", x => x.id);
                     table.ForeignKey(
-                        name: "fk_locations_users_user_temp_id4",
+                        name: "fk_locations_users_user_temp_id5",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id");
@@ -370,7 +331,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_schedules", x => x.id);
                     table.ForeignKey(
-                        name: "fk_schedules_users_user_temp_id7",
+                        name: "fk_schedules_users_user_temp_id9",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -397,7 +358,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_school_histories", x => x.id);
                     table.ForeignKey(
-                        name: "fk_school_histories_users_user_temp_id5",
+                        name: "fk_school_histories_users_user_temp_id7",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -423,6 +384,35 @@ namespace Infrastructure.Migrations
                         principalTable: "absences",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "permissions",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    type = table.Column<int>(type: "integer", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    code = table.Column<int>(type: "integer", nullable: false),
+                    card_id = table.Column<int>(type: "integer", nullable: true),
+                    credential_id = table.Column<int>(type: "integer", nullable: true),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_permissions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_permissions_cards_card_temp_id",
+                        column: x => x.card_id,
+                        principalTable: "cards",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_permissions_credentials_credential_temp_id",
+                        column: x => x.credential_id,
+                        principalTable: "credentials",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -466,7 +456,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_contract_changes", x => x.id);
                     table.ForeignKey(
-                        name: "fk_contract_changes_contracts_contract_changed_temp_id",
+                        name: "fk_contract_changes_contracts_contract_changed_temp_id2",
                         column: x => x.contract_change_id,
                         principalTable: "contracts",
                         principalColumn: "id",
@@ -475,6 +465,34 @@ namespace Infrastructure.Migrations
                         name: "fk_contract_changes_contracts_contract_temp_id1",
                         column: x => x.contract_id,
                         principalTable: "contracts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_contracts",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    contract_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_contracts", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_user_contracts_contracts_contract_temp_id",
+                        column: x => x.contract_id,
+                        principalTable: "contracts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_contracts_users_user_temp_id8",
+                        column: x => x.user_id,
+                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -531,6 +549,34 @@ namespace Infrastructure.Migrations
                         column: x => x.locationid,
                         principalTable: "locations",
                         principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_permissions",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    permission_id = table.Column<int>(type: "integer", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_permissions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_user_permissions_permissions_permission_temp_id",
+                        column: x => x.permission_id,
+                        principalTable: "permissions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_permissions_users_user_temp_id6",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -637,6 +683,16 @@ namespace Infrastructure.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_permissions_card_id",
+                table: "permissions",
+                column: "card_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_permissions_credential_id",
+                table: "permissions",
+                column: "credential_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_schedules_user_id",
                 table: "schedules",
                 column: "user_id");
@@ -650,6 +706,26 @@ namespace Infrastructure.Migrations
                 name: "ix_stocks_locationid",
                 table: "stocks",
                 column: "locationid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_contracts_contract_id",
+                table: "user_contracts",
+                column: "contract_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_contracts_user_id",
+                table: "user_contracts",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_permissions_permission_id",
+                table: "user_permissions",
+                column: "permission_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_permissions_user_id",
+                table: "user_permissions",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_users_credential_id",
@@ -695,16 +771,16 @@ namespace Infrastructure.Migrations
                 name: "jobHistories");
 
             migrationBuilder.DropTable(
-                name: "module_permission");
-
-            migrationBuilder.DropTable(
-                name: "permission");
-
-            migrationBuilder.DropTable(
                 name: "schedules");
 
             migrationBuilder.DropTable(
                 name: "schoolHistories");
+
+            migrationBuilder.DropTable(
+                name: "user_contracts");
+
+            migrationBuilder.DropTable(
+                name: "user_permissions");
 
             migrationBuilder.DropTable(
                 name: "workingTimes");
@@ -719,16 +795,19 @@ namespace Infrastructure.Migrations
                 name: "stocks");
 
             migrationBuilder.DropTable(
-                name: "contracts");
-
-            migrationBuilder.DropTable(
                 name: "bankDetails");
 
             migrationBuilder.DropTable(
-                name: "cards");
+                name: "contracts");
+
+            migrationBuilder.DropTable(
+                name: "permissions");
 
             migrationBuilder.DropTable(
                 name: "locations");
+
+            migrationBuilder.DropTable(
+                name: "cards");
 
             migrationBuilder.DropTable(
                 name: "users");

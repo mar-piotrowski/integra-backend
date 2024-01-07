@@ -688,10 +688,6 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CardId")
-                        .HasColumnType("integer")
-                        .HasColumnName("card_id");
-
                     b.Property<int>("Code")
                         .HasColumnType("integer")
                         .HasColumnName("code");
@@ -699,10 +695,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
-
-                    b.Property<int?>("CredentialId")
-                        .HasColumnType("integer")
-                        .HasColumnName("credential_id");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
@@ -719,12 +711,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_permissions");
-
-                    b.HasIndex("CardId")
-                        .HasDatabaseName("ix_permissions_card_id");
-
-                    b.HasIndex("CredentialId")
-                        .HasDatabaseName("ix_permissions_credential_id");
 
                     b.ToTable("permissions", (string)null);
                 });
@@ -1307,19 +1293,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Permission", b =>
-                {
-                    b.HasOne("Domain.Entities.Card", null)
-                        .WithMany("Permissions")
-                        .HasForeignKey("CardId")
-                        .HasConstraintName("fk_permissions_cards_card_temp_id");
-
-                    b.HasOne("Domain.Entities.Credential", null)
-                        .WithMany("Permissions")
-                        .HasForeignKey("CredentialId")
-                        .HasConstraintName("fk_permissions_credentials_credential_temp_id");
-                });
-
             modelBuilder.Entity("Domain.Entities.Schedule", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -1361,7 +1334,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CredentialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_users_credentials_credential_temp_id1");
+                        .HasConstraintName("fk_users_credentials_credential_temp_id");
 
                     b.HasOne("Domain.Entities.JobPosition", "JobPosition")
                         .WithMany()
@@ -1397,7 +1370,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.UserPermissions", b =>
                 {
                     b.HasOne("Domain.Entities.Permission", "Permission")
-                        .WithMany("UserPermissions")
+                        .WithMany("Permissions")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1451,16 +1424,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Card", b =>
-                {
-                    b.Navigation("Permissions");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Credential", b =>
-                {
-                    b.Navigation("Permissions");
-                });
-
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Navigation("Articles");
@@ -1468,7 +1431,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
                 {
-                    b.Navigation("UserPermissions");
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stock", b =>

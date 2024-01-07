@@ -9,7 +9,6 @@ public static class CardMapper {
     public static CardDto MapToDto(this Card card) => new CardDto(
         card.Number.Value,
         card.IsActive,
-        card.Permissions.ToList(),
         UserMapper.MapToDto(card.User)
     );
 

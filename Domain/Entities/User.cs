@@ -118,12 +118,13 @@ public class User : AggregateRoot<UserId> {
         JobPosition = jobPosition;
     }
 
-    public void AddPermission(PermissionId permissionId) =>
-        _permissions.Add(new UserPermissions(Id, permissionId));
+    public void AddPermissions(IEnumerable<Permission> permissions) =>
+        _permissions.AddRange(permissions.Select(permission => new UserPermissions(Id, permission.Id)));
 
-    public void AddPermissions(IEnumerable<PermissionId> permissionIds) =>
-        _permissions.AddRange(permissionIds.Select(permissionId => new UserPermissions(Id, permissionId)));
-
+    public void RemovePermissions(IEnumerable<Permission> permissions) {
+        
+    }
+    
     public void AddSchool(SchoolHistory schoolHistory) => _schoolHistories.Add(schoolHistory);
 
     public void UpdateSchoolHistory(SchoolHistoryId schoolHistoryId, SchoolHistory schoolHistory) =>

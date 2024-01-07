@@ -1,10 +1,10 @@
 using Application.Dtos;
-using Application.Features.User.AddPermission;
 using Application.Features.User.AddPermissions;
 using Application.Features.User.CreateUser;
 using Application.Features.User.DeleteUser;
 using Application.Features.User.GetUser;
 using Application.Features.User.GetUsers;
+using Application.Features.User.RemovePermissions;
 using Application.Features.User.UpdateUser;
 using Domain.Common.Result;
 using Domain.ValueObjects;
@@ -40,18 +40,18 @@ public class UserController : ControllerBase {
         return result.MapResult();
     }
 
-    [HttpPost("{userId:int}/add-permission")]
-    public async Task<ActionResult> AddPermission(int userId, [FromBody] AddUserPermissionRequest request) {
-        var result = await _sender.Send(new AddUserPermissionCommand(
-            UserId.Create(userId),
-            PermissionCode.Create(request.PermissionCode)
-        ));
-        return result.MapResult();
-    }
-
     [HttpPost("{userId:int}/add-permissions")]
     public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request) {
         var result = await _sender.Send(new AddUserPermissionsCommand(
+            UserId.Create(userId),
+            request.PermissionCodes.Select(PermissionCode.Create)
+        ));
+        return result.MapResult();
+    }
+    
+    [HttpPost("{userId:int}/remove-permissions")]
+    public async Task<ActionResult> RemovePermissions(int userId, [FromBody] RemoveUserPermissionRequest request) {
+        var result = await _sender.Send(new RemoveUserPermissionsCommand(
             UserId.Create(userId),
             request.PermissionCodes.Select(PermissionCode.Create)
         ));
