@@ -17,7 +17,8 @@ public class UserMapper {
         Sex = user.Sex,
         IdentityNumber = user.IdentityNumber?.Value ?? "",
         JobPosition = user.JobPosition?.Title,
-        Locations = user.Locations.MapToDtos().ToList()
+        Locations = user.Locations.MapToDtos().ToList(),
+        Permissions = user.Permissions.Select(permission => permission.Permission.MapToDto()).ToList()
     };
 
     public UsersResponse MapToUsersResponse(IEnumerable<User> users) =>

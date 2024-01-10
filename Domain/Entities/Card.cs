@@ -9,9 +9,6 @@ public class Card : Entity<CardId> {
     public bool IsActive { get; private set; }
     public UserId UserId { get; private set; }
     public User User { get; private set; }
-    private readonly List<Permission> _permissions = new List<Permission>();
-
-    public IReadOnlyList<Permission> Permissions => _permissions.AsReadOnly();
 
     private Card() { }
 

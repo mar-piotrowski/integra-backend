@@ -5,5 +5,6 @@ namespace Application.Dtos;
 public record PermissionDto(
     PermissionType Type,
     string Name,
-    int PermissionCode
+    int Code,
+    DateTime AssignmentDate
 );

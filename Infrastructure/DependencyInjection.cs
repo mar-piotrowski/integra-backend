@@ -4,7 +4,9 @@ using Application.Features.Absence;
 using Infrastructure.Authentication;
 using Infrastructure.Interceptors;
 using Infrastructure.Repositories;
+using Infrastructure.Seeders;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Infrastructure;
 
 public static class DependencyInjection {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration
+    ) {
         services.AddDbContext<DatabaseContext>(
             options => {
                 options.UseNpgsql(configuration.GetConnectionString("Database")).UseSnakeCaseNamingConvention();
@@ -39,5 +44,14 @@ public static class DependencyInjection {
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IUserPermissionsRepository, UserPermissionsRepository>();
         return services;
+    }
+
+    public static WebApplication SeedDatabase(this WebApplication app) {
+        using (var scope = app.Services.CreateScope()) {
+            var context = scope.ServiceProvider.GetService<DatabaseContext>();
+            new Seeder(context!).Seed();
+        }
+
+        return app;
     }
 }

@@ -26,20 +26,4 @@ public class PermissionController : Controller {
        var result = await _sender.Send(new GetPermissionQuery(PermissionCode.Create(permissionCode)));
        return result.MapResult();
    }
-
-   [HttpPost]
-   public async Task<ActionResult> Create([FromBody] CreatePermissionCommand command) {
-       var result = await _sender.Send(command);
-       return result.MapResult();
-   }
-
-   [HttpPut("{permissionCode:int}")]
-   public async Task<ActionResult> Edit(int permissionCode) {
-       throw new NotImplementedException();
-   }
-
-   [HttpDelete("{permissionCode:int}")]
-   public async Task<ActionResult> Delete(int permissionCode) {
-       throw new NotImplementedException();
-   }
 }

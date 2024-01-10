@@ -14,4 +14,5 @@ public class UserDto {
     public bool IsStudent { get; init; }
     public string? JobPosition { get; init; }
     public List<LocationDto> Locations { get; init; } = new List<LocationDto>();
+    public List<PermissionDto> Permissions { get; init; } = new List<PermissionDto>();
 }

@@ -16,6 +16,11 @@ public class UnitOfWork : IUnitOfWork {
         return _databaseContext.SaveChangesAsync(token);
     }
 
+    public void SaveChanges() {
+        UpdateAuditableEntities();
+        _databaseContext.SaveChanges();
+    }
+
     private void UpdateAuditableEntities() {
         var entities = _databaseContext.ChangeTracker.Entries<IAuditableEntity>();
         foreach (var entityEntry in entities) {

@@ -23,5 +23,9 @@ namespace Domain.Common.Errors {
 
         public static Error UserDoesNotExists =>
             new Error(HttpStatusCode.NotFound, "User.NotFound", "Uzytkownik o podanym id nie istnieje");
+        public static Error NoPermission =>
+            new Error(HttpStatusCode.NotFound, "", "Użytnownik nie posiada tego uprawnienia");
+        public static Error NoPermissions =>
+            new Error(HttpStatusCode.NotFound, "", "Użytnownik nie posiada żadnych uprawnień");
     }
 }

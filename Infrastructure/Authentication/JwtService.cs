@@ -90,7 +90,7 @@ public class JwtService : IJwtService {
         ),
         new Claim(
             "modulePermissions",
-            JsonSerializer.Serialize(user.Credential.Permissions),
+            // JsonSerializer.Serialize(user.Credential.Permissions),
             JsonClaimValueTypes.JsonArray
         )
     };
