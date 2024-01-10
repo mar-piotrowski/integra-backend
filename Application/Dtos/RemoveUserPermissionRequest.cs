@@ -1,3 +1,3 @@
 namespace Application.Dtos;
 
-public record RemoveUserPermissionRequest(IEnumerable<int> PermissionCodes);
+public record RemoveUserPermissionRequest(IEnumerable<int> Permissions);

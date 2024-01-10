@@ -44,7 +44,7 @@ public class UserController : ControllerBase {
     public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request) {
         var result = await _sender.Send(new AddUserPermissionsCommand(
             UserId.Create(userId),
-            request.PermissionCodes.Select(PermissionCode.Create)
+            request.Permissions.Select(PermissionCode.Create)
         ));
         return result.MapResult();
     }
@@ -53,7 +53,7 @@ public class UserController : ControllerBase {
     public async Task<ActionResult> RemovePermissions(int userId, [FromBody] RemoveUserPermissionRequest request) {
         var result = await _sender.Send(new RemoveUserPermissionsCommand(
             UserId.Create(userId),
-            request.PermissionCodes.Select(PermissionCode.Create)
+            request.Permissions.Select(PermissionCode.Create)
         ));
         return result.MapResult();
     }
