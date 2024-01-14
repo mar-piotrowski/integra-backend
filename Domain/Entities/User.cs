@@ -1,4 +1,5 @@
 using Domain.Common.Models;
+using Domain.Enums;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 
@@ -8,16 +9,19 @@ public class User : AggregateRoot<UserId> {
     public string Firstname { get; private set; }
     public string Lastname { get; private set; }
     public string? SecondName { get; private set; }
-    public Email Email { get; private set; }
+    public Email? Email { get; private set; }
     public Phone? Phone { get; private set; } = null;
-    public IdentityNumber? IdentityNumber { get; private set; } = null;
+    public PersonalIdNumber? PersonalIdNumber { get; private set; } 
+    public DocumentNumber? DocumentNumber { get; private set; }
     public DateTime? DateOfBirth { get; private set; } = null;
     public string? PlaceOfBirth { get; private set; } = null;
-    public string? Sex { get; private set; }
+    public Sex Sex { get; private set; } = Sex.None;
     public bool IsStudent { get; private set; }
-    public Credential Credential { get; private set; }
+    public Credential? Credential { get; private set; }
     public JobPosition? JobPosition { get; private set; }
     public string? RefreshToken { get; private set; }
+    public bool Active { get; private set; }
+    public bool CompleteDataInfo { get; private set; }
     private readonly List<HolidayLimit> _holidayLimits = new List<HolidayLimit>();
     private readonly List<Location> _locations = new List<Location>();
     private readonly List<Contract> _contracts = new List<Contract>();
@@ -39,25 +43,28 @@ public class User : AggregateRoot<UserId> {
     public IEnumerable<HolidayLimit> HolidayLimits => _holidayLimits.AsReadOnly();
 
     public IEnumerable<UserPermissions> Permissions => _permissions.AsReadOnly();
+    
 
     private User() { }
 
     private User(
         string firstname,
         string lastname,
-        Email email,
-        IdentityNumber? identityNumber,
+        Email? email,
+        PersonalIdNumber? personalIdNumber,
+        DocumentNumber? documentNumber,
         Phone? phone,
         bool isStudent,
         string? secondName,
         DateTime? dateOfBirth,
         string? placeOfBirth,
-        string? sex
+        Sex sex
     ) {
         Firstname = firstname;
         Lastname = lastname;
         Email = email;
-        IdentityNumber = identityNumber;
+        PersonalIdNumber = personalIdNumber;
+        DocumentNumber = documentNumber;
         Phone = phone;
         IsStudent = isStudent;
         SecondName = secondName;
@@ -69,19 +76,21 @@ public class User : AggregateRoot<UserId> {
     public static User Create(
         string firstname,
         string lastname,
-        Email email,
-        IdentityNumber? identityNumber = null,
+        Email? email,
+        PersonalIdNumber? personalIdNumber = null,
+        DocumentNumber? documentNumber = null,
         Phone? phone = null,
         string? secondName = "",
         bool isStudent = false,
         DateTime? dateOfBirth = null,
         string? placeOfBirth = "",
-        string? sex = ""
+        Sex sex = Sex.None
     ) => new User(
         firstname,
         lastname,
         email,
-        identityNumber,
+        personalIdNumber,
+        documentNumber,
         phone,
         isStudent,
         secondName,
@@ -90,33 +99,19 @@ public class User : AggregateRoot<UserId> {
         sex
     );
 
-    public void AddAbsence(Absence absence) {
-        _absences.Add(absence);
-    }
+    public void AddAbsence(Absence absence) => _absences.Add(absence);
 
-    public void AddContract(Contract contract) {
-        _contracts.Add(contract);
-    }
+    public void AddContract(Contract contract) => _contracts.Add(contract);
 
-    public void AddLocation(Location location) {
-        _locations.Add(location);
-    }
+    public void AddLocation(Location location) => _locations.Add(location);
 
-    public void AddLocations(IEnumerable<Location> locations) {
-        _locations.AddRange(locations);
-    }
+    public void AddLocations(IEnumerable<Location> locations) => _locations.AddRange(locations);
 
-    public void AddCredentials(Credential credential) {
-        Credential = credential;
-    }
+    public void AddCredentials(Credential credential) => Credential = credential;
 
-    public void AddJobPosition(JobPosition jobPosition) {
-        JobPosition = jobPosition;
-    }
+    public void AddJobPosition(JobPosition jobPosition) => JobPosition = jobPosition;
 
-    public void UpdateJobPosition(JobPosition jobPosition) {
-        JobPosition = jobPosition;
-    }
+    public void UpdateJobPosition(JobPosition jobPosition) => JobPosition = jobPosition;
 
     public void AddPermissions(IEnumerable<Permission> permissions) =>
         _permissions.AddRange(permissions.Select(permission => new UserPermissions(Id, permission.Id)));
@@ -140,4 +135,10 @@ public class User : AggregateRoot<UserId> {
         _jobHistories.FirstOrDefault(entry => entry.Id == jobHistoryId)?.Update(jobHistory);
 
     public void AddRefreshToken(string refreshToken) => RefreshToken = refreshToken;
+
+    public void Activate() => Active = true;
+    
+    public void DeActivate() => Active = false;
+
+    public void DataCompleted() => CompleteDataInfo = false;
 }

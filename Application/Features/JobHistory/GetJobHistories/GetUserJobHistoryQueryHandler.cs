@@ -7,7 +7,7 @@ using Domain.Common.Result;
 
 namespace Application.Features.JobHistory.GetJobHistories;
 
-public class GetUserJobHistoryQueryHandler : IQueryHandler<GetUserJobHistoriesQuery, List<JobHistoryDto>> {
+public class GetUserJobHistoryQueryHandler : IQueryHandler<GetUserJobHistoriesQuery, JobHistoriesResponse> {
     private readonly IJobHistoryRepository _jobHistoryRepository;
     private readonly IUserRepository _userRepository;
 
@@ -16,15 +16,15 @@ public class GetUserJobHistoryQueryHandler : IQueryHandler<GetUserJobHistoriesQu
         _userRepository = userRepository;
     }
 
-    public async Task<Result<List<JobHistoryDto>>> Handle(
+    public async Task<Result<JobHistoriesResponse>> Handle(
         GetUserJobHistoriesQuery request,
         CancellationToken cancellationToken
     ) {
         if (request.UserId.Value > 0 && _userRepository.GetById(request.UserId) is null)
-            return Result.Failure<List<JobHistoryDto>>(UserErrors.NotFound);
-        var jobHistories = await _jobHistoryRepository.GetAll(request.UserId);
+            return Result.Failure<JobHistoriesResponse>(UserErrors.NotFound);
+        var jobHistories = _jobHistoryRepository.GetAll(request.UserId);
         return !jobHistories.Any()
-            ? Result.Failure<List<JobHistoryDto>>(JobHistoryErrors.NotAny)
-            : jobHistories.MapToDtos().ToList();
+            ? Result.Failure<JobHistoriesResponse>(JobHistoryErrors.NotAny)
+            : Result.Success(new JobHistoriesResponse(jobHistories.MapToDtos().ToList()));
     }
 }

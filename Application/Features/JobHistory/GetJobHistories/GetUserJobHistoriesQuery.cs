@@ -4,4 +4,4 @@ using Domain.ValueObjects.Ids;
 
 namespace Application.Features.JobHistory.GetJobHistories; 
 
-public record GetUserJobHistoriesQuery(UserId UserId) : IQuery<List<JobHistoryDto>>;
+public record GetUserJobHistoriesQuery(UserId UserId) : IQuery<JobHistoriesResponse>;

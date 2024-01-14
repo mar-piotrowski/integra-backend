@@ -4,14 +4,14 @@ using Domain.ValueObjects.Ids;
 
 namespace Domain.Entities;
 
-public  class Contract : Entity<ContractId> {
+public class Contract : Entity<ContractId> {
     public ContractStatus Status { get; private set; } = ContractStatus.None;
     public decimal SalaryWithTax { get; private set; }
     public decimal SalaryWithoutTax { get; private set; }
     public int WorkingHours1 { get; private set; }
     public int WorkingHours2 { get; private set; }
-    public DateTime? SignedOnDate { get; private set; }
-    public DateTime StartDate { get; private set; }
+    public DateTime SignedOnDate { get; private set; }
+    public DateTime? StartDate { get; private set; }
     public DateTime? EndDate { get; private set; }
     public bool JobFund { get; private set; }
     public bool PensionFund { get; private set; }
@@ -27,6 +27,9 @@ public  class Contract : Entity<ContractId> {
     public DeductibleCostId? DeductibleCostId { get; private set; }
     public User User { get; private set; }
 
+    public List<ContractChange> ContractChanges { get; private set; } = new List<ContractChange>();
+    public List<ContractChange> ContractBase { get; private set; } = new List<ContractChange>();
+    
     private Contract() { }
 
     private Contract(
@@ -34,8 +37,8 @@ public  class Contract : Entity<ContractId> {
         decimal salaryWithoutTax,
         int workingHours1,
         int workingHours2,
-        DateTime? signedOnDate,
-        DateTime startDate,
+        DateTime signedOnDate,
+        DateTime? startDate,
         DateTime? endDate,
         bool jobFund,
         bool voluntaryContribution,
@@ -76,8 +79,8 @@ public  class Contract : Entity<ContractId> {
         decimal salaryWithoutTax,
         int workingHours1,
         int workingHours2,
-        DateTime? signedOnDate,
-        DateTime startDate,
+        DateTime signedOnDate,
+        DateTime? startDate,
         DateTime? endDate,
         bool jobFund,
         bool voluntaryContribution,
@@ -112,6 +115,10 @@ public  class Contract : Entity<ContractId> {
         jobPositionId,
         deductibleCostId
     );
+
+    public void Update(Contract contractChanges) {
+        ContractChanges.Add(new ContractChange(Id, contractChanges.Id));
+    }
 
     public void Active() => Status = ContractStatus.Active;
 

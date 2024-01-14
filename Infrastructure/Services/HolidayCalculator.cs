@@ -1,76 +1,57 @@
 using Application.Abstractions;
 using Application.Abstractions.Repositories;
+using Domain.Common.Errors;
 using Domain.Common.Models;
+using Domain.Common.Result;
+using Domain.Entities;
 using Domain.Enums;
 using Domain.ValueObjects.Ids;
 
 namespace Infrastructure.Services;
 
 public class HolidayCalculator : IHolidayCalculator {
-    private readonly IHolidayLimitRepository _holidayLimitRepository;
-    private readonly IJobHistoryRepository _jobHistoryRepository;
-    private readonly ISchoolHistoryRepository _historyRepository;
+    private readonly IUserRepository _userRepository;
 
-    public HolidayCalculator(
-        IJobHistoryRepository jobHistoryRepository,
-        ISchoolHistoryRepository historyRepository,
-        IHolidayLimitRepository holidayLimitRepository
-    ) {
-        _jobHistoryRepository = jobHistoryRepository;
-        _historyRepository = historyRepository;
-        _holidayLimitRepository = holidayLimitRepository;
+    public HolidayCalculator(IUserRepository userRepository) {
+        _userRepository = userRepository;
     }
 
-    public CalculatedHolidayLimit CalculateLimit(UserId userId, DateTime start, DateTime end) {
-        var previousYear = _holidayLimitRepository.GetByYear(start.AddYears(-1), end.AddYears(-1));
-        var limit = CalculateLimitViaEducationDegree(userId) + CalculateLimitViaWorkYears(userId);
-        return previousYear is null
-            ? new CalculatedHolidayLimit(ChooseLimit(limit), 0)
-            : new CalculatedHolidayLimit(ChooseLimit(limit) + previousYear.AvailableDays, previousYear.AvailableDays);
+    public Result<CalculatedHolidayLimit> CalculateLimit(UserId userId, DateTime start, DateTime end) {
+        var user = _userRepository.GetInfoToCreateLimit(userId);
+        if (user is null)
+            return Result.Failure<CalculatedHolidayLimit>(UserErrors.NotFound);
+        var userLimits = user.HolidayLimits
+            .FirstOrDefault(limit => limit.StartDate.AddYears(-1) == start);
+        var contractWorkingTime = user.Contracts.FirstOrDefault(contract => contract.Status == ContractStatus.Active);
+        if (contractWorkingTime is null)
+            return Result.Failure<CalculatedHolidayLimit>(ContractsErrors.NotFound);
+        var limit = CalculateLimitViaEducationDegree(user.SchoolHistories.ToList())
+                    + CalculateLimitViaWorkYears(user.JobHistories.ToList());
+        return userLimits is null
+            ? Result.Success(new CalculatedHolidayLimit(ChooseLimit(limit), 0))
+            : Result.Success(new CalculatedHolidayLimit(ChooseLimit(limit) + userLimits.AvailableDays,
+                userLimits.AvailableDays));
     }
 
-    private int CalculateLimitViaEducationDegree(UserId userId) {
-        // var userEducations = _historyRepository.GetAll(userId);
-        // if (!userEducations.Any())
-        //     return 0;
-        // var limit = 0;
-        // foreach (var userEducation in userEducations) {
-        //     switch (userEducation.Degree) {
-        //         case SchoolDegree.PrimaryEducation:
-        //             limit = 3;
-        //             break;
-        //         case SchoolDegree.VocationalEducation:
-        //             limit = 5;
-        //             break;
-        //         case SchoolDegree.SecondaryGeneralEducation:
-        //             limit = 4;
-        //             break;
-        //         case SchoolDegree.PostSecondaryEducation:
-        //             limit = 6;
-        //             break;
-        //         case SchoolDegree.HigherEducation:
-        //             limit = 8;
-        //             break;
-        //     }
-        // }
-
-        // return limit;
-        return 0;
+    private static int CalculateLimitViaEducationDegree(IReadOnlyCollection<SchoolHistory> schoolHistories) {
+        if (!schoolHistories.Any())
+            return 0;
+        return schoolHistories.Aggregate(0, (current, userEducation) => userEducation.Degree switch {
+            SchoolDegree.PrimaryEducation => 3,
+            SchoolDegree.VocationalEducation => 5,
+            SchoolDegree.SecondaryGeneralEducation => 4,
+            SchoolDegree.PostSecondaryEducation => 6,
+            SchoolDegree.HigherEducation => 8,
+            _ => current
+        });
     }
 
-    private int CalculateLimitViaWorkYears(UserId userId) {
-        // var userJobs = _jobHistoryRepository.GetAll(userId);
-        // if (!userJobs.Any())
-        //     return 0;
-        // decimal limit = 0;
-        // foreach (var jobHistory in userJobs) {
-        //     var days = (jobHistory.EndDate - jobHistory.StartDate).TotalDays / 365;
-        //     limit += (int)Math.Floor(Math.Round(days));
-        // }
-        //
-        // return (int)limit;
-        return 0;
+    private static int CalculateLimitViaWorkYears(IReadOnlyCollection<JobHistory> jobHistories) {
+        if (!jobHistories.Any())
+            return 0;
+        return (int)jobHistories.Select(jobHistory => (jobHistory.EndDate - jobHistory.StartDate).TotalDays / 365)
+            .Aggregate<double, decimal>(0, (current, days) => current + (int)Math.Floor(Math.Round(days)));
     }
 
-    private int ChooseLimit(int limit) => limit >= 10 ? 26 : 20;
+    private static int ChooseLimit(int limit) => limit >= 10 ? 26 : 20;
 }

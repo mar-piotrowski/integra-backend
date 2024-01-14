@@ -37,9 +37,17 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
             .Include(c => c.Credential)
             .FirstOrDefault(user => user.Email == email);
 
-    public User? GetByIdentityNumber(IdentityNumber identityNumber) =>
+    public User? GetByPersonalIdNumber(PersonalIdNumber personalIdNumber) =>
         DbContext.Set<User>()
             .Include(l => l.Locations)
             .Include(j => j.JobPosition)
-            .FirstOrDefault(user => user.IdentityNumber == identityNumber);
+            .FirstOrDefault(user => user.PersonalIdNumber == personalIdNumber);
+
+    public User? GetInfoToCreateLimit(UserId userId) =>
+        DbContext.Set<User>()
+            .Include(c => c.Contracts)
+            .Include(h => h.HolidayLimits)
+            .Include(s => s.SchoolHistories)
+            .Include(j => j.JobHistories)
+            .FirstOrDefault(entry => entry.Id == userId);
 }

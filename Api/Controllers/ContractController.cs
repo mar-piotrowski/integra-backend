@@ -30,21 +30,40 @@ public class ContractController : ControllerBase {
         return result.MapResult();
     }
 
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] CreateContractCommand command) {
+        var result = await _sender.Send(command);
+        return result.MapResult();
+    }
+
     [HttpGet("{contractId:int}/changes")]
     public async Task<ActionResult> Changes(int contractId) {
         var result = await _sender.Send(new GetContractChangesQuery(ContractId.Create(contractId)));
         return result.MapResult();
     }
 
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] CreateContractCommand command) {
-        var result = await _sender.Send(command);
+    [HttpPost("{contractId:int}/update")]
+    public async Task<ActionResult> Update(int contractId, [FromBody] UpdateContractRequest request) {
+        var result = await _sender.Send(new UpdateContractCommand(
+            ContractId.Create(contractId),
+            request.SalaryWithTax,
+            request.SalaryWithoutTax,
+            request.WorkingHours1,
+            request.WorkingHours2,
+            request.SignedOnDate,
+            request.JobFound,
+            request.VoluntaryContribution,
+            request.PensionFund,
+            request.ProfitableFund,
+            request.Fgsp,
+            request.PitExemption,
+            request.TaxRelief,
+            request.JobPosition,
+            InsuranceCodeId.Create(request.InsuranceCodeId),
+            UserId.Create(request.UserId),
+            DeductibleCostId.Create(request.DeductibleCostId)
+        ));
         return result.MapResult();
-    }
-
-    [HttpPut("{contractId:int}")]
-    public async Task<ActionResult> Update([FromBody] UpdateContractCommand command) {
-        throw new NotImplementedException();
     }
 
     [HttpPost("{contractId:int}/terminate")]

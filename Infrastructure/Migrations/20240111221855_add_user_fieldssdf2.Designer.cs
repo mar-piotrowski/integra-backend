@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240107194215_a123dfsd")]
-    partial class a123dfsd
+    [Migration("20240111221855_add_user_fieldssdf2")]
+    partial class add_user_fieldssdf2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,7 +253,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("job_fund");
 
-                    b.Property<int?>("JobPositionId")
+                    b.Property<int>("JobPositionId")
                         .HasColumnType("integer")
                         .HasColumnName("job_position_id");
 
@@ -795,7 +795,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("school_name");
 
                     b.Property<string>("Specialization")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("specialization");
 
@@ -804,7 +803,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("start_date");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
 
@@ -865,11 +863,19 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<bool>("CompleteDataInfo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("complete_data_info");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<int>("CredentialId")
+                    b.Property<int?>("CredentialId")
                         .HasColumnType("integer")
                         .HasColumnName("credential_id");
 
@@ -877,8 +883,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("date_of_birth");
 
+                    b.Property<string>("DocumentNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("document_number");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("email");
 
@@ -886,10 +895,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("firstname");
-
-                    b.Property<string>("IdentityNumber")
-                        .HasColumnType("text")
-                        .HasColumnName("identity_number");
 
                     b.Property<bool>("IsStudent")
                         .HasColumnType("boolean")
@@ -908,6 +913,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
+                    b.Property<string>("PersonalIdNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("personal_id_number");
+
                     b.Property<string>("Phone")
                         .HasColumnType("text")
                         .HasColumnName("phone");
@@ -924,8 +933,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("second_name");
 
-                    b.Property<string>("Sex")
-                        .HasColumnType("text")
+                    b.Property<int>("Sex")
+                        .HasColumnType("integer")
                         .HasColumnName("sex");
 
                     b.HasKey("Id")
@@ -1335,8 +1344,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Credential", "Credential")
                         .WithMany()
                         .HasForeignKey("CredentialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_users_credentials_credential_temp_id");
 
                     b.HasOne("Domain.Entities.JobPosition", "JobPosition")

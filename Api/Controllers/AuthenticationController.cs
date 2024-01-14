@@ -57,6 +57,11 @@ public class AuthenticationController : ControllerBase {
     public ActionResult ForgotPassword([FromBody] ForgotPasswordRequest resetPassword) {
         throw new NotImplementedException();
     }
+    
+    [HttpPost("send-verification-code")]
+    public async Task<ActionResult> SendVerificationCode() {
+        throw new NotImplementedException();
+    }
 
     [HttpPost("refresh-token")]
     [AllowAnonymous]

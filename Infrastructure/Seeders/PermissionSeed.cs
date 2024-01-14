@@ -29,7 +29,7 @@ public class Seeder {
                 _databaseContext.Set<Permission>().Add(websitePermission);
     }
 
-    private bool HasAllPermissions(IReadOnlyCollection<Permission> permissions) =>
+    private static bool HasAllPermissions(IReadOnlyCollection<Permission> permissions) =>
         Permissions.WebsitePermissions.All(websitePermission =>
             permissions.FirstOrDefault(permission => permission.Code == websitePermission.Code) is not null
         );

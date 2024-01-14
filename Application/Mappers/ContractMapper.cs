@@ -40,7 +40,7 @@ public class ContractMapper {
             contract.TaxRelief,
             contract.InsuranceCodeId?.Value,
             _userMapper.MapToDto(contract.User),
-            jobPosition is null ? null : _jobPositionMapper.MapToDto(jobPosition),
+            jobPosition is not null ? _jobPositionMapper.MapToDto(jobPosition).Title : null,
             contract.DeductibleCostId?.Value
         );
     }

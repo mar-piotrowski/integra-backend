@@ -1,15 +1,14 @@
 using Application.Abstractions.Messaging;
+using Domain.ValueObjects.Ids;
 
 namespace Application.Features.Contract.UpdateContract;
 public record UpdateContractCommand(
-    int ContractId,
+    ContractId ContractId,
     decimal SalaryWithTax,
     decimal SalaryWithoutTax,
     int WorkingHours1,
     int WorkingHours2,
-    DateTime? SignedOnDate,
-    DateTime StartDate,
-    DateTime? EndDate,
+    DateTime SignedOnDate,
     bool JobFound,
     bool VoluntaryContribution,
     bool PensionFund ,
@@ -17,8 +16,8 @@ public record UpdateContractCommand(
     bool Fgsp,
     bool PitExemption,
     bool TaxRelief,
-    int InsuranceCodeId,
-    int UserId,
-    int JobPositionId,
-    int DeductibleCostId
+    string JobPositionId,
+    InsuranceCodeId InsuranceCodeId,
+    UserId UserId,
+    DeductibleCostId DeductibleCostId
 ) : ICommand;
