@@ -8,8 +8,8 @@ public record CreateUserSchoolHistoryCommand(
     UserId UserId,
     string SchoolName,
     SchoolDegree Degree,
-    string Specialization,
-    string Title,
+    string? Specialization,
+    string? Title,
     DateTime StartDate,
     DateTime EndDate
 ) : ICommand;

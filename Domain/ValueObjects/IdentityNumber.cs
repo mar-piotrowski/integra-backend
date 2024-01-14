@@ -3,9 +3,8 @@ using Domain.Common.Models;
 namespace Domain.ValueObjects;
 
 public class IdentityNumber : ValueObject {
-    public string Value { get; private set; }
-
-    private IdentityNumber() { }
+    public readonly string Value;
+    private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     private IdentityNumber(string value) => Value = value;
 
@@ -14,4 +13,10 @@ public class IdentityNumber : ValueObject {
     protected override IEnumerable<object> GetAtomicValues() {
         yield return Value;
     }
+
+    public static string Generate() => new string(
+        Enumerable.Repeat(Chars, 5)
+            .Select(s => s[new Random().Next(s.Length)])
+            .ToArray()
+    );
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240107193954_adfsd")]
-    partial class adfsd
+    [Migration("20240113131937_add_usefffr_fsdfieldssdf2")]
+    partial class add_usefffr_fsdfieldssdf2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,7 +253,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("job_fund");
 
-                    b.Property<int?>("JobPositionId")
+                    b.Property<int>("JobPositionId")
                         .HasColumnType("integer")
                         .HasColumnName("job_position_id");
 
@@ -281,11 +281,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("salary_without_tax");
 
-                    b.Property<DateTime?>("SignedOnDate")
+                    b.Property<DateTime>("SignedOnDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("signed_on_date");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
@@ -691,10 +691,6 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CardId")
-                        .HasColumnType("integer")
-                        .HasColumnName("card_id");
-
                     b.Property<int>("Code")
                         .HasColumnType("integer")
                         .HasColumnName("code");
@@ -702,10 +698,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
-
-                    b.Property<int?>("CredentialId")
-                        .HasColumnType("integer")
-                        .HasColumnName("credential_id");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
@@ -722,12 +714,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_permissions");
-
-                    b.HasIndex("CardId")
-                        .HasDatabaseName("ix_permissions_card_id");
-
-                    b.HasIndex("CredentialId")
-                        .HasDatabaseName("ix_permissions_credential_id");
 
                     b.ToTable("permissions", (string)null);
                 });
@@ -809,7 +795,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("school_name");
 
                     b.Property<string>("Specialization")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("specialization");
 
@@ -818,7 +803,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("start_date");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
 
@@ -879,11 +863,19 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<bool>("CompleteDataInfo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("complete_data_info");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<int>("CredentialId")
+                    b.Property<int?>("CredentialId")
                         .HasColumnType("integer")
                         .HasColumnName("credential_id");
 
@@ -891,8 +883,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("date_of_birth");
 
+                    b.Property<string>("DocumentNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("document_number");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("email");
 
@@ -900,10 +895,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("firstname");
-
-                    b.Property<string>("IdentityNumber")
-                        .HasColumnType("text")
-                        .HasColumnName("identity_number");
 
                     b.Property<bool>("IsStudent")
                         .HasColumnType("boolean")
@@ -922,6 +913,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
+                    b.Property<string>("PersonalIdNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("personal_id_number");
+
                     b.Property<string>("Phone")
                         .HasColumnType("text")
                         .HasColumnName("phone");
@@ -938,8 +933,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("second_name");
 
-                    b.Property<string>("Sex")
-                        .HasColumnType("text")
+                    b.Property<int>("Sex")
+                        .HasColumnType("integer")
                         .HasColumnName("sex");
 
                     b.HasKey("Id")
@@ -1247,16 +1242,16 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.ContractChange", b =>
                 {
                     b.HasOne("Domain.Entities.Contract", "ContractChanged")
-                        .WithMany()
+                        .WithMany("ContractChanges")
                         .HasForeignKey("ContractChangeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_contract_changes_contracts_contract_changed_temp_id2");
 
                     b.HasOne("Domain.Entities.Contract", "Contract")
-                        .WithMany()
+                        .WithMany("ContractBase")
                         .HasForeignKey("ContractId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_contract_changes_contracts_contract_temp_id1");
 
@@ -1310,19 +1305,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Permission", b =>
-                {
-                    b.HasOne("Domain.Entities.Card", null)
-                        .WithMany("Permissions")
-                        .HasForeignKey("CardId")
-                        .HasConstraintName("fk_permissions_cards_card_temp_id");
-
-                    b.HasOne("Domain.Entities.Credential", null)
-                        .WithMany("Permissions")
-                        .HasForeignKey("CredentialId")
-                        .HasConstraintName("fk_permissions_credentials_credential_temp_id");
-                });
-
             modelBuilder.Entity("Domain.Entities.Schedule", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -1362,9 +1344,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Credential", "Credential")
                         .WithMany()
                         .HasForeignKey("CredentialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_users_credentials_credential_temp_id1");
+                        .HasConstraintName("fk_users_credentials_credential_temp_id");
 
                     b.HasOne("Domain.Entities.JobPosition", "JobPosition")
                         .WithMany()
@@ -1454,14 +1434,11 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Card", b =>
+            modelBuilder.Entity("Domain.Entities.Contract", b =>
                 {
-                    b.Navigation("Permissions");
-                });
+                    b.Navigation("ContractBase");
 
-            modelBuilder.Entity("Domain.Entities.Credential", b =>
-                {
-                    b.Navigation("Permissions");
+                    b.Navigation("ContractChanges");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>

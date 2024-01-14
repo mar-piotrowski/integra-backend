@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240110205617_add_user_fields2")]
+    partial class add_user_fields2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,11 +281,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("salary_without_tax");
 
-                    b.Property<DateTime>("SignedOnDate")
+                    b.Property<DateTime?>("SignedOnDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("signed_on_date");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
@@ -792,6 +795,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("school_name");
 
                     b.Property<string>("Specialization")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("specialization");
 
@@ -800,6 +804,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("start_date");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
 
@@ -1239,14 +1244,14 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.ContractChange", b =>
                 {
                     b.HasOne("Domain.Entities.Contract", "ContractChanged")
-                        .WithMany("ContractChanges")
+                        .WithMany()
                         .HasForeignKey("ContractChangeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_contract_changes_contracts_contract_changed_temp_id2");
 
                     b.HasOne("Domain.Entities.Contract", "Contract")
-                        .WithMany("ContractBase")
+                        .WithMany()
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -1429,13 +1434,6 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Status")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Contract", b =>
-                {
-                    b.Navigation("ContractBase");
-
-                    b.Navigation("ContractChanges");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>

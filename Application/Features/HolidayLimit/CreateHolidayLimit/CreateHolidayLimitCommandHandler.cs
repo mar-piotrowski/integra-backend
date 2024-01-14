@@ -25,20 +25,24 @@ public class CreateHolidayLimitCommandHandler : ICommandHandler<CreateHolidayLim
     }
 
     public async Task<Result> Handle(CreateHolidayLimitCommand request, CancellationToken cancellationToken) {
-        if (_userRepository.GetById(request.UserId) is null)
+        var user = _userRepository.GetInfoToCreateLimit(request.UserId);
+        if (user is null)
             return Result.Failure(UserErrors.NotFound);
+        if (user.HolidayLimits.Any(holidayLimit =>
+                holidayLimit.StartDate.Year == DateTime.Now.Year && holidayLimit.EndDate.Year == DateTime.Now.Year))
+            return Result.Failure(HolidayLimitErrors.YearExists);
         if (request.StartDate.Year != request.EndDate.Year)
             return Result.Failure(HolidayLimitErrors.WrongYear);
-        if (_holidayLimitRepository.GetByYear(request.StartDate, request.EndDate) is not null)
-            return Result.Failure(HolidayLimitErrors.YearExists);
         var limit = _holidayCalculator.CalculateLimit(request.UserId, request.StartDate, request.EndDate);
+        if (limit.IsFailure)
+            return limit;
         var holidayLimit = Domain.Entities.HolidayLimit.Create(
             request.UserId,
             request.Current,
             request.StartDate,
             request.EndDate,
-            limit.Available,
-            mergedDays: limit.Merged,
+            limit.Value.Available,
+            mergedDays: limit.Value.Merged,
             description: request.Description
         );
         _holidayLimitRepository.Add(holidayLimit);

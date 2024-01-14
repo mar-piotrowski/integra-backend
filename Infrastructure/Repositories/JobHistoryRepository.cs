@@ -8,12 +8,12 @@ namespace Infrastructure.Repositories;
 public class JobHistoryRepository : Repository<JobHistory, JobHistoryId>, IJobHistoryRepository {
     public JobHistoryRepository(DatabaseContext dbContext) : base(dbContext) { }
 
-    public async Task<List<JobHistory>> GetAll(UserId userId) {
+    public  List<JobHistory> GetAll(UserId userId) {
         IQueryable<JobHistory> queryable = DbContext.Set<JobHistory>();
         if (userId.Value > 0)
             queryable = queryable
                 .Include(u => u.User)
                 .Where(jobHistory => jobHistory.UserId == userId);
-        return await queryable.ToListAsync();
+        return queryable.ToList();
     }
 }

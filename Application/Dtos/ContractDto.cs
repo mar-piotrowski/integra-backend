@@ -9,8 +9,8 @@ public record ContractDto(
     decimal SalaryWithoutTax,
     int WorkingHours1,
     int WorkingHours2,
-    DateTime? SignedOnDate,
-    DateTime StartDate,
+    DateTime SignedOnDate,
+    DateTime? StartDate,
     DateTime? EndDate,
     bool JobFund,
     bool Fgsp,
@@ -19,6 +19,6 @@ public record ContractDto(
     bool TaxRelief,
     int? InsuranceCodeId,
     UserDto User,
-    JobPositionDto? JobPosition,
+    string? JobPosition,
     decimal? DeductibleCost
 );

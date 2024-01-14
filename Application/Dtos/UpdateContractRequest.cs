@@ -1,16 +1,11 @@
-using Application.Abstractions.Messaging;
-using Domain.Enums;
+namespace Application.Dtos;
 
-namespace Application.Features.Contract.CreateContract;
-
-public record CreateContractCommand(
+public record UpdateContractRequest(
     decimal SalaryWithTax,
     decimal SalaryWithoutTax,
     int WorkingHours1,
     int WorkingHours2,
     DateTime SignedOnDate,
-    DateTime? StartDate,
-    DateTime? EndDate,
     bool JobFound,
     bool VoluntaryContribution,
     bool PensionFund ,
@@ -18,9 +13,8 @@ public record CreateContractCommand(
     bool Fgsp,
     bool PitExemption,
     bool TaxRelief,
-    ContractType ContractType,
-    string JobPosition,
     int InsuranceCodeId,
     int UserId,
+    string JobPosition,
     int DeductibleCostId
-) : ICommand;
+);

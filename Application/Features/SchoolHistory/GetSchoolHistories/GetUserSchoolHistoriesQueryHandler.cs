@@ -25,7 +25,7 @@ public class GetUserSchoolHistoriesQueryHandler : IQueryHandler<GetUserSchoolHis
     ) {
         if (request.UserId.Value > 0 && _userRepository.GetById(request.UserId) is null)
             return Result.Failure<List<SchoolHistoryDto>>(UserErrors.NotFound);
-        var schoolHistories = await _schoolHistoryRepository.GetAll(request.UserId);
+        var schoolHistories = _schoolHistoryRepository.GetAll(request.UserId);
         return !schoolHistories.Any()
             ? Result.Failure<List<SchoolHistoryDto>>(SchoolHistoryErrors.NotFound)
             : Result.Success(schoolHistories.MapToDtos());

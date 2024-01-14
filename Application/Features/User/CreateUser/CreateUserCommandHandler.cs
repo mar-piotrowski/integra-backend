@@ -1,43 +1,41 @@
 using Application.Abstractions;
+using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Application.Mappers;
 using Domain.Common.Errors;
 using Domain.Common.Result;
-using Domain.Entities;
 using Domain.ValueObjects;
-using Domain.ValueObjects.Ids;
-using MediatR;
 
 namespace Application.Features.User.CreateUser;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<string>> {
-    private readonly IUnitOfWork _unitOfWork;
+public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
     private readonly IUserRepository _userRepository;
     private readonly IJobPositionRepository _jobPositionRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateUserCommandHandler(
-        IUnitOfWork unitOfWork,
         IUserRepository userRepository,
-        IJobPositionRepository jobPositionRepository
+        IJobPositionRepository jobPositionRepository,
+        IUnitOfWork unitOfWork
     ) {
-        _unitOfWork = unitOfWork;
         _userRepository = userRepository;
         _jobPositionRepository = jobPositionRepository;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
-        if (_userRepository.GetByEmail(Email.Create(request.Email)) is not null)
+    public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
+        if (!string.IsNullOrEmpty(request.Email) && _userRepository.GetByEmail(Email.Create(request.Email)) is not null)
             return Result.Failure<string>(UserErrors.EmailExists);
-        if (_userRepository.GetByIdentityNumber(IdentityNumber.Create(request.IdentityNumber)) is not null)
+        if (_userRepository.GetByPersonalIdNumber(PersonalIdNumber.Create(request.IdentityNumber)) is not null)
             return Result.Failure<string>(UserErrors.IdentityNumberExists);
-        var jobPosition = _jobPositionRepository.GetById(JobPositionId.Create(request.JobPositionId));
-        if (jobPosition is null)
-            return Result.Failure<string>(JobPositionErrors.TitleExists);
+        if (!request.Locations.Any())
+            return Result.Failure(UserErrors.NoLocations);
         var user = Domain.Entities.User.Create(
             request.Firstname,
             request.Lastname,
-            Email.Create(request.Email),
-            IdentityNumber.Create(request.IdentityNumber),
+            !string.IsNullOrEmpty(request.Email) ? Email.Create(request.Email) : null,
+            PersonalIdNumber.Create(request.IdentityNumber),
+            !string.IsNullOrEmpty(request.DocumentNumber) ? DocumentNumber.Create(request.DocumentNumber) : null,
             Phone.Create(request.Phone),
             request.SecondName,
             request.IsStudent,
@@ -45,14 +43,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
             request.PlaceOfBirth,
             request.Sex
         );
-        var credentials = Credential.Create("123");
-        // credentials.AddPermission(new Permission(PermissionType.Employee));
-        user.AddCredentials(credentials);
-        user.AddJobPosition(jobPosition);
-        if (request.Locations is not null)
-            user.AddLocations(request.Locations.MapToEntities());
+        user.AddLocations(request.Locations.MapToEntities());
         _userRepository.Add(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return Result.Success("A");
+        return Result.Success();
     }
 }

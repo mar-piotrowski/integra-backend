@@ -27,7 +27,7 @@ public class CreateContractCommandHandler : ICommandHandler<CreateContractComman
         var user = _userRepository.GetById(UserId.Create(request.UserId));
         if (user is null)
             return Result.Failure(UserErrors.UserDoesNotExists);
-        var jobPosition = _jobPositionRepository.GetById(JobPositionId.Create(request.JobPositionId));
+        var jobPosition = _jobPositionRepository.GetByTitle(request.JobPosition);
         if (jobPosition is null)
             return Result.Failure(JobPositionErrors.TitleDoesNotExists);
         var contract = Domain.Entities.Contract.Create(
@@ -48,7 +48,7 @@ public class CreateContractCommandHandler : ICommandHandler<CreateContractComman
             request.TaxRelief,
             InsuranceCodeId.Create(request.InsuranceCodeId),
             UserId.Create(request.UserId),
-            JobPositionId.Create(request.JobPositionId),
+            jobPosition.Id,
             DeductibleCostId.Create(request.DeductibleCostId)
         );
         contract.Active();

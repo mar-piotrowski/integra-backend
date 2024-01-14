@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240113121000_add_user_fsdfieldssdf2")]
+    partial class add_user_fsdfieldssdf2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,7 +253,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("job_fund");
 
-                    b.Property<int?>("JobPositionId")
+                    b.Property<int>("JobPositionId")
                         .HasColumnType("integer")
                         .HasColumnName("job_position_id");
 
@@ -1239,14 +1242,14 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.ContractChange", b =>
                 {
                     b.HasOne("Domain.Entities.Contract", "ContractChanged")
-                        .WithMany("ContractChanges")
+                        .WithMany()
                         .HasForeignKey("ContractChangeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_contract_changes_contracts_contract_changed_temp_id2");
 
                     b.HasOne("Domain.Entities.Contract", "Contract")
-                        .WithMany("ContractBase")
+                        .WithMany()
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -1429,13 +1432,6 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Status")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Contract", b =>
-                {
-                    b.Navigation("ContractBase");
-
-                    b.Navigation("ContractChanges");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
