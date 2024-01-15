@@ -9,6 +9,9 @@ namespace Domain.ValueObjects {
         public string PostalCode { get; private set; }
         public string City { get; private set; }
         public string Country { get; private set; }
+        public string Province { get; private set; }
+        public string Commune { get; private set; }
+        public string District { get; private set; }
         public bool IsPrivate { get; private set; }
         public bool IsCompany { get; private set; }
         public UserId? UserId { get; private set; }
@@ -22,6 +25,9 @@ namespace Domain.ValueObjects {
             string postalCode,
             string city,
             string country,
+            string province,
+            string commune,
+            string? district,
             bool isPrivate,
             bool isCompany
         ) {
@@ -31,6 +37,9 @@ namespace Domain.ValueObjects {
             PostalCode = postalCode;
             City = city;
             Country = country;
+            Province = province;
+            Commune = commune;
+            District = district;
             IsPrivate = isPrivate;
             IsCompany = isCompany;
         }
@@ -42,9 +51,24 @@ namespace Domain.ValueObjects {
             string postalCode,
             string city,
             string country,
+            string province,
+            string commune,
+            string? district,
             bool isPrivate,
             bool isCompany
-        ) => new Location(street, houseNo, apartmentNo, postalCode, city, country, isPrivate, isCompany);
+        ) => new Location(
+            street,
+            houseNo,
+            apartmentNo,
+            postalCode,
+            city,
+            country,
+            province, 
+            commune,
+            district,
+            isPrivate,
+            isCompany
+        );
 
         public void Update(
             string street,
@@ -53,6 +77,9 @@ namespace Domain.ValueObjects {
             string postalCode,
             string city,
             string country,
+            string province,
+            string commune,
+            string? district,
             bool isPrivate,
             bool isCompany
         ) {
@@ -62,6 +89,9 @@ namespace Domain.ValueObjects {
             PostalCode = postalCode;
             City = city;
             Country = country;
+            Province = province;
+            Commune = commune;
+            District = district;
             IsPrivate = isPrivate;
             IsCompany = isCompany;
         }

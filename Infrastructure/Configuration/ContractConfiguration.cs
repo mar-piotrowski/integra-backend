@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class ContractConfiguration : IEntityTypeConfiguration<Contract> {
     public void Configure(EntityTypeBuilder<Contract> builder) {
-        builder.ToTable("contracts");
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => ContractId.Create(value))
             .IsRequired()

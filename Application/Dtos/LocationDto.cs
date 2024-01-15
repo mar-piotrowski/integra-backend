@@ -7,6 +7,9 @@ public record LocationDto(
     string PostalCode,
     string City,
     string Country,
+    string Province,
+    string Commune,
+    string? District,
     bool IsPrivate,
     bool IsCompany
 );

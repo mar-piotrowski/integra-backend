@@ -7,5 +7,5 @@ public record UpdateContractorRequest(
     string FullName,
     string ShortName,
     LocationDto Location,
-    BankDetailsDto BankDetails
+    BankAccountDto BankAccount
 );

@@ -8,7 +8,6 @@ namespace Infrastructure.Configuration;
 
 public class UserConfiguration : IEntityTypeConfiguration<User> {
     public void Configure(EntityTypeBuilder<User> builder) {
-        builder.ToTable("users");
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => UserId.Create(value))
             .ValueGeneratedOnAdd();

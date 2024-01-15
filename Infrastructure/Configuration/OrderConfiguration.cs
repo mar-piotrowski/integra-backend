@@ -8,7 +8,6 @@ namespace Infrastructure.Configuration;
 
 public class OrderConfiguration : IEntityTypeConfiguration<Order> {
     public void Configure(EntityTypeBuilder<Order> builder) {
-        builder.ToTable("orders");
         builder.HasKey(o => o.Id);
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => OrderId.Create(value))

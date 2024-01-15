@@ -10,8 +10,11 @@ public class ContractorRepository : Repository<Contractor, ContractorId>, IContr
     public ContractorRepository(DatabaseContext dbContext) : base(dbContext) { }
 
     public IEnumerable<Contractor> GetAllWithLocation() =>
-        DbContext.Set<Contractor>().Include(p => p.Location).ToList();
-    
+        DbContext.Set<Contractor>().Include(p => p.Location).Include(b => b.BankAccount).ToList();
+
     public Contractor? FindByNip(Nip nip) =>
-        DbContext.Set<Contractor>().Include(l => l.Location).FirstOrDefault(entry => entry.Nip == nip);
+        DbContext.Set<Contractor>()
+            .Include(l => l.Location)
+            .Include(b => b.BankAccount)
+            .FirstOrDefault(entry => entry.Nip == nip);
 }

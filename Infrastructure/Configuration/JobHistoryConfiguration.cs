@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class JobHistoryConfiguration : IEntityTypeConfiguration<JobHistory> {
     public void Configure(EntityTypeBuilder<JobHistory> builder) {
-        builder.ToTable("jobHistories");
         builder.HasKey(k => k.Id);
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => JobHistoryId.Create(value))

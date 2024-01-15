@@ -13,6 +13,9 @@ public static class LocationMapper {
             location.PostalCode,
             location.City,
             location.Country,
+            location.Province,
+            location.Commune,
+            location.District,
             location.IsPrivate,
             location.IsCompany
         );
@@ -25,6 +28,9 @@ public static class LocationMapper {
             location.PostalCode,
             location.City,
             location.Country,
+            location.Province,
+            location.Commune,
+            location.District,
             location.IsPrivate,
             location.IsCompany
         );

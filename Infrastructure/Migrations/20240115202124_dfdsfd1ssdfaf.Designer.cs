@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240111221855_add_user_fieldssdf2")]
-    partial class add_user_fieldssdf2
+    [Migration("20240115202124_dfdsfd1ssdfaf")]
+    partial class dfdsfd1ssdfaf
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,6 +177,37 @@ namespace Infrastructure.Migrations
                     b.ToTable("articles", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.BankAccount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("number");
+
+                    b.HasKey("Id")
+                        .HasName("pk_bank_accounts");
+
+                    b.ToTable("bank_accounts", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Card", b =>
                 {
                     b.Property<int>("Id")
@@ -253,7 +284,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("job_fund");
 
-                    b.Property<int>("JobPositionId")
+                    b.Property<int?>("JobPositionId")
                         .HasColumnType("integer")
                         .HasColumnName("job_position_id");
 
@@ -281,11 +312,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("salary_without_tax");
 
-                    b.Property<DateTime?>("SignedOnDate")
+                    b.Property<DateTime>("SignedOnDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("signed_on_date");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
@@ -348,15 +379,15 @@ namespace Infrastructure.Migrations
                         .HasColumnName("modified_date");
 
                     b.HasKey("Id")
-                        .HasName("pk_contract_changes");
+                        .HasName("pk_contract_change");
 
                     b.HasIndex("ContractChangeId")
-                        .HasDatabaseName("ix_contract_changes_contract_change_id");
+                        .HasDatabaseName("ix_contract_change_contract_change_id");
 
                     b.HasIndex("ContractId")
-                        .HasDatabaseName("ix_contract_changes_contract_id");
+                        .HasDatabaseName("ix_contract_change_contract_id");
 
-                    b.ToTable("contractChanges", (string)null);
+                    b.ToTable("contract_change", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Contractor", b =>
@@ -368,9 +399,10 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BankDetailsid")
-                        .HasColumnType("integer")
-                        .HasColumnName("bank_detailsid");
+                    b.Property<string>("BankAccountId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bank_account_id");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
@@ -399,6 +431,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("nip");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("phone");
+
                     b.Property<string>("Representative")
                         .IsRequired()
                         .HasColumnType("text")
@@ -412,8 +449,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_contractors");
 
-                    b.HasIndex("BankDetailsid")
-                        .HasDatabaseName("ix_contractors_bank_detailsid");
+                    b.HasIndex("BankAccountId")
+                        .HasDatabaseName("ix_contractors_bank_account_id");
 
                     b.HasIndex("Locationid")
                         .HasDatabaseName("ix_contractors_locationid");
@@ -541,7 +578,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_holiday_limits_user_id");
 
-                    b.ToTable("holidayLimits", (string)null);
+                    b.ToTable("holiday_limits", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.InsuranceCode", b =>
@@ -571,7 +608,7 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_insurance_codes");
 
-                    b.ToTable("insuranceCodes", (string)null);
+                    b.ToTable("insurance_codes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.JobHistory", b =>
@@ -619,7 +656,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_job_histories_user_id");
 
-                    b.ToTable("jobHistories", (string)null);
+                    b.ToTable("job_histories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.JobPosition", b =>
@@ -647,7 +684,7 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_job_positions");
 
-                    b.ToTable("jobPositions", (string)null);
+                    b.ToTable("job_positions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -677,9 +714,9 @@ namespace Infrastructure.Migrations
                         .HasColumnName("status");
 
                     b.HasKey("Id")
-                        .HasName("pk_orders");
+                        .HasName("pk_order");
 
-                    b.ToTable("orders", (string)null);
+                    b.ToTable("order", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
@@ -756,12 +793,12 @@ namespace Infrastructure.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_schedules");
+                        .HasName("pk_schedule");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_schedules_user_id");
+                        .HasDatabaseName("ix_schedule_user_id");
 
-                    b.ToTable("schedules", (string)null);
+                    b.ToTable("schedule", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolHistory", b =>
@@ -816,7 +853,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_school_histories_user_id");
 
-                    b.ToTable("schoolHistories", (string)null);
+                    b.ToTable("school_histories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Stock", b =>
@@ -1065,12 +1102,12 @@ namespace Infrastructure.Migrations
                         .HasColumnName("start_work_date");
 
                     b.HasKey("Id")
-                        .HasName("pk_working_times");
+                        .HasName("pk_working_time");
 
                     b.HasIndex("CardId")
-                        .HasDatabaseName("ix_working_times_card_id");
+                        .HasDatabaseName("ix_working_time_card_id");
 
-                    b.ToTable("workingTimes", (string)null);
+                    b.ToTable("working_time", (string)null);
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.AbsenceStatus", b =>
@@ -1096,38 +1133,13 @@ namespace Infrastructure.Migrations
                         .HasColumnName("status");
 
                     b.HasKey("id")
-                        .HasName("pk_absence_statuses");
+                        .HasName("pk_absence_status");
 
                     b.HasIndex("AbsenceId")
                         .IsUnique()
-                        .HasDatabaseName("ix_absence_statuses_absence_id");
+                        .HasDatabaseName("ix_absence_status_absence_id");
 
-                    b.ToTable("absenceStatuses", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.ValueObjects.Ids.BankDetails", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("number");
-
-                    b.HasKey("id")
-                        .HasName("pk_bank_details");
-
-                    b.ToTable("bankDetails", (string)null);
+                    b.ToTable("absence_status", (string)null);
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.Location", b =>
@@ -1149,10 +1161,18 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("city");
 
+                    b.Property<string>("Commune")
+                        .HasColumnType("text")
+                        .HasColumnName("commune");
+
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("country");
+
+                    b.Property<string>("District")
+                        .HasColumnType("text")
+                        .HasColumnName("district");
 
                     b.Property<string>("HouseNo")
                         .IsRequired()
@@ -1171,6 +1191,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("postal_code");
+
+                    b.Property<string>("Province")
+                        .HasColumnType("text")
+                        .HasColumnName("province");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -1242,18 +1266,18 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.ContractChange", b =>
                 {
                     b.HasOne("Domain.Entities.Contract", "ContractChanged")
-                        .WithMany()
+                        .WithMany("ContractChanges")
                         .HasForeignKey("ContractChangeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_contract_changes_contracts_contract_changed_temp_id2");
+                        .HasConstraintName("fk_contract_change_contracts_contract_changed_temp_id2");
 
                     b.HasOne("Domain.Entities.Contract", "Contract")
-                        .WithMany()
+                        .WithMany("ContractBase")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_contract_changes_contracts_contract_temp_id1");
+                        .HasConstraintName("fk_contract_change_contracts_contract_temp_id1");
 
                     b.Navigation("Contract");
 
@@ -1262,12 +1286,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Contractor", b =>
                 {
-                    b.HasOne("Domain.ValueObjects.Ids.BankDetails", "BankDetails")
+                    b.HasOne("Domain.Entities.BankAccount", "BankAccount")
                         .WithMany()
-                        .HasForeignKey("BankDetailsid")
+                        .HasForeignKey("BankAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_contractors_bank_details_bank_details_temp_id");
+                        .HasConstraintName("fk_contractors_bank_accounts_bank_account_temp_id");
 
                     b.HasOne("Domain.ValueObjects.Location", "Location")
                         .WithMany()
@@ -1276,7 +1300,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_contractors_locations_location_temp_id");
 
-                    b.Navigation("BankDetails");
+                    b.Navigation("BankAccount");
 
                     b.Navigation("Location");
                 });
@@ -1312,7 +1336,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_schedules_users_user_temp_id9");
+                        .HasConstraintName("fk_schedule_users_user_temp_id9");
 
                     b.Navigation("User");
                 });
@@ -1405,7 +1429,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_working_times_cards_card_id1");
+                        .HasConstraintName("fk_working_time_cards_card_id1");
 
                     b.Navigation("Card");
                 });
@@ -1417,7 +1441,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("Domain.ValueObjects.AbsenceStatus", "AbsenceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_absence_statuses_absences_absence_id");
+                        .HasConstraintName("fk_absence_status_absences_absence_id");
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.Location", b =>
@@ -1432,6 +1456,13 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Status")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Contract", b =>
+                {
+                    b.Navigation("ContractBase");
+
+                    b.Navigation("ContractChanges");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
