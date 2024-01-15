@@ -18,7 +18,7 @@ public class GetContractorsQueryHandler : IQueryHandler<GetContractorsQuery, Con
         GetContractorsQuery request,
         CancellationToken cancellationToken
     ) {
-        var contractors = _contractorRepository.GetAllWithLocation();
+        var contractors = _contractorRepository.GetAllWithLocation().ToList();
         if (!contractors.Any())
             return Result.Failure<ContractorsResponse>(ContractorErrors.NotFoundMany);
         return Result.Success(new ContractorsResponse { Contractors = contractors.MapToDtos() });

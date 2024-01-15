@@ -12,7 +12,9 @@ public static class ContractorMapper {
             contractor.Representative,
             contractor.Nip.Value,
             contractor.Email.Value,
-            contractor.Location.MapToDto()
+            contractor.Phone.Value,
+            contractor.Location.MapToDto(),
+            contractor.BankAccount.MapToDto()
         );
 
     public static List<ContractorDto> MapToDtos(this IEnumerable<Contractor> contractors) =>

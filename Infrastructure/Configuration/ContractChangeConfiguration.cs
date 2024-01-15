@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class ContractChangeConfiguration : IEntityTypeConfiguration<ContractChange> {
     public void Configure(EntityTypeBuilder<ContractChange> builder) {
-        builder.ToTable("contractChanges");
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => ContractChangeId.Create(value))

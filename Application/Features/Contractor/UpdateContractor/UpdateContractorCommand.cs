@@ -1,6 +1,6 @@
 using Application.Abstractions.Messaging;
+using Application.Dtos;
 using Domain.ValueObjects;
-using Domain.ValueObjects.Ids;
 
 namespace Application.Features.Contractor.UpdateContractor;
 
@@ -9,6 +9,7 @@ public record UpdateContractorCommand(
     string ShortName,
     string Nip,
     string Email, 
-    Location Location,
-    BankDetails BankDetails 
+    string Phone,
+    LocationDto Location,
+    BankAccountDto BankAccount 
 ) : ICommand;

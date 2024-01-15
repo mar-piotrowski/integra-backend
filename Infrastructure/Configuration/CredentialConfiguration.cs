@@ -8,7 +8,6 @@ namespace Infrastructure.Configuration;
 
 public class CredentialConfiguration : IEntityTypeConfiguration<Credential> {
     public void Configure(EntityTypeBuilder<Credential> builder) {
-        builder.ToTable("credentials");
         builder.HasKey(k => k.Id);
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => CredentialId.Create(value))

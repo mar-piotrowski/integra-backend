@@ -7,5 +7,7 @@ public record ContractorDto(
     string Representative,
     string Nip,
     string Email,
-    LocationDto Location
+    string Phone,
+    LocationDto Location,
+    BankAccountDto BankAccount
 );

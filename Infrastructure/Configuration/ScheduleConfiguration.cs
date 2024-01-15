@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule> {
     public void Configure(EntityTypeBuilder<Schedule> builder) {
-        builder.ToTable("schedules");
         builder.HasKey(a => a.Id);
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => ScheduleId.Create(value))

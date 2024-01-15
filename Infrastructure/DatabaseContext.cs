@@ -27,6 +27,7 @@ public class DatabaseContext : DbContext {
     public DbSet<Card> Cards { get; init; }
     public DbSet<Permission> Permissions { get; init; }
     public DbSet<UserPermissions> UserPermissions { get; init; }
+    public DbSet<BankAccount> BankAccounts { get; init; }
 
     public DatabaseContext(
         DbContextOptions<DatabaseContext> options,

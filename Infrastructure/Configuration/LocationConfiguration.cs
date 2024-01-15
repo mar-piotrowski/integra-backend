@@ -8,7 +8,6 @@ namespace Infrastructure.Configuration;
 
 public class LocationConfiguration : IEntityTypeConfiguration<Location> {
     public void Configure(EntityTypeBuilder<Location> builder) {
-        builder.ToTable("locations");
         builder.Property<int>("id")
             .IsRequired()
             .ValueGeneratedOnAdd();

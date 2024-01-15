@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class HolidayLimitConfiguration : IEntityTypeConfiguration<HolidayLimit> {
     public void Configure(EntityTypeBuilder<HolidayLimit> builder) {
-        builder.ToTable("holidayLimits");
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => HolidayLimitId.Create(value))

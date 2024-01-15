@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class InsuranceCodeConfiguration : IEntityTypeConfiguration<InsuranceCode> {
     public void Configure(EntityTypeBuilder<InsuranceCode> builder) {
-        builder.ToTable("insuranceCodes");
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => InsuranceCodeId.Create(value));
     }

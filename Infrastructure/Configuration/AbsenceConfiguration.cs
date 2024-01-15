@@ -7,7 +7,6 @@ namespace Infrastructure.Configuration;
 
 public class AbsenceConfiguration : IEntityTypeConfiguration<Absence> {
     public void Configure(EntityTypeBuilder<Absence> builder) {
-        builder.ToTable("absences");
         builder.Property(p => p.Id)
             .HasConversion(c => c.Value, value => AbsenceId.Create(value))
             .IsRequired()
