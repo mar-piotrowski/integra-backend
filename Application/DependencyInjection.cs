@@ -21,6 +21,7 @@ public static class DependencyInjection {
         services.AddScoped<ContractMapper>();
         services.AddScoped<UserMapper>();
         services.AddScoped<JobPositionMapper>();
+        services.AddScoped<ScheduleMapper>();
         services.AddValidatorsFromAssembly(Assembly);
         return services;
     }

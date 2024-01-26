@@ -2,6 +2,7 @@ using Domain.Common.Models;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.ValueObjects;
+using Domain.ValueObjects.Ids;
 using Infrastructure.Interceptors;
 using Infrastructure.Seeders;
 using Microsoft.EntityFrameworkCore;
@@ -28,12 +29,20 @@ public class DatabaseContext : DbContext {
     public DbSet<Permission> Permissions { get; init; }
     public DbSet<UserPermissions> UserPermissions { get; init; }
     public DbSet<BankAccount> BankAccounts { get; init; }
+    public DbSet<WorkingTime> WorkingTimes { get; init; }
+    public DbSet<UserWorkingTimes> UserWorkingTimes { get; init; }
+    public DbSet<ScheduleSchema> ScheduleSchemas { get; init; }
+    public DbSet<ScheduleSchemaDay> ScheduleSchemaDays { get; init; }
 
     public DatabaseContext(
         DbContextOptions<DatabaseContext> options,
         PublishDomainEventsInterceptor domainEventsInterceptor
     ) : base(options) {
         _domainEventsInterceptor = domainEventsInterceptor;
+    }
+
+    static DatabaseContext() {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {

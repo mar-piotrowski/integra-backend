@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class dfdsfd1saf : Migration
+    public partial class chudfgssdfdfdsfdfj1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -123,6 +123,41 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "schedule_schemas",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    start_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    end_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    total_hours = table.Column<decimal>(type: "numeric", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_schedule_schemas", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "working_times",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    start_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    end_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    total_seconds = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_working_times", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -160,6 +195,30 @@ namespace Infrastructure.Migrations
                         column: x => x.job_position_id,
                         principalTable: "job_positions",
                         principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "schedule_schema_days",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    day = table.Column<int>(type: "integer", nullable: false),
+                    start_hour = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    end_hour = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    schedule_schema_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_schedule_schema_days", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_schedule_schema_days_schedule_schemas_schedule_schema_temp_id",
+                        column: x => x.schedule_schema_id,
+                        principalTable: "schedule_schemas",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -319,6 +378,9 @@ namespace Infrastructure.Migrations
                     postal_code = table.Column<string>(type: "text", nullable: false),
                     city = table.Column<string>(type: "text", nullable: false),
                     country = table.Column<string>(type: "text", nullable: false),
+                    province = table.Column<string>(type: "text", nullable: false),
+                    commune = table.Column<string>(type: "text", nullable: false),
+                    district = table.Column<string>(type: "text", nullable: false),
                     is_private = table.Column<bool>(type: "boolean", nullable: false),
                     is_company = table.Column<bool>(type: "boolean", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: true)
@@ -331,31 +393,6 @@ namespace Infrastructure.Migrations
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "schedule",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    start_work_time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    end_work_time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: true),
-                    user_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_schedule", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_schedule_users_user_temp_id9",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -378,7 +415,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_school_histories", x => x.id);
                     table.ForeignKey(
-                        name: "fk_school_histories_users_user_temp_id7",
+                        name: "fk_school_histories_users_user_temp_id8",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -414,6 +451,62 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "user_schedules",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    schedule_schema_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_schedules", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_user_schedules_schedule_schemas_schedule_schema_temp_id1",
+                        column: x => x.schedule_schema_id,
+                        principalTable: "schedule_schemas",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_schedules_users_user_temp_id7",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_working_times",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    working_time_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_working_times", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_user_working_times_users_user_temp_id9",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_working_times_working_times_working_time_temp_id",
+                        column: x => x.working_time_id,
+                        principalTable: "working_times",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "absence_status",
                 columns: table => new
                 {
@@ -430,32 +523,6 @@ namespace Infrastructure.Migrations
                         name: "fk_absence_status_absences_absence_id",
                         column: x => x.absence_id,
                         principalTable: "absences",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "working_time",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    start_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    end_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    start_work_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    end_work_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    card_id = table.Column<int>(type: "integer", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: true),
-                    created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    modified_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_working_time", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_working_time_cards_card_id1",
-                        column: x => x.card_id,
-                        principalTable: "cards",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -509,7 +576,7 @@ namespace Infrastructure.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_user_contracts_users_user_temp_id8",
+                        name: "fk_user_contracts_users_user_temp_id10",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -527,6 +594,7 @@ namespace Infrastructure.Migrations
                     representative = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
                     nip = table.Column<string>(type: "text", nullable: false),
+                    phone = table.Column<string>(type: "text", nullable: false),
                     locationid = table.Column<int>(type: "integer", nullable: false),
                     bank_account_id = table.Column<string>(type: "text", nullable: false),
                     created_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -674,9 +742,9 @@ namespace Infrastructure.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_schedule_user_id",
-                table: "schedule",
-                column: "user_id");
+                name: "ix_schedule_schema_days_schedule_schema_id",
+                table: "schedule_schema_days",
+                column: "schedule_schema_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_school_histories_user_id",
@@ -709,6 +777,26 @@ namespace Infrastructure.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_user_schedules_schedule_schema_id",
+                table: "user_schedules",
+                column: "schedule_schema_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_schedules_user_id",
+                table: "user_schedules",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_working_times_user_id",
+                table: "user_working_times",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_working_times_working_time_id",
+                table: "user_working_times",
+                column: "working_time_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_users_credential_id",
                 table: "users",
                 column: "credential_id");
@@ -717,11 +805,6 @@ namespace Infrastructure.Migrations
                 name: "ix_users_job_position_id",
                 table: "users",
                 column: "job_position_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_working_time_card_id",
-                table: "working_time",
-                column: "card_id");
         }
 
         /// <inheritdoc />
@@ -732,6 +815,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "articles");
+
+            migrationBuilder.DropTable(
+                name: "cards");
 
             migrationBuilder.DropTable(
                 name: "contract_change");
@@ -752,7 +838,7 @@ namespace Infrastructure.Migrations
                 name: "job_histories");
 
             migrationBuilder.DropTable(
-                name: "schedule");
+                name: "schedule_schema_days");
 
             migrationBuilder.DropTable(
                 name: "school_histories");
@@ -764,7 +850,10 @@ namespace Infrastructure.Migrations
                 name: "user_permissions");
 
             migrationBuilder.DropTable(
-                name: "working_time");
+                name: "user_schedules");
+
+            migrationBuilder.DropTable(
+                name: "user_working_times");
 
             migrationBuilder.DropTable(
                 name: "absences");
@@ -785,7 +874,10 @@ namespace Infrastructure.Migrations
                 name: "permissions");
 
             migrationBuilder.DropTable(
-                name: "cards");
+                name: "schedule_schemas");
+
+            migrationBuilder.DropTable(
+                name: "working_times");
 
             migrationBuilder.DropTable(
                 name: "locations");

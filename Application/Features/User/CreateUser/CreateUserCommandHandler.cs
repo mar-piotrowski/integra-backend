@@ -36,7 +36,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
             !string.IsNullOrEmpty(request.Email) ? Email.Create(request.Email) : null,
             PersonalIdNumber.Create(request.IdentityNumber),
             !string.IsNullOrEmpty(request.DocumentNumber) ? DocumentNumber.Create(request.DocumentNumber) : null,
-            Phone.Create(request.Phone),
+            string.IsNullOrWhiteSpace(request.Phone) ? null: Phone.Create(request.Phone),
             request.SecondName,
             request.IsStudent,
             request.DateOfBirth,

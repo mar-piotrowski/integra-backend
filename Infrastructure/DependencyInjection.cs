@@ -1,5 +1,6 @@
 using Application.Abstractions;
 using Application.Abstractions.Repositories;
+using Application.Abstractions.Services;
 using Application.Features.Absence;
 using Infrastructure.Authentication;
 using Infrastructure.Interceptors;
@@ -43,6 +44,8 @@ public static class DependencyInjection {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IUserPermissionsRepository, UserPermissionsRepository>();
+        services.AddScoped<IScheduleRepository, ScheduleRepository>();
+        services.AddScoped<IScheduleService, ScheduleService>();
         return services;
     }
 

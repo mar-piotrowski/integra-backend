@@ -50,4 +50,24 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
             .Include(s => s.SchoolHistories)
             .Include(j => j.JobHistories)
             .FirstOrDefault(entry => entry.Id == userId);
+
+    public User? WorkingHours(UserId userId) =>
+        DbContext.Set<User>()
+            .Include(w => w.WorkingTimes)
+            .ThenInclude(w => w.WorkingTime)
+            .FirstOrDefault(u => u.Id == userId);
+
+    public User? FindUserSchedules(UserId userId) =>
+        DbContext.Set<User>()
+            .Include(s => s.Schedules)
+            .ThenInclude(s => s.ScheduleSchema)
+            .ThenInclude(s => s.Days)
+            .FirstOrDefault(u => u.Id == userId);
+
+    public List<User> FindUsersWithSchedule() =>
+        DbContext.Set<User>()
+            .Include(s => s.Schedules)
+            .ThenInclude(s => s.ScheduleSchema)
+            .ThenInclude(s => s.Days)
+            .ToList();
 }

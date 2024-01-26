@@ -12,7 +12,5 @@ public class WorkingTimeConfiguration : IEntityTypeConfiguration<WorkingTime> {
             .HasConversion(c => c.Value, value => WorkingTimeId.Create(value))
             .IsRequired()
             .ValueGeneratedOnAdd();
-        builder.Property(p => p.CardId)
-            .HasConversion(c => c.Value, value => CardId.Create(value));
     }
 }

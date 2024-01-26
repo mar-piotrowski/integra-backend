@@ -7,7 +7,8 @@ namespace Domain.Common.Errors {
             new Error(HttpStatusCode.NotFound, "User.NotFound", "Nie znaleziono użytkownika o podanym id");
 
         public static Error IdentityNumberExists =>
-            new Error(HttpStatusCode.Conflict, "User.IdentityExists", "Istnieje już użytkownik z podanym numerem pesel");
+            new Error(HttpStatusCode.Conflict, "User.IdentityExists",
+                "Istnieje już użytkownik z podanym numerem pesel");
 
         public static Error EmailExists =>
             new Error(HttpStatusCode.Conflict, "User.EmailExists", "Podany email juz jest zarejestrowany");
@@ -23,14 +24,17 @@ namespace Domain.Common.Errors {
 
         public static Error UserDoesNotExists =>
             new Error(HttpStatusCode.NotFound, "User.NotFound", "Uzytkownik o podanym id nie istnieje");
-        
+
         public static Error NoPermission =>
             new Error(HttpStatusCode.NotFound, "", "Użytnownik nie posiada tego uprawnienia");
-        
+
         public static Error NoPermissions =>
             new Error(HttpStatusCode.NotFound, "", "Użytnownik nie posiada żadnych uprawnień");
-        
+
         public static Error NoLocations =>
             new Error(HttpStatusCode.BadRequest, "", "Nie podano danych adresowych");
+
+        public static Error NoScheduleForYear =>
+            new Error(HttpStatusCode.NotFound, "", "Uzytkownik nie posiada grafiku na podany rok");
     }
 }

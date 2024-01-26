@@ -10,7 +10,7 @@ public class User : AggregateRoot<UserId> {
     public string Lastname { get; private set; }
     public string? SecondName { get; private set; }
     public Email? Email { get; private set; }
-    public Phone? Phone { get; private set; } = null;
+    public Phone? Phone { get; private set; }
     public PersonalIdNumber? PersonalIdNumber { get; private set; } 
     public DocumentNumber? DocumentNumber { get; private set; }
     public DateTime? DateOfBirth { get; private set; } = null;
@@ -29,7 +29,8 @@ public class User : AggregateRoot<UserId> {
     private readonly List<JobHistory> _jobHistories = new List<JobHistory>();
     private readonly List<SchoolHistory> _schoolHistories = new List<SchoolHistory>();
     private readonly List<UserPermissions> _permissions = new List<UserPermissions>();
-
+    private readonly List<UserWorkingTimes> _workingTimes = new List<UserWorkingTimes>();
+    private readonly List<UserSchedules> _schedules = new List<UserSchedules>();
     public IEnumerable<SchoolHistory> SchoolHistories => _schoolHistories.AsReadOnly();
 
     public IEnumerable<JobHistory> JobHistories => _jobHistories.AsReadOnly();
@@ -43,7 +44,10 @@ public class User : AggregateRoot<UserId> {
     public IEnumerable<HolidayLimit> HolidayLimits => _holidayLimits.AsReadOnly();
 
     public IEnumerable<UserPermissions> Permissions => _permissions.AsReadOnly();
-    
+
+    public IEnumerable<UserWorkingTimes> WorkingTimes => _workingTimes.AsReadOnly();
+
+    public IEnumerable<UserSchedules> Schedules => _schedules.AsReadOnly();
 
     private User() { }
 
@@ -99,6 +103,9 @@ public class User : AggregateRoot<UserId> {
         sex
     );
 
+    public void AddSchedule(ScheduleSchema scheduleSchema) =>
+        _schedules.Add(new UserSchedules(this, scheduleSchema));
+
     public void AddAbsence(Absence absence) => _absences.Add(absence);
 
     public void AddContract(Contract contract) => _contracts.Add(contract);
@@ -136,6 +143,13 @@ public class User : AggregateRoot<UserId> {
 
     public void AddRefreshToken(string refreshToken) => RefreshToken = refreshToken;
 
+    public void StartWork(User user, WorkingTime workingTime) => _workingTimes.Add(new UserWorkingTimes(user, workingTime));
+
+    public void EndWork() {
+        var userWorkingTime = _workingTimes.MaxBy(date => date.CreatedDate);
+        userWorkingTime!.WorkingTime.EndWork();
+    }
+    
     public void Activate() => Active = true;
     
     public void DeActivate() => Active = false;

@@ -5,19 +5,25 @@ namespace Domain.Entities;
 
 public class WorkingTime : Entity<WorkingTimeId> {
     public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
-    public DateTime StartWorkDate { get; private set; }
-    public DateTime EndWorkDate { get; private set; }
-    public CardId CardId { get; private set; }
-    public Card Card { get; private set; }
-    public string? Description { get; private set; }
+    public DateTime? EndDate { get; private set; }
+    public int TotalSeconds { get; private set; }
+    
+    public IEnumerable<UserWorkingTimes> WorkingTimes { get; private set; }
 
-    private WorkingTime() { }
+    public WorkingTime() { }
 
-    public WorkingTime(DateTime startDate, DateTime endDate, DateTime startWorkDate, DateTime endWorkDate) {
-        StartDate = startDate;
-        EndDate = endDate;
-        StartWorkDate = startWorkDate;
-        EndWorkDate = endWorkDate;
+    public void StartWork() {
+        StartDate = DateTime.Now;
+    }
+
+    public void EndWork() {
+        EndDate = DateTime.Now;
+        CalculateTotalHours();
+    }
+
+    private void CalculateTotalHours() {
+        if (EndDate is null)
+            return;
+        TotalSeconds = (int)Math.Round((EndDate.Value - StartDate).TotalSeconds);
     }
 }
