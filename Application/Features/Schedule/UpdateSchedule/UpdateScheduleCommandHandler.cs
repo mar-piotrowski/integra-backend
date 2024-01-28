@@ -23,7 +23,7 @@ public class UpdateScheduleCommandHandler : ICommandHandler<UpdateScheduleComman
             return Result.Failure(ScheduleErrors.DatesNotValid);
         if (request.Days.Any(day => (int)day.Day < 0 || (int)day.Day > 7))
             return Result.Failure(ScheduleErrors.NotValidDay);
-        if (request.Days.Any(day => day.End <= day.Start))
+        if (request.Days.Any(day => day.EndDate <= day.StartDate))
             return Result.Failure(ScheduleErrors.HourIsZeroOrLess);
         if (request.Days.Distinct().Count() != request.Days.Count || request.Days.Count < 7)
             return Result.Failure(ScheduleErrors.NotValidDaysAmount);
@@ -31,7 +31,7 @@ public class UpdateScheduleCommandHandler : ICommandHandler<UpdateScheduleComman
         
         foreach (var requestDay in request.Days) {
             var currentDay = schedule.Days.FirstOrDefault(day => day.Day == requestDay.Day);
-            currentDay?.ChangeHours(requestDay.Start, requestDay.End);
+            currentDay?.ChangeHours(requestDay.StartDate, requestDay.EndDate);
         } 
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

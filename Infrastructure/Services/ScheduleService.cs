@@ -79,6 +79,7 @@ public class ScheduleService : IScheduleService {
             if (daySchema is null)
                 continue;
             var day = new ScheduleDayDto(
+                daySchema.ScheduleSchemaId.Value,
                 (Day)dayNumber,
                 CreateNewDay(startDate, addDay, daySchema.StartHour.Hour, daySchema.StartHour.Minute),
                 CreateNewDay(startDate, addDay, daySchema.EndHour.Hour, daySchema.EndHour.Minute)
@@ -106,7 +107,7 @@ public class ScheduleService : IScheduleService {
     }
 
     private static decimal CalculateTotalHours(IEnumerable<ScheduleDayDto> days) => days.Aggregate(0m,
-        (acc, curr) => acc += Convert.ToDecimal(Math.Round((curr.End - curr.Start).TotalHours, 2)));
+        (acc, curr) => acc += Convert.ToDecimal(Math.Round((curr.EndDate - curr.StartDate).TotalHours, 2)));
 
     private static DateTimeOffset CreateNewDay(DateTimeOffset date, int dayNumber, int hour, int minute) =>
         date.AddDays(dayNumber).AddHours(hour).AddMinutes(minute);

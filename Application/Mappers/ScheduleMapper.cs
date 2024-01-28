@@ -18,6 +18,7 @@ public class ScheduleMapper {
     
     public List<ScheduleDayDto> MapDaysToDto(IEnumerable<ScheduleSchemaDay> schemaDays) =>
         schemaDays.Select(schemaDay => new ScheduleDayDto(
+            schemaDay.ScheduleSchemaId.Value,
             schemaDay.Day,
             schemaDay.StartHour,
             schemaDay.EndHour

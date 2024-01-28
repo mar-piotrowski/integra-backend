@@ -25,8 +25,6 @@ public class CreateScheduleCommandHandler : ICommandHandler<CreateScheduleComman
             return Result.Failure(ScheduleErrors.DatesNotValid);
         if (request.Days.Any(day => (int)day.Day < 0 || (int)day.Day > 7))
             return Result.Failure(ScheduleErrors.NotValidDay);
-        if (request.Days.Any(day => day.End <= day.Start))
-            return Result.Failure(ScheduleErrors.HourIsZeroOrLess);
         if (request.Days.Distinct().Count() != request.Days.Count || request.Days.Count < 7)
             return Result.Failure(ScheduleErrors.NotValidDaysAmount);
         var days = CreateDays(request.Days);
@@ -37,5 +35,5 @@ public class CreateScheduleCommandHandler : ICommandHandler<CreateScheduleComman
     }
 
     private static List<ScheduleSchemaDay> CreateDays(IEnumerable<ScheduleDayDto> days) =>
-        days.Select(day => new ScheduleSchemaDay(day.Day, day.Start, day.End)).ToList();
+        days.Select(day => new ScheduleSchemaDay(day.Day, day.StartDate, day.EndDate)).ToList();
 }

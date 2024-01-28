@@ -22,9 +22,11 @@ public class AddUseScheduleCommandHandler : ICommandHandler<AddUserScheduleComma
     }
 
     public async Task<Result> Handle(AddUserScheduleCommand request, CancellationToken cancellationToken) {
-        var user = _userRepository.GetById(request.UserId);
+        var user = _userRepository.FindUserSchedules(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
+        if(user.Schedules.Any())
+            return Result.Failure(UserErrors.AlreadyHasSchedule);
         var schedule = _scheduleRepository.GetById(request.ScheduleSchemaId);
         if (schedule is null)
             return Result.Failure(ScheduleErrors.NotFound);

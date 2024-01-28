@@ -84,13 +84,8 @@ public class JwtService : IJwtService {
         new Claim("guid", Guid.NewGuid().ToString()),
         new Claim("userId", user.Id.Value.ToString()),
         new Claim(
-            "permission",
-            // JsonSerializer.Serialize(user.Credential.Permissions.Select(permission => permission.Type)),
-            JsonClaimValueTypes.JsonArray
-        ),
-        new Claim(
-            "modulePermissions",
-            // JsonSerializer.Serialize(user.Credential.Permissions),
+            "permissions",
+            JsonSerializer.Serialize(user.Permissions.Select(permission => permission.Permission.Code.Value)),
             JsonClaimValueTypes.JsonArray
         )
     };

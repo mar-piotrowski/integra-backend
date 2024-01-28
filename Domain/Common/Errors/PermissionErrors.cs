@@ -16,4 +16,6 @@ public static class PermissionErrors {
         new Error(HttpStatusCode.NotFound, "", "Nie znaleziono żadnych uprawnień");
     public static Error NotFound => 
         new Error(HttpStatusCode.NotFound, "", "Nie znaleziono żadnych uprawnienia");
+    public static Error CanNotAddOwner=> 
+        new Error(HttpStatusCode.NotFound, "", "Nie mozna zmienic rangi wlasciciela");
 }

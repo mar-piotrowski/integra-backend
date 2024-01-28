@@ -36,5 +36,8 @@ namespace Domain.Common.Errors {
 
         public static Error NoScheduleForYear =>
             new Error(HttpStatusCode.NotFound, "", "Uzytkownik nie posiada grafiku na podany rok");
+        
+        public static Error AlreadyHasSchedule =>
+            new Error(HttpStatusCode.BadRequest, "", "Uzytkownik juz posiada przypisany grafik");
     }
 }

@@ -1,5 +1,6 @@
 using Application.Dtos;
 using Application.Features.Schedule.CreateSchedule;
+using Application.Features.Schedule.DeleteSchedule;
 using Application.Features.Schedule.GetSchedule;
 using Application.Features.Schedule.GetSchedules;
 using Application.Features.Schedule.UpdateSchedule;
@@ -69,6 +70,7 @@ public class ScheduleController : ControllerBase {
 
     [HttpDelete("{scheduleId:int}")]
     public async Task<ActionResult> Delete(int scheduleId) {
-        throw new NotImplementedException();
+        var result = await _sender.Send(new DeleteScheduleCommand(ScheduleSchemaId.Create(scheduleId)));
+        return result.MapResult();
     }
 }

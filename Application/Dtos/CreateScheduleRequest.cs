@@ -2,7 +2,7 @@ namespace Application.Dtos;
 
 public record CreateScheduleRequest(
     string Name,
-    DateTime StartDate,
-    DateTime? EndDate,
+    DateTimeOffset StartDate,
+    DateTimeOffset? EndDate,
     List<ScheduleDayDto> Days
 );

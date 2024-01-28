@@ -35,6 +35,7 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
     public User? GetByEmail(Email email) =>
         DbContext.Set<User>()
             .Include(c => c.Credential)
+            .Include(p => p.Permissions).ThenInclude(p => p.Permission)
             .FirstOrDefault(user => user.Email == email);
 
     public User? GetByPersonalIdNumber(PersonalIdNumber personalIdNumber) =>

@@ -5,7 +5,7 @@ namespace Application.Features.Schedule.CreateSchedule;
 
 public record CreateScheduleCommand(
     string Name,
-    DateTime StartDate,
-    DateTime? EndDate,
+    DateTimeOffset StartDate,
+    DateTimeOffset? EndDate,
     List<ScheduleDayDto> Days
 ) : ICommand;

@@ -106,6 +106,12 @@ public class User : AggregateRoot<UserId> {
     public void AddSchedule(ScheduleSchema scheduleSchema) =>
         _schedules.Add(new UserSchedules(this, scheduleSchema));
 
+    public void RemoveSchedule(ScheduleSchema scheduleSchema) {
+        foreach (var userSchedules in _schedules.ToList()) 
+            if (userSchedules.ScheduleSchema == scheduleSchema)
+                _schedules.Remove(userSchedules);
+    }
+
     public void AddAbsence(Absence absence) => _absences.Add(absence);
 
     public void AddContract(Contract contract) => _contracts.Add(contract);

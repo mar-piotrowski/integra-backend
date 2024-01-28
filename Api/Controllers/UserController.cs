@@ -2,6 +2,7 @@ using Application.Dtos;
 using Application.Features.User.AddPermissions;
 using Application.Features.User.AddSchedule;
 using Application.Features.User.CreateUser;
+using Application.Features.User.DeleteSchedule;
 using Application.Features.User.DeleteUser;
 using Application.Features.User.GetSchedule;
 using Application.Features.User.GetUser;
@@ -36,11 +37,6 @@ public class UserController : ControllerBase {
         return result.MapResult();
     }
 
-    [HttpGet("{userId:int}/workingTime/{year:int}")]
-    public async Task<ActionResult> GetWorkingTime(int userId, int year) {
-        throw new NotImplementedException();
-    }
-
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserCommand command) {
         var result = await _sender.Send(command);
@@ -65,11 +61,20 @@ public class UserController : ControllerBase {
         return result.MapResult();
     }
 
-    [HttpPost("{userId:int}/add-schedule")]
+    [HttpPost("{userId:int}/schedules/add-schedule")]
     public async Task<ActionResult> AddSchedule(int userId, [FromBody] AddUserScheduleRequest request) {
         var result = await _sender.Send(new AddUserScheduleCommand(
             UserId.Create(userId),
             ScheduleSchemaId.Create(request.ScheduleSchemaId)
+        ));
+        return result.MapResult();
+    }
+
+    [HttpDelete("{userId:int}/schedules/{scheduleId:int}/remove-schedule")]
+    public async Task<ActionResult> RemoveSchedule(int userId, int scheduleId) {
+        var result = await _sender.Send(new DeleteUserScheduleCommand(
+            UserId.Create(userId),
+            ScheduleSchemaId.Create(scheduleId)
         ));
         return result.MapResult();
     }
