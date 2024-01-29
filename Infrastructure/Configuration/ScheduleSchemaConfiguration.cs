@@ -5,14 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configuration;
 
-public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule> {
-    public void Configure(EntityTypeBuilder<Schedule> builder) {
+public class ScheduleSchemaConfiguration : IEntityTypeConfiguration<ScheduleSchema> {
+    public void Configure(EntityTypeBuilder<ScheduleSchema> builder) {
         builder.HasKey(a => a.Id);
         builder.Property(p => p.Id)
-            .HasConversion(c => c.Value, value => ScheduleId.Create(value))
+            .HasConversion(c => c.Value, value => ScheduleSchemaId.Create(value))
             .IsRequired()
             .ValueGeneratedOnAdd();
-        builder.Property(p => p.UserId)
-            .HasConversion(c => c.Value, value => UserId.Create(value));
+        
     }
 }

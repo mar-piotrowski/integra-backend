@@ -19,7 +19,7 @@ public class DeActiveCardCommandHandler : ICommandHandler<DeActiveCardCommand> {
     }
 
     public async Task<Result> Handle(DeActiveCardCommand request, CancellationToken cancellationToken) {
-        var card = _cardRepository.GetByNumber(request.Number);
+        var card = _cardRepository.FindByCardNumber(request.Number);
         if (card is null)
             return Result.Failure(CardErrors.NotFound);
         if (!card.IsActive)

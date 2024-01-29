@@ -12,11 +12,9 @@ public sealed record CreateUserCommand(
     string? Phone,
     string IdentityNumber,
     string? DocumentNumber,
-    int JobPositionId,
     DateTime DateOfBirth,
     string PlaceOfBirth,
     Sex Sex,
     bool IsStudent,
-    IEnumerable<LocationDto> Locations,
-    bool AutoGenerateId
+    IEnumerable<LocationDto> Locations
 ) : ICommand;

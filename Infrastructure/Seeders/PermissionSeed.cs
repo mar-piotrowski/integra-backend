@@ -15,7 +15,7 @@ public class Seeder {
             return;
         if (!permissions.Any()) EmptyPermissionsTable();
         else NotEmptyPermissionsTable(permissions);
-        _databaseContext.SaveChangesAsync();
+        _databaseContext.SaveChanges();
     }
 
     private void EmptyPermissionsTable() {

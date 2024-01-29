@@ -12,6 +12,9 @@ public class CardRepository : Repository<Card, CardId>, ICardRepository {
     public override IEnumerable<Card> GetAll() =>
         DbContext.Set<Card>().Include(u => u.User).ToList();
 
-    public Card? GetByNumber(CardNumber cardNumber) =>
-        DbContext.Set<Card>().Include(u => u.User).FirstOrDefault(card => card.Number == cardNumber);
+    public Card? FindByCardNumber(CardNumber cardNumber) =>
+        DbContext.Set<Card>()
+            .Include(u => u.User)
+            .ThenInclude(wk => wk.WorkingTimes).ThenInclude(w => w.WorkingTime)
+            .FirstOrDefault(card => card.Number == cardNumber);
 }

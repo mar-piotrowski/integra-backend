@@ -15,7 +15,7 @@ public class GetCardQueryHandler : IQueryHandler<GetCardQuery, CardDto> {
     }
 
     public async Task<Result<CardDto>> Handle(GetCardQuery request, CancellationToken cancellationToken) {
-        var card = _cardRepository.GetByNumber(request.Number);
+        var card = _cardRepository.FindByCardNumber(request.Number);
         if (card is null)
             return Result.Failure<CardDto>(CardErrors.NotFound);
         return card.MapToDto();

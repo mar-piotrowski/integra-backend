@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240115202124_dfdsfd1ssdfaf")]
-    partial class dfdsfd1ssdfaf
+    [Migration("20240121143046_chudfgssdfdfdsfdfj1")]
+    partial class chudfgssdfdfdsfdfj1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -755,7 +755,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("permissions", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+            modelBuilder.Entity("Domain.Entities.ScheduleSchema", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -768,37 +768,73 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp without time zone")
-                        .HasColumnName("date");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<DateTime>("EndWorkTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("end_work_time");
+                        .HasColumnName("end_date");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
-                    b.Property<DateTime>("StartWorkTime")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("start_work_time");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_date");
+
+                    b.Property<decimal>("TotalHours")
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_hours");
 
                     b.HasKey("Id")
-                        .HasName("pk_schedule");
+                        .HasName("pk_schedule_schemas");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_schedule_user_id");
+                    b.ToTable("schedule_schemas", (string)null);
+                });
 
-                    b.ToTable("schedule", (string)null);
+            modelBuilder.Entity("Domain.Entities.ScheduleSchemaDay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<int>("Day")
+                        .HasColumnType("integer")
+                        .HasColumnName("day");
+
+                    b.Property<DateTimeOffset>("EndHour")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_hour");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<int>("ScheduleSchemaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("schedule_schema_id");
+
+                    b.Property<DateTimeOffset>("StartHour")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_hour");
+
+                    b.HasKey("Id")
+                        .HasName("pk_schedule_schema_days");
+
+                    b.HasIndex("ScheduleSchemaId")
+                        .HasDatabaseName("ix_schedule_schema_days_schedule_schema_id");
+
+                    b.ToTable("schedule_schema_days", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolHistory", b =>
@@ -1060,6 +1096,80 @@ namespace Infrastructure.Migrations
                     b.ToTable("user_permissions", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.UserSchedules", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<int>("ScheduleSchemaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("schedule_schema_id");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_user_schedules");
+
+                    b.HasIndex("ScheduleSchemaId")
+                        .HasDatabaseName("ix_user_schedules_schedule_schema_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_user_schedules_user_id");
+
+                    b.ToTable("user_schedules", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserWorkingTimes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.Property<int>("WorkingTimeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("working_time_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_user_working_times");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_user_working_times_user_id");
+
+                    b.HasIndex("WorkingTimeId")
+                        .HasDatabaseName("ix_user_working_times_working_time_id");
+
+                    b.ToTable("user_working_times", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
                 {
                     b.Property<int>("Id")
@@ -1069,25 +1179,13 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CardId")
-                        .HasColumnType("integer")
-                        .HasColumnName("card_id");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
-
-                    b.Property<DateTime>("EndWorkDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("end_work_date");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
@@ -1097,17 +1195,14 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
-                    b.Property<DateTime>("StartWorkDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("start_work_date");
+                    b.Property<int>("TotalSeconds")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_seconds");
 
                     b.HasKey("Id")
-                        .HasName("pk_working_time");
+                        .HasName("pk_working_times");
 
-                    b.HasIndex("CardId")
-                        .HasDatabaseName("ix_working_time_card_id");
-
-                    b.ToTable("working_time", (string)null);
+                    b.ToTable("working_times", (string)null);
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.AbsenceStatus", b =>
@@ -1162,6 +1257,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("city");
 
                     b.Property<string>("Commune")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("commune");
 
@@ -1171,6 +1267,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("country");
 
                     b.Property<string>("District")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("district");
 
@@ -1193,6 +1290,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("postal_code");
 
                     b.Property<string>("Province")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("province");
 
@@ -1329,16 +1427,16 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Schedule", b =>
+            modelBuilder.Entity("Domain.Entities.ScheduleSchemaDay", b =>
                 {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("Domain.Entities.ScheduleSchema", "ScheduleSchema")
+                        .WithMany("Days")
+                        .HasForeignKey("ScheduleSchemaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_schedule_users_user_temp_id9");
+                        .HasConstraintName("fk_schedule_schema_days_schedule_schemas_schedule_schema_temp_id");
 
-                    b.Navigation("User");
+                    b.Navigation("ScheduleSchema");
                 });
 
             modelBuilder.Entity("Domain.Entities.SchoolHistory", b =>
@@ -1348,7 +1446,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_school_histories_users_user_temp_id7");
+                        .HasConstraintName("fk_school_histories_users_user_temp_id8");
 
                     b.Navigation("User");
                 });
@@ -1394,7 +1492,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_user_contracts_users_user_temp_id8");
+                        .HasConstraintName("fk_user_contracts_users_user_temp_id10");
 
                     b.Navigation("Contract");
 
@@ -1422,16 +1520,46 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
+            modelBuilder.Entity("Domain.Entities.UserSchedules", b =>
                 {
-                    b.HasOne("Domain.Entities.Card", "Card")
-                        .WithMany()
-                        .HasForeignKey("CardId")
+                    b.HasOne("Domain.Entities.ScheduleSchema", "ScheduleSchema")
+                        .WithMany("Schedules")
+                        .HasForeignKey("ScheduleSchemaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_working_time_cards_card_id1");
+                        .HasConstraintName("fk_user_schedules_schedule_schemas_schedule_schema_temp_id1");
 
-                    b.Navigation("Card");
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("Schedules")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_schedules_users_user_temp_id7");
+
+                    b.Navigation("ScheduleSchema");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserWorkingTimes", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("WorkingTimes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_working_times_users_user_temp_id9");
+
+                    b.HasOne("Domain.Entities.WorkingTime", "WorkingTime")
+                        .WithMany("WorkingTimes")
+                        .HasForeignKey("WorkingTimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_working_times_working_times_working_time_temp_id");
+
+                    b.Navigation("User");
+
+                    b.Navigation("WorkingTime");
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.AbsenceStatus", b =>
@@ -1475,6 +1603,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("Permissions");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ScheduleSchema", b =>
+                {
+                    b.Navigation("Days");
+
+                    b.Navigation("Schedules");
+                });
+
             modelBuilder.Entity("Domain.Entities.Stock", b =>
                 {
                     b.Navigation("Articles");
@@ -1494,7 +1629,16 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Permissions");
 
+                    b.Navigation("Schedules");
+
                     b.Navigation("SchoolHistories");
+
+                    b.Navigation("WorkingTimes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
+                {
+                    b.Navigation("WorkingTimes");
                 });
 #pragma warning restore 612, 618
         }

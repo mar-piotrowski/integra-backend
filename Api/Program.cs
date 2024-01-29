@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var configuration = builder.Configuration;
 builder.Services.AddCors(cors =>

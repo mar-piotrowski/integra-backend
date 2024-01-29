@@ -5,5 +5,5 @@ using Domain.ValueObjects.Ids;
 namespace Application.Abstractions.Repositories;
 
 public interface ICardRepository : IRepository<Card, CardId> {
-    public Card? GetByNumber(CardNumber cardNumber);
+    public Card? FindByCardNumber(CardNumber cardNumber);
 }
