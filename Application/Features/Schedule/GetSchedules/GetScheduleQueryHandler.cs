@@ -17,7 +17,7 @@ public class GetScheduleQueryHandler : IQueryHandler<GetScheduleQuery, ScheduleD
     }
 
     public async Task<Result<ScheduleDto>> Handle(GetScheduleQuery request, CancellationToken cancellationToken) {
-        var schedule = _scheduleRepository.GetById(request.Id);
+        var schedule = _scheduleRepository.FindById(request.Id);
         return schedule is null
             ? Result.Failure<ScheduleDto>(ScheduleErrors.NotFound)
             : Result.Success(_scheduleMapper.MapToDto(schedule));

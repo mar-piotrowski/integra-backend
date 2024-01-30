@@ -15,9 +15,9 @@ public class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, ArticleDto>
     }
     
     public async Task<Result<ArticleDto>> Handle(GetArticleQuery request, CancellationToken cancellationToken) {
-        var article = _articleRepository.GetById(request.ArticleId);
+        var article = _articleRepository.FindById(request.ArticleId);
         if (article is null)
-            return Result.Failure<ArticleDto>(ArticleErrors.NotFoundOne);
+            return Result.Failure<ArticleDto>(ArticleErrors.NotFound);
         return Result.Success(article.MapToArticleResponse());
     }
 }

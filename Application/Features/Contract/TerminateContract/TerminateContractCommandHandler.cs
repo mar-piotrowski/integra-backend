@@ -20,7 +20,7 @@ public class TerminateContractCommandHandler : ICommandHandler<TerminateContract
     }
 
     public async Task<Result> Handle(TerminateContractCommand request, CancellationToken cancellationToken) {
-        var contract = _contractRepository.GetById(request.ContractId);
+        var contract = _contractRepository.FindById(request.ContractId);
         if (contract is null)
             return Result.Failure(ContractsErrors.NotFound);
         if (contract.Status == ContractStatus.NotActive)

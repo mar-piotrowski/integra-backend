@@ -18,7 +18,7 @@ public class CreateUserJobHistoryCommandHandler : ICommandHandler<CreateUserJobH
     }
     
     public async Task<Result> Handle(CreateUserJobHistoryCommand request, CancellationToken cancellationToken) {
-        var user = _userRepository.GetById(request.UserId);
+        var user = _userRepository.FindById(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
         var jobHistory = Domain.Entities.JobHistory.Create(request.CompanyName, request.Position, request.StartDate, request.EndDate);

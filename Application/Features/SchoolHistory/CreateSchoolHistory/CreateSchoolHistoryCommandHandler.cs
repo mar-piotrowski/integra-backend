@@ -19,7 +19,7 @@ public class CreateSchoolHistoryCommandHandler : ICommandHandler<CreateUserSchoo
     }
     
     public async Task<Result> Handle(CreateUserSchoolHistoryCommand request, CancellationToken cancellationToken) {
-        var user = _userRepository.GetById(request.UserId);
+        var user = _userRepository.FindById(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
         var schoolHistory = Domain.Entities.SchoolHistory.Create(

@@ -23,7 +23,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         var userId = _jwtService.DecodeJToken(request.Token);
         if (userId is null)
             return Result.Failure<Tokens>(AuthenticationErrors.TokenIsNotValid);
-        var user = _userRepository.GetById(userId);
+        var user = _userRepository.FindById(userId);
         if (user is null)
             return Result.Failure<Tokens>(UserErrors.NotFound);
         if (user.RefreshToken != request.Token || !_jwtService.IsValid(request.Token))

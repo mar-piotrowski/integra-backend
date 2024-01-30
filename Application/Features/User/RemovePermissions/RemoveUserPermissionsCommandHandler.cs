@@ -23,7 +23,7 @@ public class RemoveUserPermissionsCommandHandler : ICommandHandler<RemoveUserPer
     }
 
     public async Task<Result> Handle(RemoveUserPermissionsCommand request, CancellationToken cancellationToken) {
-        var user = _userRepository.GetById(request.UserId);
+        var user = _userRepository.FindById(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
         var verifyPermissionsResult = VerifyPermissionsToDelete(user, request.PermissionCodes);

@@ -24,7 +24,7 @@ public class CreateContractCommandHandler : ICommandHandler<CreateContractComman
     }
 
     public async Task<Result> Handle(CreateContractCommand request, CancellationToken cancellationToken) {
-        var user = _userRepository.GetById(UserId.Create(request.UserId));
+        var user = _userRepository.FindById(UserId.Create(request.UserId));
         if (user is null)
             return Result.Failure(UserErrors.UserDoesNotExists);
         var jobPosition = _jobPositionRepository.GetByTitle(request.JobPosition);

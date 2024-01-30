@@ -31,12 +31,12 @@ public class UpdateContractCommandHandler : ICommandHandler<UpdateContractComman
     }
 
     public async Task<Result> Handle(UpdateContractCommand request, CancellationToken cancellationToken) {
-        var contract = _contractRepository.GetById(request.ContractId);
+        var contract = _contractRepository.FindById(request.ContractId);
         if (contract is null)
             return Result.Failure(ContractsErrors.NotFound);
         if (contract.Status == ContractStatus.NotActive)
             return Result.Failure(ContractsErrors.AlreadyTerminated);
-        var user = _userRepository.GetById(request.UserId);
+        var user = _userRepository.FindById(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.UserDoesNotExists);
         var jobPosition = _jobPositionRepository.GetByTitle(request.JobPositionId);

@@ -22,7 +22,7 @@ public class ContractMapper {
     public ContractDto MapToDto(Contract contract) {
         JobPosition? jobPosition = null;
         if (contract.JobPositionId is not null)
-            jobPosition = _jobPositionRepository.GetById(contract.JobPositionId);
+            jobPosition = _jobPositionRepository.FindById(contract.JobPositionId);
         return new ContractDto(
             contract.Id.Value,
             contract.Status,

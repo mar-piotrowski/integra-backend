@@ -19,7 +19,7 @@ public class CreateArticleCommandHandler : ICommandHandler<CreateArticleCommand>
         var codeExits = _articleRepository.GetByCode(request.Code);
         if (codeExits is not null)
             return Result.Failure(ArticleErrors.ArticleWithCodeExists);
-        var article = Domain.Entities.Article.Create(
+        var article = new Domain.Entities.Article(
             request.Name,
             request.Code,
             request.Gtin,
@@ -29,7 +29,7 @@ public class CreateArticleCommandHandler : ICommandHandler<CreateArticleCommand>
             request.BuyPriceWithoutTax,
             request.SellPriceWithoutTax,
             request.SellPriceWithTax,
-            request.TaxId,
+            request.Tax,
             request.Description
         );
         _articleRepository.Add(article);

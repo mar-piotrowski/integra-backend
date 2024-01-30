@@ -18,7 +18,7 @@ public class GetHolidayLimitQueryHandler : IQueryHandler<GetHolidayLimitQuery, H
         GetHolidayLimitQuery request,
         CancellationToken cancellationToken
     ) {
-        var holidayLimit = _holidayRepository.GetById(request.HolidayLimitId);
+        var holidayLimit = _holidayRepository.FindById(request.HolidayLimitId);
         return holidayLimit?.MapToDto() ?? Result.Failure<HolidayLimitDto>(HolidayLimitErrors.NotFound);
     }
 }

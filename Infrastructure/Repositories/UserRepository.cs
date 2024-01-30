@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories;
 public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
     public UserRepository(DatabaseContext dbContext) : base(dbContext) { }
 
-    public override User? GetById(UserId userId) =>
+    public override User? FindById(UserId userId) =>
         DbContext.Set<User>()
             .Include(l => l.Locations)
             .Include(j => j.JobPosition)
@@ -17,7 +17,7 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
             .Include(p => p.Permissions).ThenInclude(p => p.Permission)
             .FirstOrDefault(entry => entry.Id == userId);
 
-    public override IEnumerable<User> GetAll() =>
+    public override IEnumerable<User> FindAll() =>
         DbContext.Set<User>()
             .Include(l => l.Locations)
             .Include(j => j.JobPosition)

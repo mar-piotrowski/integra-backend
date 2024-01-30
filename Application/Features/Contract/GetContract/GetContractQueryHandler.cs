@@ -21,7 +21,7 @@ public class GetContractQueryHandler : IQueryHandler<GetContractQuery, ContractD
     }
 
     public async Task<Result<ContractDto>> Handle(GetContractQuery request, CancellationToken cancellationToken) {
-        var contract = _contractRepository.GetById(request.ContractId);
+        var contract = _contractRepository.FindById(request.ContractId);
         if (contract is null)
             return Result.Failure<ContractDto>(ContractsErrors.NotFound);
         return Result.Success(_contractMapper.MapToDto(contract));

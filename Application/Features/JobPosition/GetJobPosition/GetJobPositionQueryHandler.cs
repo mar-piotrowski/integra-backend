@@ -14,7 +14,7 @@ public class GetJobPositionQueryHandler : IQueryHandler<GetJobPositionQuery, Job
     }
     
     public async Task<Result<JobPositionDto>> Handle(GetJobPositionQuery request, CancellationToken cancellationToken) {
-        var jobPosition = _jobPositionRepository.GetById(request.JobPositionId);
+        var jobPosition = _jobPositionRepository.FindById(request.JobPositionId);
         if (jobPosition is null)
             return Result.Failure<JobPositionDto>(JobPositionErrors.TitleDoesNotExists);
         return Result.Success(new JobPositionDto(jobPosition.Id.Value, jobPosition.Title));

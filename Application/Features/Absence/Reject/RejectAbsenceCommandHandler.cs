@@ -16,7 +16,7 @@ public class RejectAbsenceCommandHandler : ICommandHandler<RejectAbsenceCommand>
     }
 
     public async Task<Result> Handle(RejectAbsenceCommand request, CancellationToken cancellationToken) {
-        var absence = _absenceRepository.GetById(request.AbsenceId);
+        var absence = _absenceRepository.FindById(request.AbsenceId);
         if (absence is null)
             return Result.Failure(AbsenceErrors.NotFound);
         var status = absence.Status;

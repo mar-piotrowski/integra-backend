@@ -4,7 +4,7 @@ using Application.Abstractions.Repositories;
 using Domain.Common.Errors;
 using Domain.Common.Result;
 
-namespace Application.Features.Article.UpdateArticle; 
+namespace Application.Features.Article.UpdateArticle;
 
 public class UpdateArticleCommandHandler : ICommandHandler<UpdateArticleCommand> {
     private readonly IArticleRepository _articleRepository;
@@ -14,11 +14,28 @@ public class UpdateArticleCommandHandler : ICommandHandler<UpdateArticleCommand>
         _articleRepository = articleRepository;
         _unitOfWork = unitOfWork;
     }
-    
+
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken) {
-        var user = _articleRepository.GetById(request.Id);
-        if (user is null)
+        var article = _articleRepository.FindById(request.Id);
+        if (article is null)
             return Result.Failure(UserErrors.NotFound);
+        var updateArticle = new Domain.Entities.Article(
+            request.Name,
+            request.Code,
+            request.Gtin,
+            request.MeasureUnit,
+            request.Pkwiu,
+            request.BuyPriceWithTax,
+            request.BuyPriceWithoutTax,
+            request.SellPriceWithoutTax,
+            request.SellPriceWithTax,
+            request.Tax,
+            request.Description
+        );
+        updateArticle.ChangeAmount(article.Amount);
+        article.Disable();
+        _articleRepository.Add(updateArticle);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }
 }

@@ -16,7 +16,7 @@ public class UpdateScheduleCommandHandler : ICommandHandler<UpdateScheduleComman
     }
 
     public async Task<Result> Handle(UpdateScheduleCommand request, CancellationToken cancellationToken) {
-        var schedule = _scheduleRepository.GetById(request.Id);
+        var schedule = _scheduleRepository.FindById(request.Id);
         if (schedule is null)
             return Result.Failure(ScheduleErrors.NotFound);
         if (schedule.StartDate > request.EndDate)

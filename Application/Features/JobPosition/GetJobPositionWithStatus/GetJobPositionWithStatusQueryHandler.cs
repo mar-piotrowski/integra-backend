@@ -24,7 +24,7 @@ public class GetJobPositionWithStatusQueryHandler
         CancellationToken cancellationToken
     ) {
         var stats = new List<JobPositionStats>();
-        var jobPosition = _jobPositionRepository.GetAll().ToList();
+        var jobPosition = _jobPositionRepository.FindAll().ToList();
         if (!jobPosition.Any())
             return Result.Failure<JobPositionWithStatsResponse>(JobPositionErrors.NotFoundAny);
         foreach (var position in jobPosition) {

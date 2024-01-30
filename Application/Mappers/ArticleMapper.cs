@@ -15,7 +15,8 @@ public static class ArticleMapper {
         article.BuyPriceWithTax,
         article.SellPriceWithoutTax,
         article.SellPriceWithTax,
-        article.TaxId,
+        article.Tax,
+        article.Amount,
         article.Description
     );
 

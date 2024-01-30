@@ -16,7 +16,7 @@ public class UpdateJobPositionCommandHandler : ICommandHandler<UpdateJobPosition
     }
 
     public async Task<Result> Handle(UpdateJobPositionCommand request, CancellationToken cancellationToken) {
-        var title = _positionRepository.GetById(request.JobPositionId);
+        var title = _positionRepository.FindById(request.JobPositionId);
         if (title is null)
             return Result.Failure(JobPositionErrors.TitleDoesNotExists);
         title.Update(request.Title);
