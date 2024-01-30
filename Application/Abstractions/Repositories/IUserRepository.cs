@@ -13,4 +13,5 @@ public interface IUserRepository : IRepository<User, UserId> {
     public User? WorkingHours(UserId userId);
     public User? FindUserSchedules(UserId userId);
     public List<User> FindUsersWithSchedule();
+    public User? FindWithAbsences(UserId userId);
 }

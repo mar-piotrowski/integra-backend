@@ -39,5 +39,8 @@ namespace Domain.Common.Errors {
         
         public static Error AlreadyHasSchedule =>
             new Error(HttpStatusCode.BadRequest, "", "Uzytkownik juz posiada przypisany grafik");
+        
+        public static Error NoHolidayLimit =>
+            new Error(HttpStatusCode.BadRequest, "", "Uzytkownik nie posiada limitu urlopowego");
     }
 }

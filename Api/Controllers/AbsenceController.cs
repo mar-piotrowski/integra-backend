@@ -1,9 +1,11 @@
 using Application.Dtos;
-using Application.Features.Absence.AcceptAbsence;
-using Application.Features.Absence.CreateAbsence;
-using Application.Features.Absence.GetAbsence;
-using Application.Features.Absence.GetAbsences;
-using Application.Features.Absence.RejectAbsence;
+using Application.Features.Absence.Accept;
+using Application.Features.Absence.Create;
+using Application.Features.Absence.Delete;
+using Application.Features.Absence.Get;
+using Application.Features.Absence.GetAll;
+using Application.Features.Absence.Reject;
+using Application.Features.Absence.Update;
 using Domain.Common.Result;
 using Domain.ValueObjects.Ids;
 using MediatR;
@@ -18,8 +20,8 @@ public class AbsenceController : Controller {
     public AbsenceController(ISender sender) => _sender = sender;
 
     [HttpGet]
-    public async Task<ActionResult> GetAll([FromRoute] AbsenceRouteParameters routeParameters) {
-        var result = await _sender.Send(new GetAbsencesQuery());
+    public async Task<ActionResult> GetAll([FromQuery] int? userId) {
+        var result = await _sender.Send(new GetAbsencesQuery(userId is null ? null : UserId.Create(userId.Value)));
         return result.MapResult();
     }
 
@@ -36,24 +38,35 @@ public class AbsenceController : Controller {
     }
 
     [HttpPut("{absenceId:int}")]
-    public ActionResult Update(int userId, int absenceId) {
-        throw new NotImplementedException();
+    public async Task<ActionResult> Update(int absenceId, [FromBody] UpdateAbsenceRequest request) {
+        var result = await _sender.Send(new UpdateAbsenceCommand(
+            AbsenceId.Create(absenceId),
+            request.StartDate,
+            request.EndDate,
+            request.DiseaseCode,
+            request.Series,
+            request.Number,
+            request.Description,
+           UserId.Create(request.UserId)
+        ));
+        return result.MapResult();
     }
 
     [HttpDelete("{absenceId:int}")]
-    public ActionResult Delete(int userId, int absenceId) {
-        throw new NotImplementedException();
+    public async Task<ActionResult> Delete(int absenceId) {
+        var result = await _sender.Send(new DeleteAbsenceCommand(AbsenceId.Create(absenceId)));
+        return result.MapResult();
     }
 
     [HttpPost("{absenceId:int}/accept")]
-    public async Task<ActionResult> Accept(int absenceId, [FromBody] AbsenceAcceptRequest request) {
-        var result = await _sender.Send(new AcceptAbsenceCommand(AbsenceId.Create(absenceId), request.Description));
+    public async Task<ActionResult> Accept(int absenceId) {
+        var result = await _sender.Send(new AcceptAbsenceCommand(AbsenceId.Create(absenceId)));
         return result.MapResult();
     }
 
     [HttpPost("{absenceId:int}/reject")]
-    public async Task<ActionResult> Reject(int absenceId, [FromBody] AbsenceRejectRequest request) {
-        var result = await _sender.Send(new RejectAbsenceCommand(AbsenceId.Create(absenceId), request.Description));
+    public async Task<ActionResult> Reject(int absenceId) {
+        var result = await _sender.Send(new RejectAbsenceCommand(AbsenceId.Create(absenceId)));
         return result.MapResult();
     }
 }

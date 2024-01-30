@@ -20,6 +20,7 @@ public static class DependencyInjection {
         // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddScoped<ContractMapper>();
         services.AddScoped<UserMapper>();
+        services.AddScoped<AbsenceMapper>();
         services.AddScoped<JobPositionMapper>();
         services.AddScoped<ScheduleMapper>();
         services.AddValidatorsFromAssembly(Assembly);

@@ -10,6 +10,9 @@ public static class ContractsErrors {
     public static Error NotFoundChanges =>
         new Error(HttpStatusCode.NotFound, "Contracts.NotFoundChanges", "Nie znaleziono żadnych zmian");
     
+    public static Error NonActiveContract =>
+        new Error(HttpStatusCode.NotFound, "Contract.NotFound", "Nie znaleziono aktywnego kontraktu");
+    
     public static Error NotFound =>
         new Error(HttpStatusCode.NotFound, "Contract.NotFound", "Nie znaleziono kontraktu z podanym id");
 

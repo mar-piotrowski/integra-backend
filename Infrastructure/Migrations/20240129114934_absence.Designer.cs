@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240129114934_absence")]
+    partial class absence
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +38,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("delivery_date");
+
                     b.Property<string>("Description")
                         .HasColumnType("text")
                         .HasColumnName("description");
@@ -43,8 +50,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("disease_code");
 
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<DateTime>("ModifiedDate")
@@ -55,17 +62,17 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("number");
 
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("release_date");
+
                     b.Property<string>("Series")
                         .HasColumnType("text")
                         .HasColumnName("series");
 
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -1224,6 +1231,10 @@ namespace Infrastructure.Migrations
                     b.HasKey("id")
                         .HasName("pk_absence_status");
 
+                    b.HasIndex("AbsenceId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_absence_status_absence_id");
+
                     b.ToTable("absence_status", (string)null);
                 });
 
@@ -1552,12 +1563,28 @@ namespace Infrastructure.Migrations
                     b.Navigation("WorkingTime");
                 });
 
+            modelBuilder.Entity("Domain.ValueObjects.AbsenceStatus", b =>
+                {
+                    b.HasOne("Domain.Entities.Absence", null)
+                        .WithOne("Status")
+                        .HasForeignKey("Domain.ValueObjects.AbsenceStatus", "AbsenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_absence_status_absences_absence_id");
+                });
+
             modelBuilder.Entity("Domain.ValueObjects.Location", b =>
                 {
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany("Locations")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_locations_users_user_temp_id5");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Absence", b =>
+                {
+                    b.Navigation("Status")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Contract", b =>
