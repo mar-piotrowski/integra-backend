@@ -26,7 +26,7 @@ public class GetContractChangesQueryHandler : IQueryHandler<GetContractChangesQu
         GetContractChangesQuery request,
         CancellationToken cancellationToken
     ) {
-        var contract = _contractRepository.GetById(request.ContractId);
+        var contract = _contractRepository.FindById(request.ContractId);
         if (contract is null)
             return Result.Failure<ContractChangesResponse>(ContractsErrors.NotFound);
         var changes = _contractChangesRepository.GetChangesForContract(request.ContractId);

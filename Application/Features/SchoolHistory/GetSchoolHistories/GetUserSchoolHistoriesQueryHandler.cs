@@ -23,7 +23,7 @@ public class GetUserSchoolHistoriesQueryHandler : IQueryHandler<GetUserSchoolHis
         GetUserSchoolHistoriesQuery request,
         CancellationToken cancellationToken
     ) {
-        if (request.UserId.Value > 0 && _userRepository.GetById(request.UserId) is null)
+        if (request.UserId.Value > 0 && _userRepository.FindById(request.UserId) is null)
             return Result.Failure<List<SchoolHistoryDto>>(UserErrors.NotFound);
         var schoolHistories = _schoolHistoryRepository.GetAll(request.UserId);
         return !schoolHistories.Any()

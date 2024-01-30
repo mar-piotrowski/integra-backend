@@ -16,7 +16,7 @@ public class GetAbsenceQueryHandler : IQueryHandler<GetAbsenceQuery, AbsenceDto>
     }
 
     public async Task<Result<AbsenceDto>> Handle(GetAbsenceQuery request, CancellationToken cancellationToken) {
-        var absence = _absenceRepository.GetById(request.AbsenceId);
+        var absence = _absenceRepository.FindById(request.AbsenceId);
         return absence is null
             ? Result.Failure<AbsenceDto>(AbsenceErrors.NotFound)
             : Result.Success(_absenceMapper.MapToDto(absence));

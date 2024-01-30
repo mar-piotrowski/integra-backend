@@ -16,7 +16,7 @@ public class DeleteJobHistoryCommandHandler : ICommandHandler<DeleteJobHistoryCo
     }
 
     public async Task<Result> Handle(DeleteJobHistoryCommand request, CancellationToken cancellationToken) {
-        var jobHistory = _jobHistoryRepository.GetById(request.JobHistoryId);
+        var jobHistory = _jobHistoryRepository.FindById(request.JobHistoryId);
         if (jobHistory is null)
             return Result.Failure(JobHistoryErrors.NotFound);
         _jobHistoryRepository.Remove(jobHistory);

@@ -27,7 +27,7 @@ public class ContractRepository : Repository<Contract, ContractId>, IContractRep
         return query.ToList();
     }
 
-    public override Contract? GetById(ContractId contractId) =>
+    public override Contract? FindById(ContractId contractId) =>
         DbContext.Set<Contract>()
             .Include(u => u.User)
             .FirstOrDefault(contract => contract.Id == contractId);

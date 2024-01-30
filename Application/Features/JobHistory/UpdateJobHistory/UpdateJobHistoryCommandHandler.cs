@@ -17,7 +17,7 @@ public class UpdateJobHistoryCommandHandler : ICommandHandler<UpdateJobHistoryCo
     }
 
     public async Task<Result> Handle(UpdateJobHistoryCommand command, CancellationToken cancellationToken) {
-        var jobHistory = _jobHistoryRepository.GetById(command.JobHistoryId);
+        var jobHistory = _jobHistoryRepository.FindById(command.JobHistoryId);
         if (jobHistory is null)
             return Result.Failure(JobHistoryErrors.NotFound);
         var jobHistoryUpdated = Domain.Entities.JobHistory.Create(

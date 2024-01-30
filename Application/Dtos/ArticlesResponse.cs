@@ -1,3 +1,3 @@
 namespace Application.Dtos;
 
-public record ArticlesResponse(List<ArticleDto> Articles);
+public record ArticlesResponse(decimal TotalProducts, List<ArticleDto> Articles);

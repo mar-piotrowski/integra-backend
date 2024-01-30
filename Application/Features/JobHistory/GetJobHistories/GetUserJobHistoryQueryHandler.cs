@@ -20,7 +20,7 @@ public class GetUserJobHistoryQueryHandler : IQueryHandler<GetUserJobHistoriesQu
         GetUserJobHistoriesQuery request,
         CancellationToken cancellationToken
     ) {
-        if (request.UserId.Value > 0 && _userRepository.GetById(request.UserId) is null)
+        if (request.UserId.Value > 0 && _userRepository.FindById(request.UserId) is null)
             return Result.Failure<JobHistoriesResponse>(UserErrors.NotFound);
         var jobHistories = _jobHistoryRepository.GetAll(request.UserId);
         return !jobHistories.Any()

@@ -11,11 +11,13 @@ public abstract class Repository<TEntity, TIdentityEntity> : IRepository<TEntity
     protected Repository(DatabaseContext dbContext) =>
         DbContext = dbContext;
 
-    public virtual IEnumerable<TEntity> GetAll() =>
+    public virtual IEnumerable<TEntity> FindAll() =>
         DbContext.Set<TEntity>().ToList();
 
-    public virtual TEntity? GetById(TIdentityEntity id) =>
+    public virtual TEntity? FindById(TIdentityEntity id) =>
         DbContext.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
+
+    public int Count() => DbContext.Set<TEntity>().Count();
 
     public virtual void Add(TEntity entity) =>
         DbContext.Set<TEntity>().Add(entity);

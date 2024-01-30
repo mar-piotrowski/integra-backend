@@ -19,7 +19,7 @@ public class UpdateSchoolHistoryCommandHandler : ICommandHandler<UpdateSchoolHis
     }
     
     public async Task<Result> Handle(UpdateSchoolHistoryCommand request, CancellationToken cancellationToken) {
-        var schoolHistoryExists = _schoolHistoryRepository.GetById(request.SchoolHistoryId);
+        var schoolHistoryExists = _schoolHistoryRepository.FindById(request.SchoolHistoryId);
         if (schoolHistoryExists is null)
             return Result.Failure(SchoolHistoryErrors.NotFound);
         var schoolHistory = Domain.Entities.SchoolHistory.Create(

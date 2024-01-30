@@ -20,7 +20,7 @@ public class GetSchedulesQueryHandler : IQueryHandler<GetSchedulesQuery, Schedul
         GetSchedulesQuery request,
         CancellationToken cancellationToken
     ) {
-        var schedules = _scheduleRepository.GetAll().ToList();
+        var schedules = _scheduleRepository.FindAll().ToList();
         return !schedules.Any()
             ? Result.Failure<SchedulesResponse>(ScheduleErrors.NotFoundAny)
             : Result.Success(new SchedulesResponse(_scheduleMapper.MapToDtos(schedules)));

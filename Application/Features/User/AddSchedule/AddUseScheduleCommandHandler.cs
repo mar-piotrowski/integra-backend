@@ -27,7 +27,7 @@ public class AddUseScheduleCommandHandler : ICommandHandler<AddUserScheduleComma
             return Result.Failure(UserErrors.NotFound);
         if(user.Schedules.Any())
             return Result.Failure(UserErrors.AlreadyHasSchedule);
-        var schedule = _scheduleRepository.GetById(request.ScheduleSchemaId);
+        var schedule = _scheduleRepository.FindById(request.ScheduleSchemaId);
         if (schedule is null)
             return Result.Failure(ScheduleErrors.NotFound);
         user.AddSchedule(schedule);

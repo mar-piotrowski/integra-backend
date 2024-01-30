@@ -23,7 +23,7 @@ public class GetJobPositionsQueryHandler : IQueryHandler<GetJobPositionsQuery, J
         GetJobPositionsQuery request,
         CancellationToken cancellationToken
     ) {
-        var jobPositions = _jobPositionRepository.GetAll().ToList();
+        var jobPositions = _jobPositionRepository.FindAll().ToList();
         if (!jobPositions.Any())
             return Result.Failure<JobPositionsResponse>(JobPositionErrors.NotFoundAny);
         return Result.Success(new JobPositionsResponse(_jobPositionMapper.MapToDtos(jobPositions).ToList()));

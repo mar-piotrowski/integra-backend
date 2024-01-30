@@ -16,7 +16,7 @@ public class DeleteAbsenceCommandHandler : ICommandHandler<DeleteAbsenceCommand>
     }
 
     public async Task<Result> Handle(DeleteAbsenceCommand request, CancellationToken cancellationToken) {
-        var absence = _absenceRepository.GetById(request.AbsenceId);
+        var absence = _absenceRepository.FindById(request.AbsenceId);
         if (absence is null)
             return Result.Failure(AbsenceErrors.NotFound);
         if (absence.Status == AbsenceStatus.Accepted)

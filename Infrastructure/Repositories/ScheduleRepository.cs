@@ -8,10 +8,10 @@ namespace Infrastructure.Repositories;
 public class ScheduleRepository : Repository<ScheduleSchema, ScheduleSchemaId>, IScheduleRepository {
     public ScheduleRepository(DatabaseContext dbContext) : base(dbContext) { }
 
-    public override IEnumerable<ScheduleSchema> GetAll() =>
+    public override IEnumerable<ScheduleSchema> FindAll() =>
         DbContext.Set<ScheduleSchema>().Include(d => d.Days).ToList();
 
-    public override ScheduleSchema? GetById(ScheduleSchemaId id) =>
+    public override ScheduleSchema? FindById(ScheduleSchemaId id) =>
         DbContext.Set<ScheduleSchema>().Include(d => d.Days).FirstOrDefault(schema => schema.Id == id);
     
     public ScheduleSchema? FindByName(string name) =>

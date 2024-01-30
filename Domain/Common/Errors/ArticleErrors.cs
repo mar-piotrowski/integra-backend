@@ -3,7 +3,7 @@ using Domain.Common.Models;
 
 namespace Domain.Common.Errors {
     public static class ArticleErrors {
-        public static Error NotFoundOne =>
+        public static Error NotFound =>
             new Error(HttpStatusCode.NotFound, "Article.NotFound", "Nie znaleziono artykułu");
     
         public static Error NotFoundMany =>

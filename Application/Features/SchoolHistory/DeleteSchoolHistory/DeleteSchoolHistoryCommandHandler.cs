@@ -16,7 +16,7 @@ public class DeleteSchoolHistoryCommandHandler : ICommandHandler<DeleteSchoolHis
     }
 
     public async Task<Result> Handle(DeleteSchoolHistoryCommand request, CancellationToken cancellationToken) {
-        var schoolHistory = _schoolHistoryRepository.GetById(request.SchoolHistoryId);
+        var schoolHistory = _schoolHistoryRepository.FindById(request.SchoolHistoryId);
         if (schoolHistory is null)
             return Result.Failure(SchoolHistoryErrors.NotFound);
         _schoolHistoryRepository.Remove(schoolHistory);

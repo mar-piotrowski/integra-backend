@@ -16,7 +16,7 @@ public class DeleteScheduleCommandHandler : ICommandHandler<DeleteScheduleComman
     }
 
     public async Task<Result> Handle(DeleteScheduleCommand request, CancellationToken cancellationToken) {
-        var schedule = _scheduleRepository.GetById(request.ScheduleSchemaId);
+        var schedule = _scheduleRepository.FindById(request.ScheduleSchemaId);
         if (schedule is null)
             return Result.Failure(ScheduleErrors.NotFound);
         _scheduleRepository.Remove(schedule);

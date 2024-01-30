@@ -39,7 +39,7 @@ public class UpdateAbsenceCommandHandler : ICommandHandler<UpdateAbsenceCommand>
             return Result.Failure(AbsenceErrors.NoAvailableDays);
         if (limit.AvailableDays == limit.UsedDays)
             return Result.Failure(AbsenceErrors.LimitReached);
-        var absence = _absenceRepository.GetById(request.AbsenceId);
+        var absence = _absenceRepository.FindById(request.AbsenceId);
         if (absence is null)
             return Result.Failure(AbsenceErrors.NotFound);
         if (absence.Status == AbsenceStatus.Accepted)

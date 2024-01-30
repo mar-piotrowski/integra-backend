@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories;
 public class CardRepository : Repository<Card, CardId>, ICardRepository {
     public CardRepository(DatabaseContext dbContext) : base(dbContext) { }
 
-    public override IEnumerable<Card> GetAll() =>
+    public override IEnumerable<Card> FindAll() =>
         DbContext.Set<Card>().Include(u => u.User).ToList();
 
     public Card? FindByCardNumber(CardNumber cardNumber) =>

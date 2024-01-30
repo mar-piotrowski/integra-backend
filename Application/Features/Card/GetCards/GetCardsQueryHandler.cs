@@ -15,7 +15,7 @@ public class GetCardsQueryHandler : IQueryHandler<GetCardsQuery, CardsResponse> 
     }
 
     public async Task<Result<CardsResponse>> Handle(GetCardsQuery request, CancellationToken cancellationToken) {
-        var cards = _cardRepository.GetAll().ToList();
+        var cards = _cardRepository.FindAll().ToList();
         if (!cards.Any())
             return Result.Failure<CardsResponse>(CardErrors.NotFoundAny);
         return Result.Success(new CardsResponse(cards.MapToDtos()));

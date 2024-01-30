@@ -1,26 +1,23 @@
 using Application.Dtos;
+using Application.Features.Article.ChangeAmount;
 using Application.Features.Article.CreateArticle;
+using Application.Features.Article.DeleteArticle;
 using Application.Features.Article.GetArtcle;
 using Application.Features.Article.GetArticles;
 using Application.Features.Article.UpdateArticle;
 using Domain.Common.Result;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegraBackend.Controllers;
 
 [Route("integra/articles")]
 [ApiController]
-[Authorize]
 public class ArticleController : ControllerBase {
     private readonly ISender _sender;
 
-    public ArticleController(ISender sender) {
-        _sender = sender;
-    }
+    public ArticleController(ISender sender) => _sender = sender;
 
     [HttpGet]
     public async Task<ActionResult> GetAll() {
@@ -51,15 +48,29 @@ public class ArticleController : ControllerBase {
             article.Gtin,
             article.MeasureUnit,
             article.Pkwiu,
-            article.Description,
-            article.StockId
+            article.BuyPriceWithoutTax,
+            article.BuyPriceWithTax,
+            article.SellPriceWithoutTax,
+            article.SellPriceWithTax,
+            article.Tax,
+            article.Description
         );
         var result = await _sender.Send(command);
         return result.MapResult();
     }
 
     [HttpDelete("{articleId:int}")]
-    public ActionResult Delete(int stockId, int articleId) {
-        throw new NotImplementedException();
+    public async Task<ActionResult> Delete(int articleId) {
+        var result = await _sender.Send(new DeleteArticleCommand(ArticleId.Create(articleId)));
+        return result.MapResult();
+    }
+
+    [HttpPost("{articleId:int}/change-amount")]
+    public async Task<ActionResult> ChangeAmount(int articleId, [FromBody] ChangeArticleAmountRequest request) {
+        var result = await _sender.Send(new ChangeArticleAmountCommand(
+            ArticleId.Create(articleId),
+            request.Amount
+        ));
+        return result.MapResult();
     }
 }

@@ -22,7 +22,7 @@ public class CreateCardCommandHandler : ICommandHandler<CreateCardCommand> {
     }
 
     public async Task<Result> Handle(CreateCardCommand request, CancellationToken cancellationToken) {
-        var user = _userRepository.GetById(request.UserId);
+        var user = _userRepository.FindById(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
         var card = _cardRepository.FindByCardNumber(request.Number);
