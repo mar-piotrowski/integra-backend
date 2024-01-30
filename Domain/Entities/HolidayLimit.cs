@@ -45,4 +45,8 @@ public class HolidayLimit : Entity<HolidayLimitId> {
         int mergedDays = 0
     ) =>
         new HolidayLimit(userId, current, startDate, endDate, availableDays, description, usedDays, mergedDays);
+
+    public void AddUsedDays(int days) {
+        UsedDays += days;
+    }
 }

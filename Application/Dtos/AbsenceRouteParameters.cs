@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Dtos;
 
-public record AbsenceRouteParameters([FromRoute]int? UserId, [FromRoute]AbsenceStatus ?Status);
+public record AbsenceRouteParameters([FromRoute] int? UserId, [FromRoute] AbsenceStatus? Status);

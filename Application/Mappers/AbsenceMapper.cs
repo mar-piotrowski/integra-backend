@@ -3,18 +3,22 @@ using Domain.Entities;
 
 namespace Application.Mappers;
 
-public static class AbsenceMapper {
-    public static AbsenceDto MapToDto(this Absence absence) => new AbsenceDto {
+public class AbsenceMapper {
+    private readonly UserMapper _userMapper;
+    
+    public AbsenceMapper(UserMapper userMapper) => _userMapper = userMapper;
+
+    public AbsenceDto MapToDto(Absence absence) => new AbsenceDto {
         Id = absence.Id.Value,
-        // User = absence.User.MapToDto(),
+        Type = absence.Type,
+        User = _userMapper.MapToShortDto(absence.User),
         StartDate = absence.StartDate,
         EndDate = absence.EndDate,
         DiseaseCode = absence.DiseaseCode,
         Series = absence.Series,
         Number = absence.Number,
-        Status = absence.Status.Status
+        Status = absence.Status
     };
 
-    public static IEnumerable<AbsenceDto> MapToDtos(this IEnumerable<Absence> absences) =>
-        absences.Select(entry => entry.MapToDto());
+    public IEnumerable<AbsenceDto> MapToDtos(IEnumerable<Absence> absences) => absences.Select(MapToDto);
 }

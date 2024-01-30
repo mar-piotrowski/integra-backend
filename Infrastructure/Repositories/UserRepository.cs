@@ -32,6 +32,12 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
             .Include(l => l.Locations)
             .Include(j => j.JobPosition);
 
+    public User? FindWithAbsences(UserId userId) =>
+        DbContext.Set<User>()
+            .Include(a => a.Absences)
+            .Include(l => l.HolidayLimits)
+            .FirstOrDefault(u => u.Id == userId);
+
     public User? GetByEmail(Email email) =>
         DbContext.Set<User>()
             .Include(c => c.Credential)

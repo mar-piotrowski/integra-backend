@@ -1,4 +1,5 @@
 using Application.Abstractions.Repositories;
+using Domain.Common.Errors;
 using Domain.Entities;
 using Domain.ValueObjects.Ids;
 using Microsoft.EntityFrameworkCore;
@@ -16,4 +17,7 @@ public class HolidayLimitRepository : Repository<HolidayLimit, HolidayLimitId>, 
                 .Where(entry => entry.UserId == userId);
         return queryable.ToList();
     }
+
+    public HolidayLimit? FindThisYear() =>
+        DbContext.Set<HolidayLimit>().FirstOrDefault(limit => limit.StartDate.Year == DateTime.Now.Year);
 }

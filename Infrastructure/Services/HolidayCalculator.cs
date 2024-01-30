@@ -24,7 +24,7 @@ public class HolidayCalculator : IHolidayCalculator {
             .FirstOrDefault(limit => limit.StartDate.AddYears(-1) == start);
         var contractWorkingTime = user.Contracts.FirstOrDefault(contract => contract.Status == ContractStatus.Active);
         if (contractWorkingTime is null)
-            return Result.Failure<CalculatedHolidayLimit>(ContractsErrors.NotFound);
+            return Result.Failure<CalculatedHolidayLimit>(ContractsErrors.NonActiveContract);
         var limit = CalculateLimitViaEducationDegree(user.SchoolHistories.ToList())
                     + CalculateLimitViaWorkYears(user.JobHistories.ToList());
         return userLimits is null

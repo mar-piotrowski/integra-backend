@@ -15,4 +15,13 @@ public static class AbsenceErrors {
 
     public static Error AlreadyRejected =>
         new Error(HttpStatusCode.BadRequest, "Absence.AlreadyRejected", "Nieobecność została już odrzucona");
+    
+    public static Error InvalidDates =>
+        new Error(HttpStatusCode.BadRequest, "", "Wprowadzono błędną datę urlopu");
+    
+    public static Error LimitReached=>
+        new Error(HttpStatusCode.BadRequest, "", "Osiągnięto już limit urlopu");
+
+    public static Error NoAvailableDays =>
+        new Error(HttpStatusCode.BadRequest, "", "Podany urlop jest dłuższy niż dostępne dni");
 }

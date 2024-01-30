@@ -5,4 +5,5 @@ namespace Application.Abstractions.Repositories;
 
 public interface IHolidayLimitRepository : IRepository<HolidayLimit, HolidayLimitId> {
     public List<HolidayLimit> GetAll(UserId userId);
+    public HolidayLimit? FindThisYear();
 }
