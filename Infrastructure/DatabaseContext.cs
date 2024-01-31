@@ -33,6 +33,8 @@ public class DatabaseContext : DbContext {
     public DbSet<UserWorkingTimes> UserWorkingTimes { get; init; }
     public DbSet<ScheduleSchema> ScheduleSchemas { get; init; }
     public DbSet<ScheduleSchemaDay> ScheduleSchemaDays { get; init; }
+    public DbSet<Document> Documents { get; init; }
+    public DbSet<DocumentArticles> DocumentArticles { get; init; }
 
     public DatabaseContext(
         DbContextOptions<DatabaseContext> options,
