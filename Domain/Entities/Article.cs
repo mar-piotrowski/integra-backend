@@ -1,5 +1,4 @@
 using Domain.Common.Models;
-using Domain.Enums;
 using Domain.ValueObjects.Ids;
 
 namespace Domain.Entities;
@@ -19,6 +18,8 @@ public sealed class Article : Entity<ArticleId> {
     public string? Description { get; private set; }
     public bool Historical { get; private set; } = false;
     public bool Active { get; private set; } = true;
+
+    public List<DocumentArticles> Document { get; private set; } = new List<DocumentArticles>();
 
     public Article() { }
 
