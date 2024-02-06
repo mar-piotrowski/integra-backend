@@ -22,19 +22,19 @@ public class AbsenceController : Controller {
     [HttpGet]
     public async Task<ActionResult> GetAll([FromQuery] int? userId) {
         var result = await _sender.Send(new GetAbsencesQuery(userId is null ? null : UserId.Create(userId.Value)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{absenceId:int}")]
     public async Task<ActionResult> Get(int absenceId) {
         var result = await _sender.Send(new GetAbsenceQuery(AbsenceId.Create(absenceId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateAbsenceCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{absenceId:int}")]
@@ -49,24 +49,24 @@ public class AbsenceController : Controller {
             request.Description,
            UserId.Create(request.UserId)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{absenceId:int}")]
     public async Task<ActionResult> Delete(int absenceId) {
         var result = await _sender.Send(new DeleteAbsenceCommand(AbsenceId.Create(absenceId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{absenceId:int}/accept")]
     public async Task<ActionResult> Accept(int absenceId) {
         var result = await _sender.Send(new AcceptAbsenceCommand(AbsenceId.Create(absenceId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{absenceId:int}/reject")]
     public async Task<ActionResult> Reject(int absenceId) {
         var result = await _sender.Send(new RejectAbsenceCommand(AbsenceId.Create(absenceId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

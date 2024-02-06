@@ -20,24 +20,24 @@ public class ContractorController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult> GetAll() {
         var result = await _sender.Send(new GetContractorsQuery());
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{nip}")]
     public async Task<ActionResult> Get(string nip) {
         var result = await _sender.Send(new GetContractorQuery(Nip.Create(nip)));
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] CreateContractorCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{nip}")]
     public async Task<ActionResult> Edit(string nip, [FromBody] UpdateContractorCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

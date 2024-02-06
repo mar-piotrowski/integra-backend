@@ -9,9 +9,11 @@ namespace Application.Features.Contractor.GetContractors;
 
 public class GetContractorsQueryHandler : IQueryHandler<GetContractorsQuery, ContractorsResponse> {
     private readonly IContractorRepository _contractorRepository;
+    private readonly ContractorMapper _contractorMapper;
 
-    public GetContractorsQueryHandler(IContractorRepository contractorRepository) {
+    public GetContractorsQueryHandler(IContractorRepository contractorRepository, ContractorMapper contractorMapper) {
         _contractorRepository = contractorRepository;
+        _contractorMapper = contractorMapper;
     }
 
     public async Task<Result<ContractorsResponse>> Handle(
@@ -19,8 +21,8 @@ public class GetContractorsQueryHandler : IQueryHandler<GetContractorsQuery, Con
         CancellationToken cancellationToken
     ) {
         var contractors = _contractorRepository.GetAllWithLocation().ToList();
-        if (!contractors.Any())
-            return Result.Failure<ContractorsResponse>(ContractorErrors.NotFoundMany);
-        return Result.Success(new ContractorsResponse { Contractors = contractors.MapToDtos() });
+        return !contractors.Any()
+            ? Result.Failure<ContractorsResponse>(ContractorErrors.NotFoundMany)
+            : Result.Success(new ContractorsResponse(_contractorMapper.MapToDtos(contractors)));
     }
 }

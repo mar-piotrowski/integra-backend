@@ -27,20 +27,20 @@ public class UserController : ControllerBase {
     public async Task<ActionResult> GetAll([FromQuery] UserQueryParams filters) {
         var command = new GetUsersQuery(filters.Sort);
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{userId:int}")]
     public async Task<ActionResult> Get(int userId) {
         var command = new GetUserQuery(UserId.Create(userId));
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{userId:int}/add-permissions")]
@@ -49,7 +49,7 @@ public class UserController : ControllerBase {
             UserId.Create(userId),
             request.Permissions.Select(PermissionCode.Create)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{userId:int}/remove-permissions")]
@@ -58,7 +58,7 @@ public class UserController : ControllerBase {
             UserId.Create(userId),
             request.Permissions.Select(PermissionCode.Create)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{userId:int}/schedules/add-schedule")]
@@ -67,7 +67,7 @@ public class UserController : ControllerBase {
             UserId.Create(userId),
             ScheduleSchemaId.Create(request.ScheduleSchemaId)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{userId:int}/schedules/{scheduleId:int}/remove-schedule")]
@@ -76,7 +76,7 @@ public class UserController : ControllerBase {
             UserId.Create(userId),
             ScheduleSchemaId.Create(scheduleId)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{userId:int}")]
@@ -95,13 +95,13 @@ public class UserController : ControllerBase {
             user.Locations
         );
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{userId:int}")]
     public async Task<ActionResult> Delete(int userId) {
         var command = new DeleteUserCommand(UserId.Create(userId));
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

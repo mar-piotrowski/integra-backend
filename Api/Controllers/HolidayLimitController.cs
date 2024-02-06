@@ -21,13 +21,13 @@ public class HolidayLimitController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult> GetAll([FromQuery] HolidayLimitsQueries queries) {
         var result = await _sender.Send(new GetHolidayLimitsQuery(queries));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{holidayLimitId:int}")]
     public async Task<ActionResult> Get(int holidayLimitId) {
         var result = await _sender.Send(new GetHolidayLimitQuery(HolidayLimitId.Create(holidayLimitId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
@@ -39,7 +39,7 @@ public class HolidayLimitController : ControllerBase {
             request.EndDate,
             request.Description
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut]

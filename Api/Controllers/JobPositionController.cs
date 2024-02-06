@@ -22,25 +22,25 @@ public class JobPositionController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult> GetAll([FromQuery] JobPositionQueries queries) {
         var result = await _sender.Send(new GetJobPositionsQuery(""));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{jobPositionId:int}")]
     public async Task<ActionResult> Get(int jobPositionId) {
         var result = await _sender.Send(new GetJobPositionQuery(JobPositionId.Create(jobPositionId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("statistics")]
     public async Task<ActionResult> GetAllWithStatistics() {
         var result = await _sender.Send(new GetJobPositionWithStatusQuery());
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateJobPositionCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{jobPositionId:int}")]
@@ -49,7 +49,7 @@ public class JobPositionController : ControllerBase {
             JobPositionId.Create(jobPositionId),
             request.Title
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     

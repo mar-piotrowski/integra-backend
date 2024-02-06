@@ -22,13 +22,13 @@ public class CardController {
     [HttpGet]
     public async Task<ActionResult> GetAll() {
         var result = await _sender.Send(new GetCardsQuery());
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{cardNumber}")]
     public async Task<ActionResult> Get(string cardNumber) {
         var result = await _sender.Send(new GetCardQuery(CardNumber.Create(cardNumber)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
@@ -37,18 +37,18 @@ public class CardController {
             UserId.Create(request.UserId),
             CardNumber.Create(request.CardNumber)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpPost("{cardNumber}/active")]
     public async Task<ActionResult> Active(string cardNumber) {
         var result = await _sender.Send(new ActiveCardCommand(CardNumber.Create(cardNumber)));
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpPost("{cardNumber}/deactive")]
     public async Task<ActionResult> DeActive(string cardNumber) {
         var result = await _sender.Send(new DeActiveCardCommand(CardNumber.Create(cardNumber)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

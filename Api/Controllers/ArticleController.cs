@@ -1,5 +1,4 @@
 using Application.Dtos;
-using Application.Features.Article.ChangeAmount;
 using Application.Features.Article.CreateArticle;
 using Application.Features.Article.DeleteArticle;
 using Application.Features.Article.GetArtcle;
@@ -23,20 +22,20 @@ public class ArticleController : ControllerBase {
     public async Task<ActionResult> GetAll() {
         var command = new GetArticlesQuery();
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{articleId:int}")]
     public async Task<ActionResult> Get([FromRoute] int stockId, int articleId) {
-        var command = new GetArticleQuery(ArticleId.Create(articleId), StockId.Create(stockId));
+        var command = new GetArticleQuery(ArticleId.Create(articleId), new StockId(stockId));
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateArticleCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{articleId:int}")]
@@ -56,21 +55,12 @@ public class ArticleController : ControllerBase {
             article.Description
         );
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{articleId:int}")]
     public async Task<ActionResult> Delete(int articleId) {
         var result = await _sender.Send(new DeleteArticleCommand(ArticleId.Create(articleId)));
-        return result.MapResult();
-    }
-
-    [HttpPost("{articleId:int}/change-amount")]
-    public async Task<ActionResult> ChangeAmount(int articleId, [FromBody] ChangeArticleAmountRequest request) {
-        var result = await _sender.Send(new ChangeArticleAmountCommand(
-            ArticleId.Create(articleId),
-            request.Amount
-        ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

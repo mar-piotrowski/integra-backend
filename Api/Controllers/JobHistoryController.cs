@@ -19,7 +19,7 @@ public class JobHistoryController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult> GetAll([FromQuery] int userId = -1) {
         var result = await _sender.Send(new GetUserJobHistoriesQuery(UserId.Create(userId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
@@ -31,7 +31,7 @@ public class JobHistoryController : ControllerBase {
             request.StartDate,
             request.EndDate
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{jobHistoryId:int}")]
@@ -43,12 +43,12 @@ public class JobHistoryController : ControllerBase {
             request.StartDate,
             request.EndDate
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{jobHistoryId:int}")]
     public async Task<ActionResult> Delete(int jobHistoryId) {
         var result = await _sender.Send(new DeleteJobHistoryCommand(JobHistoryId.Create(jobHistoryId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

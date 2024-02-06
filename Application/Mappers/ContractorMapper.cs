@@ -3,8 +3,8 @@ using Domain.Entities;
 
 namespace Application.Mappers;
 
-public static class ContractorMapper {
-    public static ContractorDto MapToDto(this Contractor contractor) =>
+public class ContractorMapper {
+    public ContractorDto MapToDto(Contractor contractor) =>
         new ContractorDto(
             contractor.Id.Value,
             contractor.FullName,
@@ -17,7 +17,6 @@ public static class ContractorMapper {
             contractor.BankAccount.MapToDto()
         );
 
-    public static List<ContractorDto> MapToDtos(this IEnumerable<Contractor> contractors) =>
-        contractors.Select(contractor => contractor.MapToDto()).ToList();
-    
+    public List<ContractorDto> MapToDtos(IEnumerable<Contractor> contractors) =>
+        contractors.Select(MapToDto).ToList();
 }

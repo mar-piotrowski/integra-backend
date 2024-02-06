@@ -1,5 +1,3 @@
-namespace Application.Dtos; 
+namespace Application.Dtos;
 
-public class ContractorsResponse {
-    public required List<ContractorDto> Contractors { get; init; }
-}
+public record ContractorsResponse(List<ContractorDto> Contractors);

@@ -9,9 +9,11 @@ public class DocumentArticlesConfiguration : IEntityTypeConfiguration<DocumentAr
     public void Configure(EntityTypeBuilder<DocumentArticles> builder) {
         builder.HasKey(k => k.Id);
         builder.Property(p => p.Id)
-            .HasConversion(c => c.Value, value => DocumentProductsId.Create(value));
+            .HasConversion(c => c.Value, value => DocumentProductsId.Create(value))
+            .ValueGeneratedOnAdd()
+            .IsRequired();
         builder.HasOne(a => a.Article)
-            .WithMany(a => a.Document)
+            .WithMany(a => a.Documents)
             .HasForeignKey(k => k.ArticleId);
         builder.HasOne(d => d.Document)
             .WithMany(a => a.Articles)

@@ -32,7 +32,6 @@ public class UpdateArticleCommandHandler : ICommandHandler<UpdateArticleCommand>
             request.Tax,
             request.Description
         );
-        updateArticle.ChangeAmount(article.Amount);
         article.Disable();
         _articleRepository.Add(updateArticle);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

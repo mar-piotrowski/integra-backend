@@ -21,7 +21,7 @@ public class SchoolHistoryController {
     [HttpGet]
     public async Task<ActionResult> GetAll([FromQuery] int userId = -1) {
         var result = await _sender.Send(new GetUserSchoolHistoriesQuery(UserId.Create(userId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
@@ -35,7 +35,7 @@ public class SchoolHistoryController {
             request.StartDate,
             request.EndDate
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{schoolHistoryId:int}")]
@@ -49,12 +49,12 @@ public class SchoolHistoryController {
             request.StartDate,
             request.EndDate
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{schoolHistoryId:int}")]
     public async Task<ActionResult> Delete(int schoolHistoryId) {
         var result = await _sender.Send(new DeleteSchoolHistoryCommand(SchoolHistoryId.Create(schoolHistoryId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

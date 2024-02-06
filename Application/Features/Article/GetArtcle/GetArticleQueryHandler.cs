@@ -18,6 +18,6 @@ public class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, ArticleDto>
         var article = _articleRepository.FindById(request.ArticleId);
         if (article is null)
             return Result.Failure<ArticleDto>(ArticleErrors.NotFound);
-        return Result.Success(article.MapToArticleResponse());
+        return Result.Success(article.MapToDto());
     }
 }

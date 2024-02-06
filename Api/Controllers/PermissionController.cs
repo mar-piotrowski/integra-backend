@@ -18,12 +18,12 @@ public class PermissionController : Controller {
    [HttpGet]
    public async Task<ActionResult> GetAll([FromQuery] PermissionQueryParams filters) {
        var result = await _sender.Send(new GetPermissionsQuery(filters));
-       return result.MapResult();
+       return result.MapToResult();
    }
 
    [HttpGet("{permissionCode:int}")]
    public async Task<ActionResult> Get(int permissionCode) {
        var result = await _sender.Send(new GetPermissionQuery(PermissionCode.Create(permissionCode)));
-       return result.MapResult();
+       return result.MapToResult();
    }
 }

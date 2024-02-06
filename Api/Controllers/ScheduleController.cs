@@ -24,25 +24,25 @@ public class ScheduleController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult> GetAll() {
         var result = await _sender.Send(new GetSchedulesQuery());
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{scheduleId:int}")]
     public async Task<ActionResult> Get(int scheduleId) {
         var result = await _sender.Send(new GetScheduleQuery(ScheduleSchemaId.Create(scheduleId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpGet("users/{userId:int}/{year:int}/{month:int}")]
     public async Task<ActionResult> GetUserSchedule(int userId, int year, int month, [FromQuery] bool onlyWeek) {
         var result = await _sender.Send(new GetUserScheduleQuery(UserId.Create(userId), year, month, onlyWeek));
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpGet("users/{year:int}/{month:int}")]
     public async Task<ActionResult> GetUsersSchedule(int year, int month, [FromQuery] bool onlyWeek) {
         var result = await _sender.Send(new GetUsersScheduleQuery(year, month, onlyWeek));
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpPost]
@@ -53,7 +53,7 @@ public class ScheduleController : ControllerBase {
             request.EndDate,
             request.Days
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPut("{scheduleId:int}")]
@@ -65,12 +65,12 @@ public class ScheduleController : ControllerBase {
             request.EndDate,
             request.Days
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpDelete("{scheduleId:int}")]
     public async Task<ActionResult> Delete(int scheduleId) {
         var result = await _sender.Send(new DeleteScheduleCommand(ScheduleSchemaId.Create(scheduleId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

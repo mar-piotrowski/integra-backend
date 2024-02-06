@@ -21,25 +21,25 @@ public class ContractController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult> GetAll([FromQuery] ContractQueries queries) {
         var result = await _sender.Send(new GetContractsQuery(queries));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{contractId:int}")]
     public async Task<ActionResult> Get(int contractId) {
         var result = await _sender.Send(new GetContractQuery(ContractId.Create(contractId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateContractCommand command) {
         var result = await _sender.Send(command);
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpGet("{contractId:int}/changes")]
     public async Task<ActionResult> Changes(int contractId) {
         var result = await _sender.Send(new GetContractChangesQuery(ContractId.Create(contractId)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{contractId:int}/update")]
@@ -63,7 +63,7 @@ public class ContractController : ControllerBase {
             UserId.Create(request.UserId),
             DeductibleCostId.Create(request.DeductibleCostId)
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("{contractId:int}/terminate")]
@@ -73,6 +73,6 @@ public class ContractController : ControllerBase {
             request.TerminateType,
             request.TerminateDate
         ));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

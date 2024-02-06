@@ -14,12 +14,13 @@ public sealed class Article : Entity<ArticleId> {
     public decimal SellPriceWithoutTax { get; private set; }
     public decimal SellPriceWithTax { get; private set; }
     public decimal Tax { get; private set; }
-    public decimal Amount { get; private set; }
     public string? Description { get; private set; }
     public bool Historical { get; private set; } = false;
     public bool Active { get; private set; } = true;
 
-    public List<DocumentArticles> Document { get; private set; } = new List<DocumentArticles>();
+    public List<DocumentArticles> Documents { get; private set; } = new List<DocumentArticles>();
+
+    public List<StockArticles> Stocks { get; private set; } = new List<StockArticles>();
 
     public Article() { }
 
@@ -49,8 +50,6 @@ public sealed class Article : Entity<ArticleId> {
         Description = description;
     }
 
-    public void ChangeAmount(decimal amount) => Amount = amount;
-    
     public void Disable() {
         Active = false;
         Historical = true;

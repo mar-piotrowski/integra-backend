@@ -16,7 +16,7 @@ public class CreateArticleCommandHandler : ICommandHandler<CreateArticleCommand>
     }
 
     public async Task<Result> Handle(CreateArticleCommand request, CancellationToken cancellationToken) {
-        var codeExits = _articleRepository.GetByCode(request.Code);
+        var codeExits = _articleRepository.FindByCode(request.Code);
         if (codeExits is not null)
             return Result.Failure(ArticleErrors.ArticleWithCodeExists);
         var article = new Domain.Entities.Article(

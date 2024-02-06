@@ -7,4 +7,5 @@ public enum DocumentType {
    Pz,
    Rw,
    Pw,
+   Mm
 }

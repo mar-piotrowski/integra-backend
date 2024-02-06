@@ -12,6 +12,6 @@ public record ArticleDto(
     decimal SellPriceWithoutTax,
     decimal SellPriceWithTax,
     decimal Tax,
-    decimal Amount,
+    decimal StockAmount,
     string? Description
 );

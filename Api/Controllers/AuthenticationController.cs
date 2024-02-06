@@ -25,13 +25,13 @@ public class AuthenticationController : ControllerBase {
             Password.Create(request.Password))
         );
         if (!result.IsSuccess)
-            return result.MapResult();
+            return result.MapToResult();
         var cookieOptions = new CookieOptions {
             HttpOnly = true,
             Secure = true,
         };
         HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, cookieOptions);
-        return result.MapResult();
+        return result.MapToResult();
     }
     
     [HttpPost("register")]
@@ -44,7 +44,7 @@ public class AuthenticationController : ControllerBase {
             Password.Create(request.ConfirmPassword)
         ));
 
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("logout")]
@@ -68,6 +68,6 @@ public class AuthenticationController : ControllerBase {
     public async Task<ActionResult> RefreshToken() {
         HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken);
         var result = await _sender.Send(new RefreshTokenCommand(refreshToken ?? ""));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

@@ -19,12 +19,12 @@ public class WorkingTimeController : ControllerBase {
     [HttpPost("start-work")]
     public async Task<ActionResult> StartWork([FromBody] RegisterWorkTimeRequest request) {
         var result = await _sender.Send(new StartWorkCommand(CardNumber.Create(request.CardNumber)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 
     [HttpPost("end-work")]
     public async Task<ActionResult> EndWork([FromBody] RegisterWorkTimeRequest request) {
         var result = await _sender.Send(new EndWorkCommand(CardNumber.Create(request.CardNumber)));
-        return result.MapResult();
+        return result.MapToResult();
     }
 }

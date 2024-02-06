@@ -17,12 +17,4 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Documents\Create\" />
-      <Folder Include="Features\Documents\Delete\" />
-      <Folder Include="Features\Documents\Edit\" />
-      <Folder Include="Features\Documents\GetAll\" />
-      <Folder Include="Features\Documents\Get\" />
-    </ItemGroup>
-
 </Project>

@@ -34,7 +34,7 @@ namespace Domain.Common.Result {
             return result.IsSuccess ? onSuccess(result.Value) : onFailure(result.Error);
         }
 
-        public static ActionResult MapResult(this Result result) {
+        public static ActionResult MapToResult(this Result result) {
             if (result.IsSuccess)
                 return new OkResult();
             var error = new ObjectResult(result.Error) {
@@ -43,7 +43,7 @@ namespace Domain.Common.Result {
             return error;
         }
 
-        public static ActionResult MapResult<T>(this Result<T> result) {
+        public static ActionResult MapToResult<T>(this Result<T> result) {
             if (result.IsSuccess)
                 return new OkObjectResult(result.Value);
             var error = new ObjectResult(result.Error) {

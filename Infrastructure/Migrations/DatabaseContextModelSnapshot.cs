@@ -97,10 +97,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric")
-                        .HasColumnName("amount");
-
                     b.Property<decimal>("BuyPriceWithTax")
                         .HasColumnType("numeric")
                         .HasColumnName("buy_price_with_tax");
@@ -160,10 +156,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("sell_price_without_tax");
 
-                    b.Property<int?>("StockId")
-                        .HasColumnType("integer")
-                        .HasColumnName("stock_id");
-
                     b.Property<decimal>("Tax")
                         .HasColumnType("numeric")
                         .HasColumnName("tax");
@@ -173,9 +165,6 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("OrderId")
                         .HasDatabaseName("ix_articles_order_id");
-
-                    b.HasIndex("StockId")
-                        .HasDatabaseName("ix_articles_stock_id");
 
                     b.ToTable("articles", (string)null);
                 });
@@ -528,10 +517,17 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Document", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    b.Property<int>("ContractorId")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset?>("AdmissionDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("admission_date");
+
+                    b.Property<int?>("ContractorId")
                         .HasColumnType("integer")
                         .HasColumnName("contractor_id");
 
@@ -543,21 +539,58 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount");
+
                     b.Property<DateTimeOffset>("IssueDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issue_date");
+
+                    b.Property<bool>("Locked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("locked");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
-                    b.Property<DateTimeOffset>("PaymentDate")
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("number");
+
+                    b.Property<DateTimeOffset?>("PaymentDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("payment_date");
 
-                    b.Property<DateTimeOffset>("ReceptionDate")
+                    b.Property<int?>("PaymentMethod")
+                        .HasColumnType("integer")
+                        .HasColumnName("payment_method");
+
+                    b.Property<DateTimeOffset?>("ReceptionDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("reception_date");
+
+                    b.Property<DateTimeOffset?>("SaleDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("sale_date");
+
+                    b.Property<int?>("SourceStockId")
+                        .HasColumnType("integer")
+                        .HasColumnName("source_stock_id");
+
+                    b.Property<int?>("TargetStockId")
+                        .HasColumnType("integer")
+                        .HasColumnName("target_stock_id");
+
+                    b.Property<decimal>("TotalAmountWithTax")
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_amount_with_tax");
+
+                    b.Property<decimal>("TotalAmountWithoutTax")
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_amount_without_tax");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -569,14 +602,27 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ContractorId")
                         .HasDatabaseName("ix_documents_contractor_id");
 
+                    b.HasIndex("SourceStockId")
+                        .HasDatabaseName("ix_documents_source_stock_id");
+
+                    b.HasIndex("TargetStockId")
+                        .HasDatabaseName("ix_documents_target_stock_id");
+
                     b.ToTable("documents", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.DocumentArticles", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("integer")
@@ -989,9 +1035,13 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<int?>("Locationid")
-                        .HasColumnType("integer")
-                        .HasColumnName("locationid");
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_main");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
@@ -1005,10 +1055,48 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_stocks");
 
-                    b.HasIndex("Locationid")
-                        .HasDatabaseName("ix_stocks_locationid");
-
                     b.ToTable("stocks", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.StockArticles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("article_id");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<int>("StockId")
+                        .HasColumnType("integer")
+                        .HasColumnName("stock_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_stock_articles");
+
+                    b.HasIndex("ArticleId")
+                        .HasDatabaseName("ix_stock_articles_article_id");
+
+                    b.HasIndex("StockId")
+                        .HasDatabaseName("ix_stock_articles_stock_id");
+
+                    b.ToTable("stock_articles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -1410,11 +1498,6 @@ namespace Infrastructure.Migrations
                         .WithMany("Articles")
                         .HasForeignKey("OrderId")
                         .HasConstraintName("fk_articles_order_order_temp_id");
-
-                    b.HasOne("Domain.Entities.Stock", null)
-                        .WithMany("Articles")
-                        .HasForeignKey("StockId")
-                        .HasConstraintName("fk_articles_stocks_stock_temp_id");
                 });
 
             modelBuilder.Entity("Domain.Entities.Card", b =>
@@ -1485,20 +1568,34 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Document", b =>
                 {
-                    b.HasOne("Domain.Entities.Contractor", "Contract")
+                    b.HasOne("Domain.Entities.Contractor", "Contractor")
                         .WithMany()
                         .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_documents_contractors_contract_temp_id");
+                        .HasConstraintName("fk_documents_contractors_contractor_temp_id");
 
-                    b.Navigation("Contract");
+                    b.HasOne("Domain.Entities.Stock", "SourceStock")
+                        .WithMany()
+                        .HasForeignKey("SourceStockId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_documents_stocks_source_stock_temp_id");
+
+                    b.HasOne("Domain.Entities.Stock", "TargetStock")
+                        .WithMany()
+                        .HasForeignKey("TargetStockId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_documents_stocks_target_stock_temp_id1");
+
+                    b.Navigation("Contractor");
+
+                    b.Navigation("SourceStock");
+
+                    b.Navigation("TargetStock");
                 });
 
             modelBuilder.Entity("Domain.Entities.DocumentArticles", b =>
                 {
                     b.HasOne("Domain.Entities.Article", "Article")
-                        .WithMany("Document")
+                        .WithMany("Documents")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1564,14 +1661,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Stock", b =>
+            modelBuilder.Entity("Domain.Entities.StockArticles", b =>
                 {
-                    b.HasOne("Domain.ValueObjects.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("Locationid")
-                        .HasConstraintName("fk_stocks_locations_location_temp_id1");
+                    b.HasOne("Domain.Entities.Article", "Article")
+                        .WithMany("Stocks")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_stock_articles_articles_article_temp_id1");
 
-                    b.Navigation("Location");
+                    b.HasOne("Domain.Entities.Stock", "Stock")
+                        .WithMany("Articles")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_stock_articles_stocks_stock_temp_id2");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Stock");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -1685,7 +1793,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Article", b =>
                 {
-                    b.Navigation("Document");
+                    b.Navigation("Documents");
+
+                    b.Navigation("Stocks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Contract", b =>
