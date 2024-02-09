@@ -9,7 +9,6 @@ public record CreateDocumentCommand(
     DocumentType Type,
     string Number,
     DateTimeOffset IssueDate,
-    DateTimeOffset? AdmissionDate,
     DateTimeOffset? ReceptionDate,
     DateTimeOffset? PaymentDate,
     PaymentMethod? PaymentMethod,

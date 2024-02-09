@@ -8,8 +8,6 @@ public class Document : Entity<DocumentId> {
     public DocumentType Type { get; private set; }
     public string Number { get; private set; }
     public DateTimeOffset IssueDate { get; private set; }
-    public DateTimeOffset? SaleDate { get; private set; }
-    public DateTimeOffset? AdmissionDate { get; private set; }
     public DateTimeOffset? ReceptionDate { get; private set; }
     public DateTimeOffset? PaymentDate { get; private set; }
     public PaymentMethod? PaymentMethod { get; private set; }
@@ -33,6 +31,7 @@ public class Document : Entity<DocumentId> {
         DateTimeOffset issueDate,
         DateTimeOffset? receptionDate,
         DateTimeOffset? paymentDate,
+        PaymentMethod? paymentMethod,
         decimal discount,
         decimal totalAmountWithTax,
         decimal totalAmountWithoutTax,
@@ -47,6 +46,7 @@ public class Document : Entity<DocumentId> {
         IssueDate = issueDate;
         ReceptionDate = receptionDate;
         PaymentDate = paymentDate;
+        PaymentMethod = paymentMethod;
         Discount = discount;
         TotalAmountWithTax = totalAmountWithTax;
         TotalAmountWithoutTax = totalAmountWithoutTax;
@@ -62,25 +62,29 @@ public class Document : Entity<DocumentId> {
         DateTimeOffset issueDate,
         DateTimeOffset? receptionDate,
         DateTimeOffset? paymentDate,
+        PaymentMethod? paymentMethod,
         decimal discount,
         decimal totalAmountWithTax,
         decimal totalAmountWithoutTax,
-        string? description,
+        bool locked,
         ContractorId? contractorId,
         StockId? sourceStockId,
-        StockId? targetStockId
+        StockId? targetStockId,
+        string? description
     ) {
         Number = number;
         IssueDate = issueDate;
         ReceptionDate = receptionDate;
         PaymentDate = paymentDate;
+        PaymentMethod = paymentMethod;
         Discount = discount;
         TotalAmountWithTax = totalAmountWithTax;
         TotalAmountWithoutTax = totalAmountWithoutTax;
-        Description = description;
+        Locked = locked;
         ContractorId = contractorId;
         SourceStockId = sourceStockId;
         TargetStockId = targetStockId;
+        Description = description;
     }
 
     public void AddArticles(List<StockArticleChangeDto> articles) {

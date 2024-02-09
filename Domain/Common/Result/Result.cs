@@ -12,6 +12,7 @@ namespace Domain.Common.Result {
         }
 
         public static Result Success() => new Result(true, Error.None);
+        public static Result<T> Success<T>() => new Result<T>();
 
         public static Result<TValue> Success<TValue>(TValue value) => new Result<TValue>(value, true, Error.None);
 
@@ -29,5 +30,6 @@ namespace Domain.Common.Result {
                     return result;
             return Success();
         }
+
     }
 }

@@ -40,7 +40,6 @@ public class DocumentController : ControllerBase {
             request.Type,
             request.Number,
             request.IssueDate,
-            request.AdmissionDate,
             request.ReceptionDate,
             request.PaymentDate,
             request.PaymentMethod,
@@ -50,9 +49,15 @@ public class DocumentController : ControllerBase {
             request.Description,
             request.Locked,
             request.Articles,
-            request.ContractorId is not null ? ContractorId.Create(request.ContractorId.Value) : null,
-            request.SourceStockId is not null ? new StockId(request.SourceStockId.Value) : null,
-            request.TargetStockId is not null ? new StockId(request.TargetStockId.Value) : null
+            request.ContractorId is not null && request.ContractorId != 0
+                ? ContractorId.Create(request.ContractorId.Value)
+                : null,
+            request.SourceStockId is not null && request.SourceStockId != 0
+                ? new StockId(request.SourceStockId.Value)
+                : null,
+            request.TargetStockId is not null && request.TargetStockId != 0
+                ? new StockId(request.TargetStockId.Value)
+                : null
         ));
         return result.MapToResult();
     }
@@ -65,15 +70,22 @@ public class DocumentController : ControllerBase {
             request.IssueDate,
             request.ReceptionDate,
             request.PaymentDate,
+            request.PaymentMethod,
             request.Discount,
             request.TotalAmountWithoutTax,
             request.TotalAmountWithTax,
             request.Description,
             request.Locked,
             request.Articles,
-            ContractorId.Create(request.ContractorId),
-            new StockId(request.SourceStockId),
-            new StockId(request.TargetStockId)
+            request.ContractorId is not null && request.ContractorId != 0
+                ? ContractorId.Create(request.ContractorId.Value)
+                : null,
+            request.SourceStockId is not null && request.SourceStockId != 0
+                ? new StockId(request.SourceStockId.Value)
+                : null,
+            request.TargetStockId is not null && request.TargetStockId != 0
+                ? new StockId(request.TargetStockId.Value)
+                : null
         ));
         return result.MapToResult();
     }
