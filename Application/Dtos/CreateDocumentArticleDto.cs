@@ -1,3 +1,3 @@
 namespace Application.Dtos;
 
-public record CreateDocumentArticleDto(int ArticleId, decimal Amount);
+public record CreateDocumentArticleDto(int Id, decimal Amount);

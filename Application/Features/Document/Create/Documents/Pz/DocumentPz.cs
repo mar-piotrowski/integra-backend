@@ -20,15 +20,13 @@ public class DocumentPz : IDocumentPz {
     public Result<Domain.Entities.Document> Create(CreateDocumentCommand command) {
         if (command.ContractorId is null || _contractorRepository.FindById(command.ContractorId) is null)
             return Result.Failure<Domain.Entities.Document>(DocumentErrors.ContractorIsRequired);
-        if (command.AdmissionDate is null)
-            return Result.Failure<Domain.Entities.Document>(DocumentErrors.AdmissionDateRequired);
         if (command.SourceStockId is null)
             return Result.Failure<Domain.Entities.Document>(StockErrors.SourceStockIsRequired);
         var stock = _stockRepository.FindById(command.SourceStockId);
         if (stock is null)
             return Result.Failure<Domain.Entities.Document>(StockErrors.NotFound);
         var addArticles = command.Articles
-            .Select(article => new StockArticleChangeDto(ArticleId.Create(article.ArticleId), article.Amount))
+            .Select(article => new StockArticleChangeDto(ArticleId.Create(article.Id), article.Amount))
             .ToList();
         var document = new Domain.Entities.Document(
             DocumentType.Pz,

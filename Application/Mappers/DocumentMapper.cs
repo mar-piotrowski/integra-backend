@@ -14,6 +14,7 @@ public class DocumentMapper {
 
     public DocumentDto MapToDto(Document document) {
         return new DocumentDto(
+            document.Id.Value,
             document.Type,
             document.Number,
             document.IssueDate,

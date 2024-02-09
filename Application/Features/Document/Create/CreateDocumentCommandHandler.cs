@@ -31,7 +31,7 @@ public class CreateDocumentCommandHandler : ICommandHandler<CreateDocumentComman
         if (documentExists is not null)
             return Result.Failure(DocumentErrors.Exists);
         var articles = _articleRepository
-            .FindByIds(request.Articles.Select(article => ArticleId.Create(article.ArticleId)));
+            .FindByIds(request.Articles.Select(article => ArticleId.Create(article.Id)));
         var availableArticlesResult = DocumentUtils.HasAvailableArticles(articles, request.Articles);
         if (availableArticlesResult.IsFailure)
             return availableArticlesResult;

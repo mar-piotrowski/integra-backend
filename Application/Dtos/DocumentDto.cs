@@ -3,6 +3,7 @@ using Domain.Enums;
 namespace Application.Dtos;
 
 public record DocumentDto(
+    int Id,
     DocumentType Type,
     string Number,
     DateTimeOffset IssueDate,
