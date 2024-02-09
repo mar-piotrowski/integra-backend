@@ -5,6 +5,8 @@ using Application.Features.Document.Edit;
 using Application.Features.Document.Get;
 using Application.Features.Document.GetAll;
 using Domain.Common.Result;
+using Domain.Entities;
+using Domain.Enums;
 using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IntegraBackend.Controllers;
 
 [Route("integra/documents")]
+[ApiController]
 public class DocumentController : ControllerBase {
     private readonly ISender _sender;
 
@@ -20,8 +23,8 @@ public class DocumentController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAll() {
-        var result = await _sender.Send(new GetDocumentsQuery());
+    public async Task<ActionResult> GetAll([FromQuery] List<DocumentType> documentType) {
+        var result = await _sender.Send(new GetDocumentsQuery(documentType));
         return result.MapToResult();
     }
 
@@ -37,7 +40,6 @@ public class DocumentController : ControllerBase {
             request.Type,
             request.Number,
             request.IssueDate,
-            request.AdmissionDate,
             request.ReceptionDate,
             request.PaymentDate,
             request.PaymentMethod,
@@ -47,9 +49,15 @@ public class DocumentController : ControllerBase {
             request.Description,
             request.Locked,
             request.Articles,
-            ContractorId.Create(request.ContractorId),
-            new StockId(request.SourceStockId),
-            new StockId(request.TargetStockId)
+            request.ContractorId is not null && request.ContractorId != 0
+                ? ContractorId.Create(request.ContractorId.Value)
+                : null,
+            request.SourceStockId is not null && request.SourceStockId != 0
+                ? new StockId(request.SourceStockId.Value)
+                : null,
+            request.TargetStockId is not null && request.TargetStockId != 0
+                ? new StockId(request.TargetStockId.Value)
+                : null
         ));
         return result.MapToResult();
     }
@@ -62,15 +70,22 @@ public class DocumentController : ControllerBase {
             request.IssueDate,
             request.ReceptionDate,
             request.PaymentDate,
+            request.PaymentMethod,
             request.Discount,
             request.TotalAmountWithoutTax,
             request.TotalAmountWithTax,
             request.Description,
             request.Locked,
             request.Articles,
-            ContractorId.Create(request.ContractorId),
-            new StockId(request.SourceStockId),
-           new StockId(request.TargetStockId) 
+            request.ContractorId is not null && request.ContractorId != 0
+                ? ContractorId.Create(request.ContractorId.Value)
+                : null,
+            request.SourceStockId is not null && request.SourceStockId != 0
+                ? new StockId(request.SourceStockId.Value)
+                : null,
+            request.TargetStockId is not null && request.TargetStockId != 0
+                ? new StockId(request.TargetStockId.Value)
+                : null
         ));
         return result.MapToResult();
     }

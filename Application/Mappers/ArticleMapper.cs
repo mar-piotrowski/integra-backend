@@ -44,5 +44,10 @@ public static class ArticleMapper {
         articles.Select(documentArticles => documentArticles.MapToDocumentArticleDto()).ToList();
 
     public static List<StockArticleChangeDto> MapToAddArticles(this List<CreateDocumentArticleDto> articles) =>
-        articles.Select(article => new StockArticleChangeDto(ArticleId.Create(article.ArticleId), article.Amount)).ToList();
+        articles.Select(article => new StockArticleChangeDto(ArticleId.Create(article.Id), article.Amount))
+            .ToList();
+
+    public static List<StockArticleDto> MapToStockArticles(this List<StockArticles> articles) =>
+        articles.Select(article => new StockArticleDto(article.Article.Name, article.Article.Code, article.Amount))
+            .ToList();
 }

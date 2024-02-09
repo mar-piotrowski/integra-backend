@@ -1,12 +1,12 @@
-using Application.Features.Document.Create.Documents.Invoice;
-using Application.Features.Document.Create.Documents.Mm;
-using Application.Features.Document.Create.Documents.Pw;
-using Application.Features.Document.Create.Documents.Pz;
-using Application.Features.Document.Create.Documents.Rw;
-using Application.Features.Document.Create.Documents.Wz;
+using Application.Features.Document.Documents.Invoice;
+using Application.Features.Document.Documents.Mm;
+using Application.Features.Document.Documents.Pw;
+using Application.Features.Document.Documents.Pz;
+using Application.Features.Document.Documents.Rw;
+using Application.Features.Document.Documents.Wz;
 using Domain.Enums;
 
-namespace Application.Features.Document.Create.Documents;
+namespace Application.Features.Document.Documents;
 
 public class DocumentFactory : IDocumentFactory {
     private readonly DocumentInvoice _documentInvoice;

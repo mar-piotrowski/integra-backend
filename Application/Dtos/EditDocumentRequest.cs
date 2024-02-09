@@ -1,3 +1,5 @@
+using Domain.Enums;
+
 namespace Application.Dtos;
 
 public record EditDocumentRequest (
@@ -5,13 +7,14 @@ public record EditDocumentRequest (
     DateTimeOffset IssueDate,
     DateTimeOffset? ReceptionDate,
     DateTimeOffset? PaymentDate,
+    PaymentMethod PaymentMethod,
     decimal Discount,
     decimal TotalAmountWithTax,
     decimal TotalAmountWithoutTax, 
     string? Description,
-    bool Locked,
     List<CreateDocumentArticleDto> Articles,
-    int ContractorId,
-    int SourceStockId,
-    int TargetStockId
+    bool Locked,
+    int? ContractorId,
+    int? SourceStockId,
+    int? TargetStockId
 );

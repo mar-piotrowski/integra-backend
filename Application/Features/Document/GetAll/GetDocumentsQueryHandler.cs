@@ -18,7 +18,7 @@ public class GetDocumentsQueryHandler : IQueryHandler<GetDocumentsQuery, Documen
 
     public async Task<Result<DocumentsResponse>>
         Handle(GetDocumentsQuery request, CancellationToken cancellationToken) {
-        var documents = _documentRepository.FindAll().ToList();
+        var documents = _documentRepository.FindAll(request.DocumentTypes).ToList();
         return !documents.Any()
             ? Result.Failure<DocumentsResponse>(DocumentErrors.NotFoundMany)
             : Result.Success(new DocumentsResponse(_documentMapper.MapToDtos(documents)));

@@ -16,7 +16,7 @@ public record CreateDocumentRequest (
     string? Description,
     List<CreateDocumentArticleDto> Articles,
     bool Locked,
-    int ContractorId,
-    int SourceStockId,
-    int TargetStockId
+    int? ContractorId,
+    int? SourceStockId,
+    int? TargetStockId
 );
