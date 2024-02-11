@@ -1,5 +1,4 @@
 using Domain.Common.Models;
-using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
 
 namespace Domain.Entities;
@@ -11,4 +10,6 @@ public class Credential : Entity<CredentialId> {
     private Credential(string password) => Password = password;
 
     public static Credential Create(string password) => new Credential(password);
+
+    public void ChangePassword(string password) => Password = password;
 }

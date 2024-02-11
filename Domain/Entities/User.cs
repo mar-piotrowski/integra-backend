@@ -11,14 +11,15 @@ public class User : AggregateRoot<UserId> {
     public string? SecondName { get; private set; }
     public Email? Email { get; private set; }
     public Phone? Phone { get; private set; }
-    public PersonalIdNumber? PersonalIdNumber { get; private set; } 
+    public PersonalIdNumber? PersonalIdNumber { get; private set; }
     public DocumentNumber? DocumentNumber { get; private set; }
-    public DateTime? DateOfBirth { get; private set; } = null;
-    public string? PlaceOfBirth { get; private set; } = null;
+    public DateTimeOffset? DateOfBirth { get; private set; } = null;
+    public string? PlaceOfBirth { get; private set; }
     public Sex Sex { get; private set; } = Sex.None;
     public bool IsStudent { get; private set; }
     public Credential? Credential { get; private set; }
     public JobPosition? JobPosition { get; private set; }
+    public BankAccount? BankAccount { get; private set; }
     public string? RefreshToken { get; private set; }
     public bool Active { get; private set; }
     public bool CompleteDataInfo { get; private set; }
@@ -60,7 +61,7 @@ public class User : AggregateRoot<UserId> {
         Phone? phone,
         bool isStudent,
         string? secondName,
-        DateTime? dateOfBirth,
+        DateTimeOffset? dateOfBirth,
         string? placeOfBirth,
         Sex sex
     ) {
@@ -86,7 +87,7 @@ public class User : AggregateRoot<UserId> {
         Phone? phone = null,
         string? secondName = "",
         bool isStudent = false,
-        DateTime? dateOfBirth = null,
+        DateTimeOffset? dateOfBirth = null,
         string? placeOfBirth = "",
         Sex sex = Sex.None
     ) => new User(
@@ -103,11 +104,36 @@ public class User : AggregateRoot<UserId> {
         sex
     );
 
+    public void Update(
+        string firstname,
+        string lastname,
+        Email? email,
+        PersonalIdNumber? personalIdNumber = null,
+        DocumentNumber? documentNumber = null,
+        Phone? phone = null,
+        string? secondName = "",
+        bool isStudent = false,
+        DateTimeOffset? dateOfBirth = null,
+        string? placeOfBirth = "",
+        Sex sex = Sex.None
+    ) => new User(
+        firstname,
+        lastname,
+        email,
+        personalIdNumber,
+        documentNumber,
+        phone,
+        isStudent,
+        secondName,
+        dateOfBirth,
+        placeOfBirth,
+        sex
+    );
     public void AddSchedule(ScheduleSchema scheduleSchema) =>
         _schedules.Add(new UserSchedules(this, scheduleSchema));
 
     public void RemoveSchedule(ScheduleSchema scheduleSchema) {
-        foreach (var userSchedules in _schedules.ToList()) 
+        foreach (var userSchedules in _schedules.ToList())
             if (userSchedules.ScheduleSchema == scheduleSchema)
                 _schedules.Remove(userSchedules);
     }
@@ -117,7 +143,7 @@ public class User : AggregateRoot<UserId> {
     public void AddContract(Contract contract) => _contracts.Add(contract);
 
     public void AddLocation(Location location) => _locations.Add(location);
-
+    
     public void AddLocations(IEnumerable<Location> locations) => _locations.AddRange(locations);
 
     public void AddCredentials(Credential credential) => Credential = credential;
@@ -136,7 +162,9 @@ public class User : AggregateRoot<UserId> {
                 _permissions.Remove(permissionToRemove);
         }
     }
-    
+
+    public void AddBankAccount(string name, string number) => BankAccount = new BankAccount(name, name);
+
     public void AddSchool(SchoolHistory schoolHistory) => _schoolHistories.Add(schoolHistory);
 
     public void UpdateSchoolHistory(SchoolHistoryId schoolHistoryId, SchoolHistory schoolHistory) =>
@@ -149,15 +177,16 @@ public class User : AggregateRoot<UserId> {
 
     public void AddRefreshToken(string refreshToken) => RefreshToken = refreshToken;
 
-    public void StartWork(User user, WorkingTime workingTime) => _workingTimes.Add(new UserWorkingTimes(user, workingTime));
+    public void StartWork(User user, WorkingTime workingTime) =>
+        _workingTimes.Add(new UserWorkingTimes(user, workingTime));
 
     public void EndWork() {
         var userWorkingTime = _workingTimes.MaxBy(date => date.CreatedDate);
         userWorkingTime!.WorkingTime.EndWork();
     }
-    
+
     public void Activate() => Active = true;
-    
+
     public void DeActivate() => Active = false;
 
     public void DataCompleted() => CompleteDataInfo = false;

@@ -12,5 +12,7 @@ public class BankAccountConfiguration : IEntityTypeConfiguration<BankAccount> {
             .HasConversion(c => c.Value, value => BankAccountId.Create(value))
             .ValueGeneratedOnAdd()
             .IsRequired();
+        builder.Property(p => p.UserId)
+            .HasConversion(c => c.Value, value => UserId.Create(value));
     }
 }

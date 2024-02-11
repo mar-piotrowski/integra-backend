@@ -16,7 +16,7 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Result<UsersR
     }
     
     public async Task<Result<UsersResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken) {
-        var users = _userRepository.GetAllWithLocation().ToList();
+        var users = _userRepository.FindAll().ToList();
         if (!users.Any())
             return Result.Failure<UsersResponse>(UserErrors.NotFoundMany);
         return Result.Success<UsersResponse>(_userMapper.MapToUsersResponse(users));

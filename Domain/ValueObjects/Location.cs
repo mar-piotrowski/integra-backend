@@ -98,6 +98,16 @@ namespace Domain.ValueObjects {
 
         protected override IEnumerable<object> GetAtomicValues() {
             yield return Street;
+            yield return HouseNo;
+            yield return ApartmentNo;
+            yield return PostalCode;
+            yield return City;
+            yield return Country;
+            yield return Province;
+            yield return Commune;
+            yield return District;
+            yield return IsPrivate;
+            yield return IsCompany;
         }
     }
 }

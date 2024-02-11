@@ -194,8 +194,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("number");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_bank_accounts");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_bank_accounts_user_id");
 
                     b.ToTable("bank_accounts", (string)null);
                 });
@@ -523,10 +531,6 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset?>("AdmissionDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("admission_date");
-
                     b.Property<int?>("ContractorId")
                         .HasColumnType("integer")
                         .HasColumnName("contractor_id");
@@ -571,10 +575,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ReceptionDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("reception_date");
-
-                    b.Property<DateTimeOffset?>("SaleDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("sale_date");
 
                     b.Property<int?>("SourceStockId")
                         .HasColumnType("integer")
@@ -1124,8 +1124,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("credential_id");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTimeOffset?>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_of_birth");
 
                     b.Property<string>("DocumentNumber")
@@ -1500,6 +1500,16 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("fk_articles_order_order_temp_id");
                 });
 
+            modelBuilder.Entity("Domain.Entities.BankAccount", b =>
+                {
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithOne("BankAccount")
+                        .HasForeignKey("Domain.Entities.BankAccount", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_bank_accounts_users_user_id");
+                });
+
             modelBuilder.Entity("Domain.Entities.Card", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -1507,7 +1517,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_cards_users_user_temp_id1");
+                        .HasConstraintName("fk_cards_users_user_temp_id9");
 
                     b.Navigation("User");
                 });
@@ -1519,7 +1529,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_contracts_users_user_temp_id2");
+                        .HasConstraintName("fk_contracts_users_user_temp_id1");
 
                     b.Navigation("User");
                 });
@@ -1552,7 +1562,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("BankAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_contractors_bank_accounts_bank_account_temp_id");
+                        .HasConstraintName("fk_contractors_bank_accounts_bank_account_temp_id1");
 
                     b.HasOne("Domain.ValueObjects.Location", "Location")
                         .WithMany()
@@ -1620,7 +1630,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_holiday_limits_users_user_temp_id3");
+                        .HasConstraintName("fk_holiday_limits_users_user_temp_id2");
 
                     b.Navigation("User");
                 });
@@ -1632,7 +1642,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_job_histories_users_user_temp_id4");
+                        .HasConstraintName("fk_job_histories_users_user_temp_id3");
 
                     b.Navigation("User");
                 });
@@ -1656,7 +1666,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_school_histories_users_user_temp_id8");
+                        .HasConstraintName("fk_school_histories_users_user_temp_id7");
 
                     b.Navigation("User");
                 });
@@ -1734,7 +1744,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_user_permissions_users_user_temp_id6");
+                        .HasConstraintName("fk_user_permissions_users_user_temp_id5");
 
                     b.Navigation("Permission");
 
@@ -1755,7 +1765,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_user_schedules_users_user_temp_id7");
+                        .HasConstraintName("fk_user_schedules_users_user_temp_id6");
 
                     b.Navigation("ScheduleSchema");
 
@@ -1769,7 +1779,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_user_working_times_users_user_temp_id9");
+                        .HasConstraintName("fk_user_working_times_users_user_temp_id8");
 
                     b.HasOne("Domain.Entities.WorkingTime", "WorkingTime")
                         .WithMany("WorkingTimes")
@@ -1788,7 +1798,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany("Locations")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_locations_users_user_temp_id5");
+                        .HasConstraintName("fk_locations_users_user_temp_id4");
                 });
 
             modelBuilder.Entity("Domain.Entities.Article", b =>
@@ -1835,6 +1845,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("Absences");
+
+                    b.Navigation("BankAccount");
 
                     b.Navigation("Contracts");
 
