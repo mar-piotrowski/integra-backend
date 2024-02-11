@@ -36,11 +36,20 @@ namespace Domain.Common.Errors {
 
         public static Error NoScheduleForYear =>
             new Error(HttpStatusCode.NotFound, "", "Uzytkownik nie posiada grafiku na podany rok");
-        
+
         public static Error AlreadyHasSchedule =>
             new Error(HttpStatusCode.BadRequest, "", "Uzytkownik juz posiada przypisany grafik");
-        
+
         public static Error NoHolidayLimit =>
             new Error(HttpStatusCode.BadRequest, "", "Uzytkownik nie posiada limitu urlopowego");
+
+        public static Error PasswordIsTooShort =>
+            new Error(HttpStatusCode.BadRequest, "", "Hasło jest za krótkie");
+
+        public static Error NoCredentials =>
+            new Error(HttpStatusCode.NotFound, "", "Użytkownik nie ma przypisanego hasła");
+
+        public static Error CurrentPasswordDifferent =>
+            new Error(HttpStatusCode.NotFound, "", "Podane hasło nie jest poprawne");
     }
 }

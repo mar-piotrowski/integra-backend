@@ -16,5 +16,7 @@ public sealed record CreateUserCommand(
     string PlaceOfBirth,
     Sex Sex,
     bool IsStudent,
+    string? EmployeeAnyWherePassword,
+    BankAccountDto BankAccount,
     IEnumerable<LocationDto> Locations
 ) : ICommand;

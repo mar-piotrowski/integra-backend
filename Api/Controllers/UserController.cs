@@ -80,19 +80,22 @@ public class UserController : ControllerBase {
     }
 
     [HttpPut("{userId:int}")]
-    public async Task<ActionResult> Update([FromBody] UpdateUserRequest user, int userId) {
+    public async Task<ActionResult> Update([FromBody] UpdateUserRequest request, int userId) {
         var command = new UpdateUserCommand(
-            userId,
-            user.Firstname,
-            user.Lastname,
-            user.SecondName,
-            user.Email,
-            user.Phone,
-            user.DateOfBirth,
-            user.PlaceOfBirth,
-            user.Sex,
-            user.IsStudent,
-            user.Locations
+            UserId.Create(userId),
+            request.Firstname,
+            request.Lastname,
+            request.SecondName,
+            request.Email,
+            request.Phone,
+            request.IdentityNumber,
+            request.DocumentNumber,
+            request.DateOfBirth,
+            request.PlaceOfBirth,
+            request.Sex,
+            request.IsStudent,
+            request.BankAccount,
+            request.Locations
         );
         var result = await _sender.Send(command);
         return result.MapToResult();

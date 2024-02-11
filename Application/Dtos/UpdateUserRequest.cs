@@ -1,19 +1,25 @@
+using Domain.Common.Result;
+using Domain.Enums;
 using FluentValidation;
+using MediatR;
 
 namespace Application.Dtos;
 
-public class UpdateUserRequest {
-    public string Firstname { get; init; }
-    public string Lastname { get; init; }
-    public string? SecondName { get; init; }
-    public string Email { get; init; }
-    public string? Phone { get; init; }
-    public DateTime? DateOfBirth { get; init; }
-    public string? PlaceOfBirth { get; init; }
-    public string? Sex { get; init; }
-    public bool IsStudent { get; init; }
-    public List<LocationDto>? Locations { get; init; }
-}
+public record UpdateUserRequest(
+    string Firstname,
+    string Lastname,
+    string? SecondName,
+    string? Email,
+    string? Phone,
+    string IdentityNumber,
+    string? DocumentNumber,
+    DateTimeOffset DateOfBirth,
+    string PlaceOfBirth,
+    Sex Sex,
+    bool IsStudent,
+    BankAccountDto? BankAccount,
+    List<LocationDto>? Locations
+) : IRequest<Result>;
 
 public class UpdateUserRequestValidator : AbstractValidator<CreateUserRequest> {
     public UpdateUserRequestValidator() {

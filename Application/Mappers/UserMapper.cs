@@ -17,6 +17,7 @@ public class UserMapper {
         Sex = user.Sex,
         IdentityNumber = user.PersonalIdNumber?.Value ?? "Brak",
         JobPosition = user.JobPosition?.Title ?? "Brak",
+        BankAccount = user.BankAccount?.MapToDto(),
         Locations = user.Locations.MapToDtos().ToList(),
         Permissions = user.Permissions.Select(permission => permission.Permission.MapToDto()).ToList()
     };

@@ -4,6 +4,7 @@ using Application.Abstractions.Repositories;
 using Application.Mappers;
 using Domain.Common.Errors;
 using Domain.Common.Result;
+using Domain.Entities;
 using Domain.ValueObjects;
 
 namespace Application.Features.User.CreateUser;
@@ -11,19 +12,19 @@ namespace Application.Features.User.CreateUser;
 public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
     private readonly IUserRepository _userRepository;
     private readonly IPermissionRepository _permissionRepository;
-    private readonly IJobPositionRepository _jobPositionRepository;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
-        IJobPositionRepository jobPositionRepository,
         IUnitOfWork unitOfWork,
-        IPermissionRepository permissionRepository
+        IPermissionRepository permissionRepository,
+        IPasswordHasher passwordHasher
     ) {
         _userRepository = userRepository;
-        _jobPositionRepository = jobPositionRepository;
         _unitOfWork = unitOfWork;
         _permissionRepository = permissionRepository;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
@@ -46,10 +47,15 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
             request.PlaceOfBirth,
             request.Sex
         );
-        var employeePermission = _permissionRepository.GetByCode(PermissionCode.Create(112));
-        if (employeePermission is not null)
-            user.AddPermissions(new List<Domain.Entities.Permission>() { employeePermission });
+        var userPermission = _permissionRepository.GetByCode(PermissionCode.Create(943));
+        if (userPermission is not null)
+            user.AddPermissions(new List<Domain.Entities.Permission>() { userPermission });
         user.AddLocations(request.Locations.MapToEntities());
+        user.AddBankAccount(request.BankAccount.Name, request.BankAccount.Number);
+        if (!string.IsNullOrWhiteSpace(request.EmployeeAnyWherePassword)) {
+            var passwordHashed = _passwordHasher.Hash(Password.Create(request.EmployeeAnyWherePassword));
+            user.AddCredentials(Credential.Create(passwordHashed));
+        }
         _userRepository.Add(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();

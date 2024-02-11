@@ -6,6 +6,7 @@ namespace Domain.Entities;
 public class BankAccount : Entity<BankAccountId> {
     public string Name { get; private set; }
     public string Number { get; private set; }
+    public UserId UserId { get; private set; }
 
     private BankAccount() { }
 

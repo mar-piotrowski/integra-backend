@@ -1,9 +1,11 @@
 using Application.Dtos;
+using Application.Features.Authentication.ChangePassword;
 using Application.Features.Authentication.Login;
 using Application.Features.Authentication.RefreshToken;
 using Application.Features.Authentication.Register;
 using Domain.Common.Result;
 using Domain.ValueObjects;
+using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +35,7 @@ public class AuthenticationController : ControllerBase {
         HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, cookieOptions);
         return result.MapToResult();
     }
-    
+
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegisterRequest request) {
         var result = await _sender.Send(new RegisterCommand(
@@ -53,14 +55,14 @@ public class AuthenticationController : ControllerBase {
         return Ok();
     }
 
-    [HttpPost("reset-password")]
-    public ActionResult ForgotPassword([FromBody] ForgotPasswordRequest resetPassword) {
-        throw new NotImplementedException();
-    }
-    
-    [HttpPost("send-verification-code")]
-    public async Task<ActionResult> SendVerificationCode() {
-        throw new NotImplementedException();
+    [HttpPost("change-password")]
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request) {
+        var result = await _sender.Send(new ChangePasswordCommand(
+            UserId.Create(request.UserId),
+            request.CurrentPassword,
+            request.NewPassword
+        ));
+        return result.MapToResult();
     }
 
     [HttpPost("refresh-token")]

@@ -10,5 +10,7 @@ public class CreateUserRequest {
     public string? PlaceOfBirth { get; init; }
     public string? Sex { get; init; }
     public bool IsStudent { get; init; }
+    public string? EmployeeAnyWherePassword { get; init; }
+    public BankAccountDto BankAccount { get; init; }
     public List<LocationDto>? Locations { get; init; }
 }

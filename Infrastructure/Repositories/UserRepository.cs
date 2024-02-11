@@ -14,6 +14,7 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
             .Include(l => l.Locations)
             .Include(j => j.JobPosition)
             .Include(c => c.Credential)
+            .Include(b => b.BankAccount)
             .Include(p => p.Permissions).ThenInclude(p => p.Permission)
             .FirstOrDefault(entry => entry.Id == userId);
 
@@ -21,6 +22,7 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
         DbContext.Set<User>()
             .Include(l => l.Locations)
             .Include(j => j.JobPosition)
+            .Include(b => b.BankAccount)
             .Include(p => p.Permissions).ThenInclude(p => p.Permission);
 
     public IEnumerable<User> GetAllWithPosition(string position) =>
