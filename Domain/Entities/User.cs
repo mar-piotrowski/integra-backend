@@ -27,6 +27,7 @@ public class User : AggregateRoot<UserId> {
     public string? RefreshToken { get; private set; }
     public bool Active { get; private set; } = true;
     public bool CompleteDataInfo { get; private set; }
+    private readonly List<Card> _cards = new List<Card>();
     private readonly List<HolidayLimit> _holidayLimits = new List<HolidayLimit>();
     private readonly List<Location> _locations = new List<Location>();
     private readonly List<Contract> _contracts = new List<Contract>();
@@ -36,6 +37,7 @@ public class User : AggregateRoot<UserId> {
     private readonly List<UserPermissions> _permissions = new List<UserPermissions>();
     private readonly List<WorkingTime> _workingTimes = new List<WorkingTime>();
     private readonly List<UserSchedules> _schedules = new List<UserSchedules>();
+    public IEnumerable<Card> Cards => _cards.AsReadOnly();
     public IEnumerable<SchoolHistory> SchoolHistories => _schoolHistories.AsReadOnly();
 
     public IEnumerable<JobHistory> JobHistories => _jobHistories.AsReadOnly();
@@ -182,15 +184,15 @@ public class User : AggregateRoot<UserId> {
     public void AddRefreshToken(string refreshToken) => RefreshToken = refreshToken;
 
     public void StartWork(WorkingTime workingTime) => _workingTimes.Add(workingTime);
-    
+
     public void EndWork() {
         var userWorkingTime = _workingTimes.MaxBy(date => date.CreatedDate);
-        userWorkingTime?.EndWork(); 
+        userWorkingTime?.EndWork();
     }
+
+    public void AddCard(Card card) => _cards.Add(card);
 
     public void Activate() => Active = true;
 
     public void DeActivate() => Active = false;
-
-    public void DataCompleted() => CompleteDataInfo = false;
 }

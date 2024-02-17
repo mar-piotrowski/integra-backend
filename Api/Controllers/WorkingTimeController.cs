@@ -4,6 +4,7 @@ using Application.Features.WorkingTime.Edit;
 using Application.Features.WorkingTime.EndWork;
 using Application.Features.WorkingTime.GetAll;
 using Application.Features.WorkingTime.StartWork;
+using Application.Features.WorkingTime.UserStatistics;
 using Domain.Common.Result;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
@@ -27,6 +28,12 @@ public class WorkingTimeController : ControllerBase {
         return result.MapToResult();
     }
 
+    [HttpGet("users/{userId:int}/stats/{year:int}/{month:int}")]
+    public async Task<ActionResult> GetUserWorkingTimesStatistics(int userId, int month, int year) {
+        var result = await _sender.Send(new GetUserWorkingTimeStatisticsQuery(UserId.Create(userId), year, month));
+        return result.MapToResult();
+    }
+
     [HttpPost("users/start-work")]
     public async Task<ActionResult> StartWork([FromBody] RegisterWorkTimeRequest request) {
         var result = await _sender.Send(new StartWorkCommand(CardNumber.Create(request.CardNumber)));
@@ -39,11 +46,12 @@ public class WorkingTimeController : ControllerBase {
         return result.MapToResult();
     }
 
+
     [HttpPut("{workingTimeId:int}")]
     public async Task<ActionResult> Edit(int workingTimeId, [FromBody] EditWorkingTimeRequest request) {
         var result = await _sender.Send(new EditWorkingTimeCommand(
             WorkingTimeId.Create(workingTimeId),
-            request.StartDate, 
+            request.StartDate,
             request.EndDate
         ));
         return result.MapToResult();

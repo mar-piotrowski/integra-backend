@@ -8,6 +8,7 @@ public static class CardMapper {
 
     public static CardDto MapToDto(this Card card) => new CardDto(
         card.Number.Value,
+        card.CreatedDate,
         card.IsActive,
         UserMapper.MapToDto(card.User)
     );

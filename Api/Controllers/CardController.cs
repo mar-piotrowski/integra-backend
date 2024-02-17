@@ -2,6 +2,7 @@ using Application.Dtos;
 using Application.Features.Card.ActiveCard;
 using Application.Features.Card.CreateCard;
 using Application.Features.Card.DeActiveCard;
+using Application.Features.Card.Delete;
 using Application.Features.Card.GetCard;
 using Application.Features.Card.GetCards;
 using Domain.Common.Result;
@@ -35,7 +36,8 @@ public class CardController {
     public async Task<ActionResult> Create([FromBody] CreateCardRequest request) {
         var result = await _sender.Send(new CreateCardCommand(
             UserId.Create(request.UserId),
-            CardNumber.Create(request.CardNumber)
+            CardNumber.Create(request.Number),
+            request.Active
         ));
         return result.MapToResult();
     }
@@ -46,9 +48,15 @@ public class CardController {
         return result.MapToResult();
     }
     
-    [HttpPost("{cardNumber}/deactive")]
+    [HttpPost("{cardNumber}/de-active")]
     public async Task<ActionResult> DeActive(string cardNumber) {
         var result = await _sender.Send(new DeActiveCardCommand(CardNumber.Create(cardNumber)));
+        return result.MapToResult();
+    }
+
+    [HttpDelete("{cardNumber}")]
+    public async Task<ActionResult> Delete(string cardNumber) {
+        var result = await _sender.Send(new DeleteCardCommand( CardNumber.Create(cardNumber) ));
         return result.MapToResult();
     }
 }

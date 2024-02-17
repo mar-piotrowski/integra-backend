@@ -28,8 +28,9 @@ public class CreateCardCommandHandler : ICommandHandler<CreateCardCommand> {
         var card = _cardRepository.FindByCardNumber(request.Number);
         if (card is not null)
             return Result.Failure(CardErrors.Exists);
-        var newCard = Domain.Entities.Card.Create(request.UserId, request.Number);
+        var newCard = new Domain.Entities.Card(request.Number, request.Active);
         _cardRepository.Add(newCard);
+        user.AddCard(newCard);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }

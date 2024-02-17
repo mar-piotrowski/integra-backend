@@ -5,6 +5,7 @@ namespace Application.Dtos;
 
 public record CardDto(
     string Number,
-    bool IsActive,
+    DateTimeOffset AssignmentDate,
+    bool Active,
     UserDto User
 );

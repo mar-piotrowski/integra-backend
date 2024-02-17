@@ -4,4 +4,4 @@ using Domain.ValueObjects.Ids;
 
 namespace Application.Features.Card.CreateCard;
 
-public record CreateCardCommand(UserId UserId, CardNumber Number) : ICommand;
+public record CreateCardCommand(UserId UserId, CardNumber Number, bool Active) : ICommand;

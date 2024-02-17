@@ -85,4 +85,9 @@ public sealed class UserRepository : Repository<User, UserId>, IUserRepository {
             .ThenInclude(s => s.ScheduleSchema)
             .ThenInclude(s => s.Days)
             .ToList();
+
+    public User? FindWorkingTimes(UserId userId) =>
+        DbContext.Set<User>()
+            .Include(w => w.WorkingTimes)
+            .FirstOrDefault(u => u.Id == userId);
 }
