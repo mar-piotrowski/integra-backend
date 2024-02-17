@@ -1,6 +1,7 @@
 namespace Application.Dtos;
 
 public record LocationDto(
+    int Id,
     string Street,
     string HouseNo,
     string ApartmentNo,

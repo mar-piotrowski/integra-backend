@@ -19,7 +19,5 @@ public class ContractorConfiguration : IEntityTypeConfiguration<Contractor> {
             .HasConversion(c => c.Value, value => Email.Create(value));
         builder.Property(p => p.Phone)
             .HasConversion(c => c.Value, value => Phone.Create(value));
-        builder.Property(p => p.BankAccountId)
-            .HasConversion(c => c.Value, value => BankAccountId.Create(value));
     }
 }

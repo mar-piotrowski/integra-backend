@@ -19,6 +19,8 @@ public record UpdateUserCommand(
     string PlaceOfBirth,
     Sex Sex,
     bool IsStudent,
+    string? Citizenship,
+    string? Nip,
     BankAccountDto? BankAccount,
     List<LocationDto>? Locations
 ) : IRequest<Result>;

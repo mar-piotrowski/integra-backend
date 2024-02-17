@@ -51,5 +51,8 @@ namespace Domain.Common.Errors {
 
         public static Error CurrentPasswordDifferent =>
             new Error(HttpStatusCode.NotFound, "", "Podane hasło nie jest poprawne");
+        
+        public static Error NoResolvedContracts =>
+            new Error(HttpStatusCode.Conflict, "", "Użytkownim ma nie rozwiązane lub nie zatwierdzone umowy");
     }
 }

@@ -47,6 +47,7 @@ public static class DependencyInjection {
         services.AddScoped<IScheduleRepository, ScheduleRepository>();
         services.AddScoped<IScheduleService, ScheduleService>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
+        services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
         return services;
     }
 

@@ -1,4 +1,3 @@
-using Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Dtos;
@@ -17,6 +16,8 @@ public class UserDto {
     public Sex Sex { get; init; }
     public bool IsStudent { get; init; }
     public string? JobPosition { get; init; }
+    public string? Citizenship { get; init; }
+    public string? Nip { get; init; }
     public BankAccountDto? BankAccount { get; init; }
     public List<LocationDto> Locations { get; init; } = new List<LocationDto>();
     public List<PermissionDto> Permissions { get; init; } = new List<PermissionDto>();

@@ -66,5 +66,5 @@ public class CreateAbsenceCommandHandler : ICommandHandler<CreateAbsenceCommand>
     }
 
     private bool DatesAreValid(DateTimeOffset startDate, DateTimeOffset endDate) =>
-        startDate >= _dateTimeProvider.UtcNow() && startDate < endDate;
+        startDate <= _dateTimeProvider.UtcNow() && startDate <= endDate;
 }

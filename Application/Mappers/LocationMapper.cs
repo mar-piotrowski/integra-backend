@@ -7,6 +7,7 @@ namespace Application.Mappers;
 public static class LocationMapper {
     public static LocationDto MapToDto(this Location location) =>
         new LocationDto(
+            location.Id.Value,
             location.Street,
             location.HouseNo,
             location.ApartmentNo,

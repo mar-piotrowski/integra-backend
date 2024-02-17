@@ -10,17 +10,20 @@ public class ArticleRepository : Repository<Article, ArticleId>, IArticleReposit
 
     public override IEnumerable<Article> FindAll() =>
         DbContext.Set<Article>()
+            .Where(a => a.Active)
             .Include(s => s.Stocks)
             .Where(article => article.Active && !article.Historical)
             .ToList();
     
     public Article? FindByCode(string code) =>
         DbContext.Set<Article>()
+            .Where(a => a.Active)
             .Include(s => s.Stocks)
             .FirstOrDefault(article => article.Code == code);
 
     public List<Article> FindByIds(IEnumerable<ArticleId> articleIds) =>
         DbContext.Set<Article>()
+            .Where(a => a.Active)
             .Include(s => s.Stocks)
             .Where(article => articleIds.Contains(article.Id))
             .ToList();

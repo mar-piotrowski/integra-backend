@@ -176,6 +176,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("id");
 
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("integer")
+                        .HasColumnName("contractor_id");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
@@ -194,12 +198,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("number");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_bank_accounts");
+
+                    b.HasIndex("ContractorId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_bank_accounts_contractor_id");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -399,10 +407,9 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BankAccountId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("bank_account_id");
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
@@ -418,9 +425,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("full_name");
 
-                    b.Property<int>("Locationid")
-                        .HasColumnType("integer")
-                        .HasColumnName("locationid");
+                    b.Property<bool>("Historical")
+                        .HasColumnType("boolean")
+                        .HasColumnName("historical");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
@@ -448,12 +455,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_contractors");
-
-                    b.HasIndex("BankAccountId")
-                        .HasDatabaseName("ix_contractors_bank_account_id");
-
-                    b.HasIndex("Locationid")
-                        .HasDatabaseName("ix_contractors_locationid");
 
                     b.ToTable("contractors", (string)null);
                 });
@@ -817,6 +818,96 @@ namespace Infrastructure.Migrations
                     b.ToTable("job_positions", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApartmentNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("apartment_no");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("city");
+
+                    b.Property<string>("Commune")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("commune");
+
+                    b.Property<int?>("ContractorId")
+                        .HasColumnType("integer")
+                        .HasColumnName("contractor_id");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("country");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<string>("District")
+                        .HasColumnType("text")
+                        .HasColumnName("district");
+
+                    b.Property<string>("HouseNo")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("house_no");
+
+                    b.Property<bool>("IsCompany")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_company");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_private");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modified_date");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("postal_code");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("province");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("street");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_locations");
+
+                    b.HasIndex("ContractorId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_locations_contractor_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_locations_user_id");
+
+                    b.ToTable("locations", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -1112,6 +1203,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
+                    b.Property<string>("Citizenship")
+                        .HasColumnType("text")
+                        .HasColumnName("citizenship");
+
                     b.Property<bool>("CompleteDataInfo")
                         .HasColumnType("boolean")
                         .HasColumnName("complete_data_info");
@@ -1157,6 +1252,10 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
+
+                    b.Property<string>("Nip")
+                        .HasColumnType("text")
+                        .HasColumnName("nip");
 
                     b.Property<string>("PersonalIdNumber")
                         .HasColumnType("text")
@@ -1305,43 +1404,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("user_schedules", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserWorkingTimes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("modified_date");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.Property<int>("WorkingTimeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("working_time_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_user_working_times");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_user_working_times_user_id");
-
-                    b.HasIndex("WorkingTimeId")
-                        .HasDatabaseName("ix_user_working_times_working_time_id");
-
-                    b.ToTable("user_working_times", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
                 {
                     b.Property<int>("Id")
@@ -1355,24 +1417,35 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTimeOffset?>("EndDate")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_date");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("modified_date");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<int>("TotalSeconds")
                         .HasColumnType("integer")
                         .HasColumnName("total_seconds");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_working_times");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_working_times_user_id");
 
                     b.ToTable("working_times", (string)null);
                 });
@@ -1405,81 +1478,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("absence_status", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.ValueObjects.Location", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<string>("ApartmentNo")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("apartment_no");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("city");
-
-                    b.Property<string>("Commune")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("commune");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("country");
-
-                    b.Property<string>("District")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("district");
-
-                    b.Property<string>("HouseNo")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("house_no");
-
-                    b.Property<bool>("IsCompany")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_company");
-
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_private");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("postal_code");
-
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("province");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("street");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("id")
-                        .HasName("pk_locations");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_locations_user_id");
-
-                    b.ToTable("locations", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.Absence", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -1502,11 +1500,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.BankAccount", b =>
                 {
+                    b.HasOne("Domain.Entities.Contractor", null)
+                        .WithOne("BankAccount")
+                        .HasForeignKey("Domain.Entities.BankAccount", "ContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_bank_accounts_contractors_contractor_id");
+
                     b.HasOne("Domain.Entities.User", null)
                         .WithOne("BankAccount")
                         .HasForeignKey("Domain.Entities.BankAccount", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_bank_accounts_users_user_id");
                 });
 
@@ -1553,27 +1556,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Contract");
 
                     b.Navigation("ContractChanged");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Contractor", b =>
-                {
-                    b.HasOne("Domain.Entities.BankAccount", "BankAccount")
-                        .WithMany()
-                        .HasForeignKey("BankAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_contractors_bank_accounts_bank_account_temp_id1");
-
-                    b.HasOne("Domain.ValueObjects.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("Locationid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_contractors_locations_location_temp_id");
-
-                    b.Navigation("BankAccount");
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Domain.Entities.Document", b =>
@@ -1643,6 +1625,23 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_job_histories_users_user_temp_id3");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Location", b =>
+                {
+                    b.HasOne("Domain.Entities.Contractor", "Contractor")
+                        .WithOne("Location")
+                        .HasForeignKey("Domain.Entities.Location", "ContractorId")
+                        .HasConstraintName("fk_locations_contractors_contractor_id");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("Locations")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_locations_users_user_temp_id4");
+
+                    b.Navigation("Contractor");
 
                     b.Navigation("User");
                 });
@@ -1772,33 +1771,16 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserWorkingTimes", b =>
+            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("WorkingTimes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_user_working_times_users_user_temp_id8");
-
-                    b.HasOne("Domain.Entities.WorkingTime", "WorkingTime")
-                        .WithMany("WorkingTimes")
-                        .HasForeignKey("WorkingTimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_working_times_working_times_working_time_temp_id");
+                        .HasConstraintName("fk_working_times_users_user_temp_id8");
 
                     b.Navigation("User");
-
-                    b.Navigation("WorkingTime");
-                });
-
-            modelBuilder.Entity("Domain.ValueObjects.Location", b =>
-                {
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithMany("Locations")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("fk_locations_users_user_temp_id4");
                 });
 
             modelBuilder.Entity("Domain.Entities.Article", b =>
@@ -1813,6 +1795,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("ContractBase");
 
                     b.Navigation("ContractChanges");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Contractor", b =>
+                {
+                    b.Navigation("BankAccount")
+                        .IsRequired();
+
+                    b.Navigation("Location")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Document", b =>
@@ -1862,11 +1853,6 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("SchoolHistories");
 
-                    b.Navigation("WorkingTimes");
-                });
-
-            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
-                {
                     b.Navigation("WorkingTimes");
                 });
 #pragma warning restore 612, 618

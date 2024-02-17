@@ -8,14 +8,14 @@ namespace Application.Features.JobPosition.GetJobPositionWithStatus;
 
 public class GetJobPositionWithStatusQueryHandler
     : IQueryHandler<GetJobPositionWithStatusQuery, JobPositionWithStatsResponse> {
-    private readonly IUserRepository _userRepository;
+    private readonly IContractRepository _contractRepository;
     private readonly IJobPositionRepository _jobPositionRepository;
 
     public GetJobPositionWithStatusQueryHandler(
-        IUserRepository userRepository,
+        IContractRepository contractRepository,
         IJobPositionRepository jobPositionRepository
     ) {
-        _userRepository = userRepository;
+        _contractRepository = contractRepository;
         _jobPositionRepository = jobPositionRepository;
     }
 
@@ -27,20 +27,6 @@ public class GetJobPositionWithStatusQueryHandler
         var jobPosition = _jobPositionRepository.FindAll().ToList();
         if (!jobPosition.Any())
             return Result.Failure<JobPositionWithStatsResponse>(JobPositionErrors.NotFoundAny);
-        foreach (var position in jobPosition) {
-            var totalUsers = CalculateTotalUsers(position.Title);
-           stats.Add(new JobPositionStats(position.Id.Value, position.Title, totalUsers, 0)); 
-        }
-
         return Result.Success(new JobPositionWithStatsResponse(stats));
-    }
-
-    private decimal CalculateAvgSalary(string jobPosition) {
-        return 0;
-    }
-
-    private int CalculateTotalUsers(string jobPosition) {
-        var users = _userRepository.GetAllWithPosition(jobPosition).ToList();
-        return !users.Any() ? 0 : users.Count;
     }
 }

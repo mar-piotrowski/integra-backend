@@ -1,7 +1,9 @@
+using System.Collections;
 using Domain.Common.Models;
 using Domain.Enums;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Ids;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Domain.Entities;
 
@@ -15,13 +17,15 @@ public class User : AggregateRoot<UserId> {
     public DocumentNumber? DocumentNumber { get; private set; }
     public DateTimeOffset? DateOfBirth { get; private set; } = null;
     public string? PlaceOfBirth { get; private set; }
+    public string? Citizenship { get; private set; }
+    public string? Nip { get; private set; }
     public Sex Sex { get; private set; } = Sex.None;
     public bool IsStudent { get; private set; }
     public Credential? Credential { get; private set; }
     public JobPosition? JobPosition { get; private set; }
     public BankAccount? BankAccount { get; private set; }
     public string? RefreshToken { get; private set; }
-    public bool Active { get; private set; }
+    public bool Active { get; private set; } = true;
     public bool CompleteDataInfo { get; private set; }
     private readonly List<HolidayLimit> _holidayLimits = new List<HolidayLimit>();
     private readonly List<Location> _locations = new List<Location>();
@@ -30,7 +34,7 @@ public class User : AggregateRoot<UserId> {
     private readonly List<JobHistory> _jobHistories = new List<JobHistory>();
     private readonly List<SchoolHistory> _schoolHistories = new List<SchoolHistory>();
     private readonly List<UserPermissions> _permissions = new List<UserPermissions>();
-    private readonly List<UserWorkingTimes> _workingTimes = new List<UserWorkingTimes>();
+    private readonly List<WorkingTime> _workingTimes = new List<WorkingTime>();
     private readonly List<UserSchedules> _schedules = new List<UserSchedules>();
     public IEnumerable<SchoolHistory> SchoolHistories => _schoolHistories.AsReadOnly();
 
@@ -46,13 +50,13 @@ public class User : AggregateRoot<UserId> {
 
     public IEnumerable<UserPermissions> Permissions => _permissions.AsReadOnly();
 
-    public IEnumerable<UserWorkingTimes> WorkingTimes => _workingTimes.AsReadOnly();
+    public IEnumerable<WorkingTime> WorkingTimes => _workingTimes.AsReadOnly();
 
     public IEnumerable<UserSchedules> Schedules => _schedules.AsReadOnly();
 
     private User() { }
 
-    private User(
+    public User(
         string firstname,
         string lastname,
         Email? email,
@@ -63,7 +67,9 @@ public class User : AggregateRoot<UserId> {
         string? secondName,
         DateTimeOffset? dateOfBirth,
         string? placeOfBirth,
-        Sex sex
+        Sex sex,
+        string? citizenship,
+        string? nip
     ) {
         Firstname = firstname;
         Lastname = lastname;
@@ -76,33 +82,26 @@ public class User : AggregateRoot<UserId> {
         DateOfBirth = dateOfBirth;
         PlaceOfBirth = placeOfBirth;
         Sex = sex;
+        Citizenship = citizenship;
+        Nip = nip;
     }
 
-    public static User Create(
-        string firstname,
-        string lastname,
-        Email? email,
-        PersonalIdNumber? personalIdNumber = null,
-        DocumentNumber? documentNumber = null,
-        Phone? phone = null,
-        string? secondName = "",
-        bool isStudent = false,
-        DateTimeOffset? dateOfBirth = null,
-        string? placeOfBirth = "",
-        Sex sex = Sex.None
-    ) => new User(
-        firstname,
-        lastname,
-        email,
-        personalIdNumber,
-        documentNumber,
-        phone,
-        isStudent,
-        secondName,
-        dateOfBirth,
-        placeOfBirth,
-        sex
-    );
+    public static User Register(string firstname, string lastname, Email email) =>
+        new User(
+            firstname,
+            lastname,
+            email,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            Sex.None,
+            null,
+            null
+        );
 
     public void Update(
         string firstname,
@@ -115,20 +114,25 @@ public class User : AggregateRoot<UserId> {
         bool isStudent = false,
         DateTimeOffset? dateOfBirth = null,
         string? placeOfBirth = "",
-        Sex sex = Sex.None
-    ) => new User(
-        firstname,
-        lastname,
-        email,
-        personalIdNumber,
-        documentNumber,
-        phone,
-        isStudent,
-        secondName,
-        dateOfBirth,
-        placeOfBirth,
-        sex
-    );
+        Sex sex = Sex.None,
+        string? citizenship = null,
+        string? nip = null
+    ) {
+        Firstname = firstname;
+        Lastname = lastname;
+        Email = email;
+        PersonalIdNumber = personalIdNumber;
+        DocumentNumber = documentNumber;
+        Phone = phone;
+        IsStudent = isStudent;
+        SecondName = secondName;
+        DateOfBirth = dateOfBirth;
+        PlaceOfBirth = placeOfBirth;
+        Sex = sex;
+        Citizenship = citizenship;
+        Nip = nip;
+    }
+
     public void AddSchedule(ScheduleSchema scheduleSchema) =>
         _schedules.Add(new UserSchedules(this, scheduleSchema));
 
@@ -143,7 +147,7 @@ public class User : AggregateRoot<UserId> {
     public void AddContract(Contract contract) => _contracts.Add(contract);
 
     public void AddLocation(Location location) => _locations.Add(location);
-    
+
     public void AddLocations(IEnumerable<Location> locations) => _locations.AddRange(locations);
 
     public void AddCredentials(Credential credential) => Credential = credential;
@@ -177,12 +181,11 @@ public class User : AggregateRoot<UserId> {
 
     public void AddRefreshToken(string refreshToken) => RefreshToken = refreshToken;
 
-    public void StartWork(User user, WorkingTime workingTime) =>
-        _workingTimes.Add(new UserWorkingTimes(user, workingTime));
-
+    public void StartWork(WorkingTime workingTime) => _workingTimes.Add(workingTime);
+    
     public void EndWork() {
         var userWorkingTime = _workingTimes.MaxBy(date => date.CreatedDate);
-        userWorkingTime!.WorkingTime.EndWork();
+        userWorkingTime?.EndWork(); 
     }
 
     public void Activate() => Active = true;

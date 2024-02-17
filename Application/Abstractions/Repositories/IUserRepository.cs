@@ -10,7 +10,6 @@ public interface IUserRepository : IRepository<User, UserId> {
     public User? GetByEmail(Email email);
     public User? GetByPersonalIdNumber(PersonalIdNumber personalIdNumber);
     public User? GetInfoToCreateLimit(UserId userId);
-    public User? WorkingHours(UserId userId);
     public User? FindUserSchedules(UserId userId);
     public List<User> FindUsersWithSchedule();
     public User? FindWithAbsences(UserId userId);

@@ -30,7 +30,6 @@ public class DatabaseContext : DbContext {
     public DbSet<UserPermissions> UserPermissions { get; init; }
     public DbSet<BankAccount> BankAccounts { get; init; }
     public DbSet<WorkingTime> WorkingTimes { get; init; }
-    public DbSet<UserWorkingTimes> UserWorkingTimes { get; init; }
     public DbSet<ScheduleSchema> ScheduleSchemas { get; init; }
     public DbSet<ScheduleSchemaDay> ScheduleSchemaDays { get; init; }
     public DbSet<Document> Documents { get; init; }

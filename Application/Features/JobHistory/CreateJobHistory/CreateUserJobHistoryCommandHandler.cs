@@ -21,6 +21,8 @@ public class CreateUserJobHistoryCommandHandler : ICommandHandler<CreateUserJobH
         var user = _userRepository.FindById(request.UserId);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
+        if (request.StartDate > request.EndDate)
+            return Result.Failure(JobHistoryErrors.WrongDates);
         var jobHistory = Domain.Entities.JobHistory.Create(request.CompanyName, request.Position, request.StartDate, request.EndDate);
         _jobHistoryRepository.Add(jobHistory);
         user.AddJobHistory(jobHistory);

@@ -2,6 +2,8 @@ using Application.Abstractions;
 using Application.Abstractions.Repositories;
 using Domain.Common.Errors;
 using Domain.Common.Result;
+using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Features.User.DeleteUser;
@@ -19,7 +21,12 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Resul
         var user = _userRepository.FindById(request.Id);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
-        _userRepository.Remove(user);
+        if (user.Contracts.FirstOrDefault(
+                contract => contract.Status
+                    is ContractStatus.Active
+                    or ContractStatus.Pending) is not null
+           ) return Result.Failure(UserErrors.NoResolvedContracts);
+        user.DeActivate();
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }

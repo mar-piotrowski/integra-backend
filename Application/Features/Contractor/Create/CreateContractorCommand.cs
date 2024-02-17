@@ -1,15 +1,15 @@
 using Application.Abstractions.Messaging;
 using Application.Dtos;
-using Domain.ValueObjects;
 
-namespace Application.Features.Contractor.UpdateContractor;
+namespace Application.Features.Contractor.Create;
 
-public record UpdateContractorCommand(
+public record CreateContractorCommand(
     string FullName,
     string ShortName,
+    string Representative,
     string Nip,
-    string Email, 
+    string Email,
     string Phone,
     LocationDto Location,
-    BankAccountDto BankAccount 
+    BankAccountDto BankAccount
 ) : ICommand;

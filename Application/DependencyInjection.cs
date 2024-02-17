@@ -31,6 +31,7 @@ public static class DependencyInjection {
         services.AddScoped<DocumentMapper>();
         services.AddScoped<StockMapper>();
         services.AddScoped<ContractorMapper>();
+        services.AddScoped<WorkingTimeMapper>();
         services.AddScoped<IDocumentFactory, DocumentFactory>();
         services.AddScoped<DocumentInvoice>();
         services.AddScoped<DocumentMm>();

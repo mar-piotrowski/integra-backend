@@ -5,9 +5,8 @@ using Domain.Common.Errors;
 using Domain.Common.Result;
 using Domain.Entities;
 using Domain.ValueObjects;
-using Domain.ValueObjects.Ids;
 
-namespace Application.Features.Contractor.CreateContractor;
+namespace Application.Features.Contractor.Create;
 
 public class ContractorCreateCommandHandler : ICommandHandler<CreateContractorCommand> {
     private readonly IContractorRepository _contractorRepository;

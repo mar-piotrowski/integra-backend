@@ -14,7 +14,6 @@ public class CardRepository : Repository<Card, CardId>, ICardRepository {
 
     public Card? FindByCardNumber(CardNumber cardNumber) =>
         DbContext.Set<Card>()
-            .Include(u => u.User)
-            .ThenInclude(wk => wk.WorkingTimes).ThenInclude(w => w.WorkingTime)
+            .Include(u => u.User).ThenInclude(w => w.WorkingTimes)
             .FirstOrDefault(card => card.Number == cardNumber);
 }

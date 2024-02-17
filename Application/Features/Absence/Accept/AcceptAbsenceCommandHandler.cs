@@ -43,5 +43,5 @@ public class AcceptAbsenceCommandHandler : ICommandHandler<AcceptAbsenceCommand>
     }
 
     private bool LimitHasAvailableDays(Domain.Entities.HolidayLimit limit, Domain.Entities.Absence absence) =>
-        limit.UsedDays <= (absence.EndDate - absence.StartDate).Days;
+        limit.AvailableDays >= limit.UsedDays + (absence.EndDate - absence.StartDate).Days;
 }

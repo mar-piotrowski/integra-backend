@@ -37,7 +37,7 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, TokenResp
         if (request.Password != request.ConfirmPassword)
             return Result.Failure<TokenResponse>(AuthenticationErrors.WrongConfirmPassword);
         var hashPassword = _passwordHasher.Hash(request.Password);
-        var user = Domain.Entities.User.Create(request.Firstname, request.Lastname, request.Email);
+        var user = Domain.Entities.User.Register(request.Firstname, request.Lastname, request.Email);
         var credentials = Credential.Create(hashPassword);
         var ownerPermission = _permissionRepository.GetByCode(PermissionCode.Create(748));
         user.AddCredentials(credentials);

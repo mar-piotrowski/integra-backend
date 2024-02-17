@@ -18,13 +18,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace IntegraBackend.Controllers;
 
 [Route("integra/users")]
+[ApiController]
 public class UserController : ControllerBase {
     private readonly ISender _sender;
 
     public UserController(ISender sender) => _sender = sender;
 
     [HttpGet]
-    public async Task<ActionResult> GetAll([FromQuery] UserQueryParams filters) {
+    public async Task<ActionResult> GetAll([FromQuery] UserQueryParams filters, int companyId) {
         var command = new GetUsersQuery(filters.Sort);
         var result = await _sender.Send(command);
         return result.MapToResult();
@@ -37,14 +38,16 @@ public class UserController : ControllerBase {
         return result.MapToResult();
     }
 
+
+
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] CreateUserCommand command) {
+    public async Task<ActionResult> Create([FromBody] CreateUserCommand command, int companyId) {
         var result = await _sender.Send(command);
         return result.MapToResult();
     }
 
     [HttpPost("{userId:int}/add-permissions")]
-    public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request) {
+    public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request, int companyId) {
         var result = await _sender.Send(new AddUserPermissionsCommand(
             UserId.Create(userId),
             request.Permissions.Select(PermissionCode.Create)
@@ -53,7 +56,7 @@ public class UserController : ControllerBase {
     }
 
     [HttpPost("{userId:int}/remove-permissions")]
-    public async Task<ActionResult> RemovePermissions(int userId, [FromBody] RemoveUserPermissionRequest request) {
+    public async Task<ActionResult> RemovePermissions(int userId, [FromBody] RemoveUserPermissionRequest request, int companyId) {
         var result = await _sender.Send(new RemoveUserPermissionsCommand(
             UserId.Create(userId),
             request.Permissions.Select(PermissionCode.Create)
@@ -62,7 +65,7 @@ public class UserController : ControllerBase {
     }
 
     [HttpPost("{userId:int}/schedules/add-schedule")]
-    public async Task<ActionResult> AddSchedule(int userId, [FromBody] AddUserScheduleRequest request) {
+    public async Task<ActionResult> AddSchedule(int userId, [FromBody] AddUserScheduleRequest request, int companyId) {
         var result = await _sender.Send(new AddUserScheduleCommand(
             UserId.Create(userId),
             ScheduleSchemaId.Create(request.ScheduleSchemaId)
@@ -71,7 +74,7 @@ public class UserController : ControllerBase {
     }
 
     [HttpDelete("{userId:int}/schedules/{scheduleId:int}/remove-schedule")]
-    public async Task<ActionResult> RemoveSchedule(int userId, int scheduleId) {
+    public async Task<ActionResult> RemoveSchedule(int userId, int scheduleId, int companyId) {
         var result = await _sender.Send(new DeleteUserScheduleCommand(
             UserId.Create(userId),
             ScheduleSchemaId.Create(scheduleId)
@@ -80,7 +83,7 @@ public class UserController : ControllerBase {
     }
 
     [HttpPut("{userId:int}")]
-    public async Task<ActionResult> Update([FromBody] UpdateUserRequest request, int userId) {
+    public async Task<ActionResult> Update([FromBody] EditUserRequest request, int userId, int companyId) {
         var command = new UpdateUserCommand(
             UserId.Create(userId),
             request.Firstname,
@@ -94,6 +97,8 @@ public class UserController : ControllerBase {
             request.PlaceOfBirth,
             request.Sex,
             request.IsStudent,
+            request.Citizenship,
+            request.Nip,
             request.BankAccount,
             request.Locations
         );
@@ -102,7 +107,7 @@ public class UserController : ControllerBase {
     }
 
     [HttpDelete("{userId:int}")]
-    public async Task<ActionResult> Delete(int userId) {
+    public async Task<ActionResult> Delete(int userId, int companyId) {
         var command = new DeleteUserCommand(UserId.Create(userId));
         var result = await _sender.Send(command);
         return result.MapToResult();

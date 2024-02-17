@@ -34,18 +34,20 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
             return Result.Failure<string>(UserErrors.IdentityNumberExists);
         if (!request.Locations.Any())
             return Result.Failure(UserErrors.NoLocations);
-        var user = Domain.Entities.User.Create(
+        var user = new Domain.Entities.User(
             request.Firstname,
             request.Lastname,
             !string.IsNullOrEmpty(request.Email) ? Email.Create(request.Email) : null,
             PersonalIdNumber.Create(request.IdentityNumber),
             !string.IsNullOrEmpty(request.DocumentNumber) ? DocumentNumber.Create(request.DocumentNumber) : null,
             string.IsNullOrWhiteSpace(request.Phone) ? null : Phone.Create(request.Phone),
-            request.SecondName,
             request.IsStudent,
+            request.SecondName,
             request.DateOfBirth,
             request.PlaceOfBirth,
-            request.Sex
+            request.Sex,
+            request.Citizenship,
+            request.Nip
         );
         var userPermission = _permissionRepository.GetByCode(PermissionCode.Create(943));
         if (userPermission is not null)

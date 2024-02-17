@@ -1,9 +1,11 @@
-using Application.Features.Contractor.CreateContractor;
-using Application.Features.Contractor.GetContractor;
-using Application.Features.Contractor.GetContractors;
-using Application.Features.Contractor.UpdateContractor;
+using Application.Features.Contractor.Create;
+using Application.Features.Contractor.Delete;
+using Application.Features.Contractor.Get;
+using Application.Features.Contractor.GetAll;
+using Application.Features.Contractor.Update;
 using Domain.Common.Result;
 using Domain.ValueObjects;
+using Domain.ValueObjects.Ids;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,9 +37,15 @@ public class ContractorController : ControllerBase {
         return result.MapToResult();
     }
 
-    [HttpPut("{nip}")]
-    public async Task<ActionResult> Edit(string nip, [FromBody] UpdateContractorCommand command) {
+    [HttpPut]
+    public async Task<ActionResult> Edit([FromBody] UpdateContractorCommand command) {
         var result = await _sender.Send(command);
+        return result.MapToResult();
+    }
+    
+    [HttpDelete("{contractorId:int}")]
+    public async Task<ActionResult> Edit(int contractorId) {
+        var result = await _sender.Send(new DeleteContractorCommand(ContractorId.Create(contractorId)));
         return result.MapToResult();
     }
 }

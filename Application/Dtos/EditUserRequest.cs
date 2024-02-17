@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Dtos;
 
-public record UpdateUserRequest(
+public record EditUserRequest(
     string Firstname,
     string Lastname,
     string? SecondName,
@@ -17,6 +17,8 @@ public record UpdateUserRequest(
     string PlaceOfBirth,
     Sex Sex,
     bool IsStudent,
+    string? Citizenship,
+    string? Nip,
     BankAccountDto? BankAccount,
     List<LocationDto>? Locations
 ) : IRequest<Result>;

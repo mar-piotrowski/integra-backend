@@ -5,7 +5,7 @@ using Application.Mappers;
 using Domain.Common.Errors;
 using Domain.Common.Result;
 
-namespace Application.Features.Contractor.GetContractors;
+namespace Application.Features.Contractor.GetAll;
 
 public class GetContractorsQueryHandler : IQueryHandler<GetContractorsQuery, ContractorsResponse> {
     private readonly IContractorRepository _contractorRepository;
