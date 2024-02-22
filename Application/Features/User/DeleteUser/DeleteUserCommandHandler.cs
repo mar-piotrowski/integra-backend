@@ -21,11 +21,20 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Resul
         var user = _userRepository.FindById(request.Id);
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
-        if (user.Contracts.FirstOrDefault(
-                contract => contract.Status
-                    is ContractStatus.Active
-                    or ContractStatus.Pending) is not null
-           ) return Result.Failure(UserErrors.NoResolvedContracts);
+        var activeContract = user.Contracts.FirstOrDefault(
+            contract => contract.Status
+                is ContractStatus.Active
+                or ContractStatus.Pending);
+        if (activeContract is not null)
+            return Result.Failure(UserErrors.NoResolvedContracts);
+        var currentAbsence = user.Absences.FirstOrDefault(absence => absence.EndDate >= DateTimeOffset.Now);
+        if (currentAbsence is not null)
+            return Result.Failure(UserErrors.CurrentAbsence);
+        var pendingAbsence = user.Absences.FirstOrDefault(absence => absence.Status == AbsenceStatus.Pending);
+        if (pendingAbsence is not null)
+            return Result.Failure(UserErrors.PendingAbsence);
+        foreach (var userCard in user.Cards)
+            userCard.DeActive();
         user.DeActivate();
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
