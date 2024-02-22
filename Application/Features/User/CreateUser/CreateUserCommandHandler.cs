@@ -30,7 +30,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
         if (!string.IsNullOrEmpty(request.Email) && _userRepository.GetByEmail(Email.Create(request.Email)) is not null)
             return Result.Failure<string>(UserErrors.EmailExists);
-        if (_userRepository.GetByPersonalIdNumber(PersonalIdNumber.Create(request.IdentityNumber)) is not null)
+        if (_userRepository.GetByPersonalIdNumber(PersonalIdNumber.Create(request.PersonalIdNumber)) is not null)
             return Result.Failure<string>(UserErrors.IdentityNumberExists);
         if (!request.Locations.Any())
             return Result.Failure(UserErrors.NoLocations);
@@ -38,7 +38,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand> {
             request.Firstname,
             request.Lastname,
             !string.IsNullOrEmpty(request.Email) ? Email.Create(request.Email) : null,
-            PersonalIdNumber.Create(request.IdentityNumber),
+            PersonalIdNumber.Create(request.PersonalIdNumber),
             !string.IsNullOrEmpty(request.DocumentNumber) ? DocumentNumber.Create(request.DocumentNumber) : null,
             string.IsNullOrWhiteSpace(request.Phone) ? null : Phone.Create(request.Phone),
             request.IsStudent,

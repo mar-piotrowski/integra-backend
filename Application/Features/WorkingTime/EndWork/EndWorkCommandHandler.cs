@@ -22,8 +22,8 @@ public class EndWorkCommandHandler : ICommandHandler<EndWorkCommand> {
             return Result.Failure(CardErrors.NotFound);
         var workStarted = card.User.WorkingTimes
             .OrderBy(workingTime => workingTime.StartDate)
-            .LastOrDefault(workingTime => workingTime.Status == WorkingTimeStatus.End);
-        if (workStarted is not null)
+            .LastOrDefault(workingTime => workingTime.Status == WorkingTimeStatus.Start);
+        if (workStarted is null)
             return Result.Failure(WorkingTimeErrors.JobHasNotStarted);
         card.User.EndWork();
         await _unitOfWork.SaveChangesAsync(cancellationToken);

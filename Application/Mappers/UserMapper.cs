@@ -7,7 +7,6 @@ public class UserMapper {
     public UserDto MapToDto(User user) => new UserDto() {
         Id = user.Id.Value,
         Firstname = user.Firstname,
-        SecondName = user.SecondName,
         Lastname = user.Lastname,
         Email = user.Email?.Value,
         Phone = user.Phone?.Value ?? "",
@@ -15,7 +14,7 @@ public class UserMapper {
         PlaceOfBirth = user.PlaceOfBirth,
         IsStudent = user.IsStudent,
         Sex = user.Sex,
-        IdentityNumber = user.PersonalIdNumber?.Value ?? "",
+        PersonalIdNumber = user.PersonalIdNumber?.Value ?? "",
         DocumentNumber = user.DocumentNumber?.Value,
         Citizenship = user.Citizenship,
         Nip = user.Nip,

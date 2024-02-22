@@ -6,10 +6,12 @@ namespace Application.Mappers;
 public class DocumentMapper {
     private readonly StockMapper _stockMapper;
     private readonly ContractorMapper _contractorMapper;
+    private readonly ArticleMapper _articleMapper;
 
-    public DocumentMapper(StockMapper stockMapper, ContractorMapper contractorMapper) {
+    public DocumentMapper(StockMapper stockMapper, ContractorMapper contractorMapper, ArticleMapper articleMapper) {
         _stockMapper = stockMapper;
         _contractorMapper = contractorMapper;
+        _articleMapper = articleMapper;
     }
 
     public DocumentDto MapToDto(Document document) {
@@ -25,7 +27,7 @@ public class DocumentMapper {
             document.TotalAmountWithoutTax,
             document.Description,
             document.Locked,
-            document.Articles.MapToDocumentArticleDtos(),
+            _articleMapper.MapToDocumentArticleDtos(document.Articles),
             document.Contractor is not null ? _contractorMapper.MapToDto(document.Contractor) : null,
             document.SourceStock is not null ? _stockMapper.MapToDto(document.SourceStock) : null,
             document.TargetStock is not null ? _stockMapper.MapToDto(document.TargetStock) : null

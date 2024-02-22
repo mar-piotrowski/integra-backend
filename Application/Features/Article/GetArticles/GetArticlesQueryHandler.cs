@@ -9,15 +9,17 @@ namespace Application.Features.Article.GetArticles;
 
 public class GetArticlesQueryHandler : IQueryHandler<GetArticlesQuery, ArticlesResponse> {
     private readonly IArticleRepository _articleRepository;
+    private readonly ArticleMapper _articleMapper;
 
-    public GetArticlesQueryHandler(IArticleRepository articleRepository) {
+    public GetArticlesQueryHandler(IArticleRepository articleRepository, ArticleMapper articleMapper) {
         _articleRepository = articleRepository;
+        _articleMapper = articleMapper;
     }
 
     public async Task<Result<ArticlesResponse>> Handle(GetArticlesQuery request, CancellationToken cancellationToken) {
         var articles = _articleRepository.FindAll().ToList();
         return !articles.Any()
             ? Result.Failure<ArticlesResponse>(ArticleErrors.NotFoundMany)
-            : Result.Success( new ArticlesResponse(_articleRepository.Count(), articles.MapToDtos()));
+            : Result.Success(new ArticlesResponse(_articleRepository.Count(), _articleMapper.MapToDtos(articles)));
     }
 }

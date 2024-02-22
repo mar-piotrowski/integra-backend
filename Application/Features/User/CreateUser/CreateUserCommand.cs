@@ -10,7 +10,7 @@ public sealed record CreateUserCommand(
     string? SecondName,
     string? Email,
     string? Phone,
-    string IdentityNumber,
+    string PersonalIdNumber,
     string? DocumentNumber,
     DateTime DateOfBirth,
     string PlaceOfBirth,

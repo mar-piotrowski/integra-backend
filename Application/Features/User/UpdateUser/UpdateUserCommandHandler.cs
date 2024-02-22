@@ -27,7 +27,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Resul
             request.Firstname,
             request.Lastname,
             !string.IsNullOrEmpty(request.Email) ? Email.Create(request.Email) : null,
-            PersonalIdNumber.Create(request.IdentityNumber),
+            PersonalIdNumber.Create(request.PersonalIdNumber),
             !string.IsNullOrEmpty(request.DocumentNumber) ? DocumentNumber.Create(request.DocumentNumber) : null,
             string.IsNullOrWhiteSpace(request.Phone) ? null : Phone.Create(request.Phone),
             request.SecondName,

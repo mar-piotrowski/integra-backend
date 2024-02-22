@@ -54,7 +54,8 @@ public static class DependencyInjection {
     public static WebApplication SeedDatabase(this WebApplication app) {
         using (var scope = app.Services.CreateScope()) {
             var context = scope.ServiceProvider.GetService<DatabaseContext>();
-            new Seeder(context!).Seed();
+            new PermissionSeed(context!).Seed();
+            new UserSeed(context!, new PasswordHasher()).Seed();
         }
 
         return app;

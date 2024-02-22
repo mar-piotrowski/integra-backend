@@ -7,7 +7,7 @@ public class BankAccount : Entity<BankAccountId> {
     public string Name { get; private set; }
     public string Number { get; private set; }
     public UserId? UserId { get; private set; }
-    public ContractorId ContractorId { get; private set; }
+    public ContractorId? ContractorId { get; private set; }
 
     private BankAccount() { }
 

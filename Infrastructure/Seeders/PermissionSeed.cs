@@ -3,10 +3,10 @@ using Domain.Entities;
 
 namespace Infrastructure.Seeders;
 
-public class Seeder {
+public class PermissionSeed {
     private readonly DatabaseContext _databaseContext;
 
-    public Seeder(DatabaseContext databaseContext) => _databaseContext = databaseContext;
+    public PermissionSeed(DatabaseContext databaseContext) => _databaseContext = databaseContext;
 
     public void Seed() {
         _databaseContext.Database.EnsureCreated();

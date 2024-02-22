@@ -6,10 +6,9 @@ public class UserDto {
     public int Id { get; set; }
     public required string Firstname { get; init; }
     public required string Lastname { get; init; }
-    public string? SecondName { get; init; }
     public string? Email { get; init; }
     public string? Phone { get; init; } 
-    public required string IdentityNumber { get; init; } 
+    public required string PersonalIdNumber { get; init; } 
     public string? DocumentNumber { get; init; }
     public DateTimeOffset? DateOfBirth { get; init; }
     public string? PlaceOfBirth { get; init; }

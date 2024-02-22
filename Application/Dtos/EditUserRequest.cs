@@ -11,7 +11,7 @@ public record EditUserRequest(
     string? SecondName,
     string? Email,
     string? Phone,
-    string IdentityNumber,
+    string PersonalIdNumber,
     string? DocumentNumber,
     DateTimeOffset DateOfBirth,
     string PlaceOfBirth,

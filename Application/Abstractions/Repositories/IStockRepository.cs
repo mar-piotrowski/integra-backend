@@ -8,4 +8,5 @@ public interface IStockRepository : IRepository<Stock, StockId> {
     public Stock? FindByName(string name);
     public List<Stock> FindStocksWithProduct(ArticleId articleId);
     public List<Article> FindArticles(StockId stockId, List<ArticleId> articleIds);
+    public decimal CountArticleOnStocks(ArticleId articleId);
 }

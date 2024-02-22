@@ -39,7 +39,6 @@ public class UserController : ControllerBase {
     }
 
 
-
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserCommand command, int companyId) {
         var result = await _sender.Send(command);
@@ -47,7 +46,8 @@ public class UserController : ControllerBase {
     }
 
     [HttpPost("{userId:int}/add-permissions")]
-    public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request, int companyId) {
+    public async Task<ActionResult> AddPermissions(int userId, [FromBody] AddUserPermissionsRequest request,
+        int companyId) {
         var result = await _sender.Send(new AddUserPermissionsCommand(
             UserId.Create(userId),
             request.Permissions.Select(PermissionCode.Create)
@@ -56,7 +56,8 @@ public class UserController : ControllerBase {
     }
 
     [HttpPost("{userId:int}/remove-permissions")]
-    public async Task<ActionResult> RemovePermissions(int userId, [FromBody] RemoveUserPermissionRequest request, int companyId) {
+    public async Task<ActionResult> RemovePermissions(int userId, [FromBody] RemoveUserPermissionRequest request,
+        int companyId) {
         var result = await _sender.Send(new RemoveUserPermissionsCommand(
             UserId.Create(userId),
             request.Permissions.Select(PermissionCode.Create)
@@ -91,7 +92,7 @@ public class UserController : ControllerBase {
             request.SecondName,
             request.Email,
             request.Phone,
-            request.IdentityNumber,
+            request.PersonalIdNumber,
             request.DocumentNumber,
             request.DateOfBirth,
             request.PlaceOfBirth,

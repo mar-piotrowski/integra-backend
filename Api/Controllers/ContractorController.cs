@@ -44,7 +44,7 @@ public class ContractorController : ControllerBase {
     }
     
     [HttpDelete("{contractorId:int}")]
-    public async Task<ActionResult> Edit(int contractorId) {
+    public async Task<ActionResult> Delete(int contractorId) {
         var result = await _sender.Send(new DeleteContractorCommand(ContractorId.Create(contractorId)));
         return result.MapToResult();
     }
