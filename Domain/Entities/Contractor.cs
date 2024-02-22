@@ -12,8 +12,9 @@ public class Contractor : Entity<ContractorId> {
     public Nip Nip { get; private set; }
     public Phone Phone { get; private set; }
     public Location Location { get; private set; }
-    public BankAccountId BankAccountId { get; private set; }
     public BankAccount BankAccount { get; private set; }
+    public bool Active { get; private set; } = true;
+    public bool Historical { get; private set;  }
         
     private Contractor() { }
 
@@ -53,5 +54,10 @@ public class Contractor : Entity<ContractorId> {
         ShortName = shortName;
         Email = email;
         Phone = phone;
+    }
+    
+    public void Disable() {
+        Active = false;
+        Historical = true;
     }
 }

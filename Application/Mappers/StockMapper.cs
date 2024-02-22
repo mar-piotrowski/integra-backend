@@ -4,12 +4,18 @@ using Domain.Entities;
 namespace Application.Mappers;
 
 public class StockMapper {
+    private readonly ArticleMapper _articleMapper;
+
+    public StockMapper(ArticleMapper articleMapper) {
+        _articleMapper = articleMapper;
+    }
+
     public StockDto MapToDto(Stock stock) => new StockDto(
         stock.Id.Value,
         stock.Name,
         stock.IsMain,
         CountAllStockArticles(stock.Articles),
-        stock.Articles.MapToStockArticles()
+        _articleMapper.MapToStockArticles(stock.Articles)
     );
 
     public List<StockDto> MapToDtos(IEnumerable<Stock> stocks) => stocks.Select(MapToDto).ToList();

@@ -7,7 +7,6 @@ public class UserMapper {
     public UserDto MapToDto(User user) => new UserDto() {
         Id = user.Id.Value,
         Firstname = user.Firstname,
-        SecondName = user.SecondName,
         Lastname = user.Lastname,
         Email = user.Email?.Value,
         Phone = user.Phone?.Value ?? "",
@@ -15,7 +14,10 @@ public class UserMapper {
         PlaceOfBirth = user.PlaceOfBirth,
         IsStudent = user.IsStudent,
         Sex = user.Sex,
-        IdentityNumber = user.PersonalIdNumber?.Value ?? "Brak",
+        PersonalIdNumber = user.PersonalIdNumber?.Value ?? "",
+        DocumentNumber = user.DocumentNumber?.Value,
+        Citizenship = user.Citizenship,
+        Nip = user.Nip,
         JobPosition = user.JobPosition?.Title ?? "Brak",
         BankAccount = user.BankAccount?.MapToDto(),
         Locations = user.Locations.MapToDtos().ToList(),
@@ -28,7 +30,6 @@ public class UserMapper {
     public UserShortDto MapToShortDto(User user) => new UserShortDto(
         user.Id.Value,
         user.Firstname,
-        user.Lastname,
-        user.JobPosition?.Title ?? "Brak"
+        user.Lastname
     );
 }

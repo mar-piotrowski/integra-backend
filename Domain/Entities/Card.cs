@@ -12,13 +12,11 @@ public class Card : Entity<CardId> {
 
     private Card() { }
 
-    private Card(CardNumber number, UserId userId) {
+    public Card(CardNumber number, bool active) {
         Number = number;
-        UserId = userId;
-        Active();
+        if (active)
+            Active();
     }
-
-    public static Card Create(UserId userId, CardNumber number) => new Card(number, userId);
 
     public void Active() => IsActive = true;
 

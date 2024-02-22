@@ -12,9 +12,11 @@ namespace Application.Features.Document.Documents.Mm;
 
 public class DocumentMm : IDocumentMm {
     private readonly IStockRepository _stockRepository;
+    private readonly ArticleMapper _articleMapper;
 
-    public DocumentMm(IStockRepository stockRepository) {
+    public DocumentMm(IStockRepository stockRepository, ArticleMapper articleMapper) {
         _stockRepository = stockRepository;
+        _articleMapper = articleMapper;
     }
 
     public Result<Domain.Entities.Document> Create(CreateDocumentCommand command) {
@@ -47,14 +49,13 @@ public class DocumentMm : IDocumentMm {
             command.SourceStockId,
             command.TargetStockId
         );
-        var articles = command.Articles.MapToAddArticles();
-        if (!document.Locked) {
-            document.AddArticles(articles);
-            return document;
+        var articles = _articleMapper.MapToAddArticles(command.Articles);
+        if (document.Locked) {
+            sourceStock.OddAmountArticles(articles);
+            targetStock.AddArticles(articles);
         }
 
-        sourceStock.OddAmountArticles(articles);
-        targetStock.AddArticles(articles);
+        document.AddArticles(articles);
         return document;
     }
 
@@ -87,7 +88,7 @@ public class DocumentMm : IDocumentMm {
             command.TargetStockId,
             command.Description
         );
-        var articles = command.Articles.MapToAddArticles();
+        var articles = _articleMapper.MapToAddArticles(command.Articles);
         if (!command.Locked) {
             document.ClearArticles();
             document.AddArticles(articles);

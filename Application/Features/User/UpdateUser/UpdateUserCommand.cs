@@ -13,12 +13,14 @@ public record UpdateUserCommand(
     string? SecondName,
     string? Email,
     string? Phone,
-    string IdentityNumber,
+    string PersonalIdNumber,
     string? DocumentNumber,
     DateTimeOffset DateOfBirth,
     string PlaceOfBirth,
     Sex Sex,
     bool IsStudent,
+    string? Citizenship,
+    string? Nip,
     BankAccountDto? BankAccount,
     List<LocationDto>? Locations
 ) : IRequest<Result>;

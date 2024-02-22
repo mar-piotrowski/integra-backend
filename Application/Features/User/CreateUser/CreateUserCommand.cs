@@ -10,13 +10,15 @@ public sealed record CreateUserCommand(
     string? SecondName,
     string? Email,
     string? Phone,
-    string IdentityNumber,
+    string PersonalIdNumber,
     string? DocumentNumber,
     DateTime DateOfBirth,
     string PlaceOfBirth,
     Sex Sex,
     bool IsStudent,
     string? EmployeeAnyWherePassword,
+    string? Citizenship,
+    string? Nip,
     BankAccountDto BankAccount,
     IEnumerable<LocationDto> Locations
 ) : ICommand;

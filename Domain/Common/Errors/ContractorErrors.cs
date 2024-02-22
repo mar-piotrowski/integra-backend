@@ -9,6 +9,12 @@ namespace Domain.Common.Errors {
             "Podany nip jest już zarejestrowany"
         );
 
+        public static Error NotFound => new Error(
+            HttpStatusCode.BadRequest,
+            "",
+            "Nie znaleziono kontrahenata"
+        );
+
         public static Error NipNotExists => new Error(
             HttpStatusCode.NotFound,
             "Contractor.NipDoesNotExist",

@@ -20,7 +20,7 @@ public class EditStockCommandHandler : ICommandHandler<EditStockCommand> {
         if (stock is null)
             return Result.Failure(StockErrors.NotFound);
         var stockNameExists = _stockRepository.FindByName(request.Name);
-        if (stockNameExists is not null)
+        if (stockNameExists is not null && stock.Id != stockNameExists.Id)
             return Result.Failure(StockErrors.NameExists);
         if (request.IsMain) {
             var mainStock = StockUtils.FindMainStock(_stockRepository.FindAll());

@@ -37,11 +37,9 @@ public class RegisterCommandHandler : ICommandHandler<RegisterCommand, TokenResp
         if (request.Password != request.ConfirmPassword)
             return Result.Failure<TokenResponse>(AuthenticationErrors.WrongConfirmPassword);
         var hashPassword = _passwordHasher.Hash(request.Password);
-        var user = Domain.Entities.User.Create(request.Firstname, request.Lastname, request.Email);
-        var credentials = Credential.Create(hashPassword);
-        var ownerPermission = _permissionRepository.GetByCode(PermissionCode.Create(748));
-        user.AddCredentials(credentials);
-        user.AddPermissions(new List<Domain.Entities.Permission> { ownerPermission! });
+        var user = Domain.Entities.User.Register(request.Firstname, request.Lastname, request.Email);
+        user.AddCredentials(Credential.Create(hashPassword));
+        user.AddPermissions(_permissionRepository.GetManagementPermissions());
         _userRepository.Add(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success(new TokenResponse(_jwtService.GenerateAccessToken(user)));

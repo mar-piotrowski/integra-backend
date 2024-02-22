@@ -8,11 +8,17 @@ namespace Application.Features.Article.UpdateArticle;
 
 public class UpdateArticleCommandHandler : ICommandHandler<UpdateArticleCommand> {
     private readonly IArticleRepository _articleRepository;
+    private readonly IStockRepository _stockRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateArticleCommandHandler(IArticleRepository articleRepository, IUnitOfWork unitOfWork) {
+    public UpdateArticleCommandHandler(
+        IArticleRepository articleRepository,
+        IUnitOfWork unitOfWork,
+        IStockRepository stockRepository
+    ) {
         _articleRepository = articleRepository;
         _unitOfWork = unitOfWork;
+        _stockRepository = stockRepository;
     }
 
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken) {
@@ -34,6 +40,11 @@ public class UpdateArticleCommandHandler : ICommandHandler<UpdateArticleCommand>
         );
         article.Disable();
         _articleRepository.Add(updateArticle);
+        foreach (var stockArticles in article.Stocks) {
+            var stock = _stockRepository.FindById(stockArticles.StockId);
+            stock?.AddArticle(updateArticle, stockArticles.Amount);
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }

@@ -15,7 +15,7 @@ public sealed class Article : Entity<ArticleId> {
     public decimal SellPriceWithTax { get; private set; }
     public decimal Tax { get; private set; }
     public string? Description { get; private set; }
-    public bool Historical { get; private set; } = false;
+    public bool Historical { get; private set; } 
     public bool Active { get; private set; } = true;
 
     public List<DocumentArticles> Documents { get; private set; } = new List<DocumentArticles>();
